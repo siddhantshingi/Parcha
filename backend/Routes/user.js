@@ -33,7 +33,7 @@ router.delete('/delete-user', (req, res) => {
 
 /**Api to get the list of user */
 router.get('/get-user', (req, res) => {
-	documentService.getUser(req.query, (data) => {
+	userService.getUser(req.query, (data) => {
 		res.send(data);
 	});
 });
