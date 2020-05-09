@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../Entities/user.dart';
 import '../Services/userService.dart';
+import 'package:token_system/components/title.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -24,6 +25,14 @@ class _RegisterState extends State<Register> {
     userService = new UserService();
   }
 
+  String validateMobile(String value) {
+    // Indian Mobile number are of 10 digit only
+    if (value.length != 10)
+      return 'Mobile Number must be of 10 digits';
+    else
+      return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,16 +43,7 @@ class _RegisterState extends State<Register> {
             padding: EdgeInsets.all(10),
             child: ListView(
               children: <Widget>[
-                Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      'TokenDown',
-                      style: TextStyle(
-                          color: Colors.blueGrey,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 30),
-                    )),
+                TitleWidget(),
                 Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(10),
@@ -80,9 +80,11 @@ class _RegisterState extends State<Register> {
                       labelText: 'Contact number',
                     ),
                   ),
-                ),Container(
-                  padding: EdgeInsets.all(10),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: TextField(
+                    obscureText: true,
                     controller: passwordController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -92,6 +94,7 @@ class _RegisterState extends State<Register> {
                 ),Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
+                    obscureText: true,
                     controller: confirmPasswordController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -127,9 +130,8 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: TextField(
-                    obscureText: true,
                     controller: pincodeController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -139,7 +141,7 @@ class _RegisterState extends State<Register> {
                 ),
                 Container(
                     height: 50,
-                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: RaisedButton(
                       textColor: Colors.white,
                       color: Colors.blueGrey,
@@ -164,22 +166,22 @@ class _RegisterState extends State<Register> {
                     )),
                 Container(
                     child: Row(
-                      children: <Widget>[
-                        Text('Already have an account?'),
-                        FlatButton(
-                          textColor: Colors.blue,
-                          child: Text(
-                            'Sign in',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          onPressed: () {
-                            //signin screen
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.center,
-                    ))
+                  children: <Widget>[
+                    Text('Already have an account?'),
+                    FlatButton(
+                      textColor: Colors.blue,
+                      child: Text(
+                        'Sign in',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () {
+                        //signin screen
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ))
               ],
             )));
   }
