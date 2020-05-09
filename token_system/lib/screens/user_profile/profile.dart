@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final int val;
+  final String name;
 
-  ProfileScreen({Key key, @required this.val}) : super(key: key);
+  ProfileScreen({Key key, @required this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text("You are here: " + val.toString()),
+      child: Text("Welcome! " + name),
     );
   }
 }
