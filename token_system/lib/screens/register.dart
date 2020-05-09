@@ -162,6 +162,7 @@ class _RegisterState extends State<Register> {
                         newUser.verificationStatus = 0;
                         print (newUser.toJson());
                         userService.registerApiCall(newUser);
+                        Navigator.pop(context);
                       },
                     )),
                 Container(
