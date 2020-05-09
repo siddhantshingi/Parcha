@@ -35,13 +35,16 @@ let createUser = (data, callback) => {
 	async.auto({
 		user: (cb) => {
 			var dataToSet = {
-				"id":data.id,
+				"id":Number(data.id),
 				"name":data.name,
-				"DOB":data.DOB,
 				"email":data.email,
+				"contactNumber":data.contactNumber,
 				"password":data.password,
-				"contact_number":data.contact_number,
-				"adhaar_number":data.adhaar_number
+				"aadharNumber":data.aadharNumber,
+				"state":data.state,
+				"district":data.district,
+				"pincode":data.pincode,
+				"verificationStatus":Number(data.verificationStatus),
 			}
 			userDAO.createUser(dataToSet, (err, dbData) => {
 			if (err) {
@@ -71,11 +74,15 @@ let updateUser = (data,callback) => {
 			}
 			var dataToSet={
 				"name":data.name,
-				"DOB":data.DOB,
+				"name":data.name,
 				"email":data.email,
+				"contactNumber":data.contactNumber,
 				"password":data.password,
-				"contact_number":data.contact_number,
-				"adhaar_number":data.adhaar_number
+				"aadharNumber":data.aadharNumber,
+				"state":data.state,
+				"district":data.district,
+				"pincode":data.pincode,
+				"verificationStatus":data.verificationStatus
 			}
             userDAO.updateUser(criteria, dataToSet, (err, dbData)=>{
 	            if(err){

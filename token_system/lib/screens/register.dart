@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../Entities/user.dart';
+import '../Services/userService.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -6,10 +8,21 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController contactNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController aadharNumberController = TextEditingController();
+  TextEditingController stateController = TextEditingController();
+  TextEditingController districtController = TextEditingController();
+  TextEditingController pincodeController = TextEditingController();
+
+  UserService userService;
+
+  _RegisterState(){
+    userService = new UserService();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,42 +54,86 @@ class _RegisterState extends State<Register> {
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
-                    controller: firstNameController,
+                    controller: nameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'First Name',
+                      labelText: 'Name',
                     ),
                   ),
                 ),
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
-                    controller: lastNameController,
+                    controller: emailController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Last Name',
+                      labelText: 'Email',
                     ),
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  padding: EdgeInsets.all(10),
                   child: TextField(
-                    obscureText: true,
+                    controller: contactNumberController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Contact number',
+                    ),
+                  ),
+                ),Container(
+                  padding: EdgeInsets.all(10),
+                  child: TextField(
                     controller: passwordController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
                     ),
                   ),
+                ),Container(
+                  padding: EdgeInsets.all(10),
+                  child: TextField(
+                    controller: confirmPasswordController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Confirm password',
+                    ),
+                  ),
+                ),Container(
+                  padding: EdgeInsets.all(10),
+                  child: TextField(
+                    controller: aadharNumberController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Aadhar number',
+                    ),
+                  ),
+                ),Container(
+                  padding: EdgeInsets.all(10),
+                  child: TextField(
+                    controller: stateController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'State',
+                    ),
+                  ),
+                ),Container(
+                  padding: EdgeInsets.all(10),
+                  child: TextField(
+                    controller: districtController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'District',
+                    ),
+                  ),
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: TextField(
                     obscureText: true,
-                    controller: confirmPasswordController,
+                    controller: pincodeController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Confirm Password',
+                      labelText: 'Pincode',
                     ),
                   ),
                 ),
@@ -89,11 +146,20 @@ class _RegisterState extends State<Register> {
                       child: Text('Register'),
                       onPressed: () {
                         // TODO: add validation function
-                        // TODO: call register API
-                        print(firstNameController.text);
-                        print(lastNameController.text);
-                        print(passwordController.text);
-                        print(confirmPasswordController.text);
+                        User newUser = new User();
+                        newUser.id = 0;
+                        newUser.name = nameController.text;
+                        newUser.email = emailController.text;
+                        newUser.contactNumber = contactNumberController.text;
+                        newUser.password = passwordController.text;
+                        newUser.aadharNumber = aadharNumberController.text;
+                        newUser.state = stateController.text;
+                        newUser.district = districtController.text;
+                        newUser.email = emailController.text;
+                        newUser.pincode = pincodeController.text;
+                        newUser.verificationStatus = 0;
+                        print (newUser.toJson());
+                        userService.registerApiCall(newUser);
                       },
                     )),
                 Container(
