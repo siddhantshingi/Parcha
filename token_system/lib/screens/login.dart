@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/components/title.dart';
 import 'package:token_system/screens/register.dart';
-import 'package:token_system/screens/user_profile/home.dart';
+import 'package:token_system/screens/home.dart';
 
 class Login extends StatefulWidget {
   @override
