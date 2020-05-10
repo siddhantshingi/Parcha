@@ -49,7 +49,7 @@ let createUser = (data, callback) => {
 			userDAO.createUser(dataToSet, (err, dbData) => {
 			if (err) {
 				console.log("ERROR: ", dbData);
-				cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ONE, "statusMessage": util.statusMessage.SERVER_BUSY });
+				cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err });
 				return;
 			}
 
@@ -86,7 +86,7 @@ let updateUser = (data,callback) => {
 			}
             userDAO.updateUser(criteria, dataToSet, (err, dbData)=>{
 	            if(err){
-					cb(null,{"statusCode":util.statusCode.FOUR_ZERO_ONE,"statusMessage":util.statusMessage.SERVER_BUSY});
+					cb(null,{"statusCode":util.statusCode.FOUR_ZERO_ZERO,"statusMessage":util.statusMessage.BAD_REQUEST + err});
                     return; 
                 }
                 else{
@@ -112,7 +112,7 @@ let deleteUser = (data,callback) => {
 			}
 			userDAO.deleteUser(criteria,(err,dbData) => {
 				if (err) {
-					cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ONE, "statusMessage": util.statusMessage.SERVER_BUSY });
+					cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err });
 					return;
 				}
 				cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DELETE_DATA });
@@ -129,7 +129,7 @@ let getUser = (data, callback) => {
 		user: (cb) => {
 			userDAO.getUser({},(err, data) => {
 				if (err) {
-					cb(null, {"errorCode": util.statusCode.INTERNAL_SERVER_ERROR,"statusMessage": util.statusMessage.SERVER_BUSY});
+					cb(null, {"errorCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err});
 					return;
 				}
 				cb(null, data);
@@ -150,7 +150,7 @@ let getUserById = (data, callback) => {
 			}
 			userDAO.getUserDetailUsingId(criteria,(err, data) => {
 				if (err) {
-					cb(null, {"errorCode": util.statusCode.INTERNAL_SERVER_ERROR,"statusMessage": util.statusMessage.SERVER_BUSY});
+					cb(null, {"errorCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err});
 					return;
 				}
 				cb(null, data[0]);
@@ -175,7 +175,7 @@ let getUserByEmail = (data, callback) => {
 					return;
 				}
 				if (err) {
-					cb(null, {"errorCode": util.statusCode.INTERNAL_SERVER_ERROR,"statusMessage": util.statusMessage.SERVER_BUSY});
+					cb(null, {"errorCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err});
 					return;
 				}
 				cb(null, data[0]);
