@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './screens/login.dart';
+import 'package:token_system/screens/login.dart';
 
 void main() {
   runApp(MaterialApp(

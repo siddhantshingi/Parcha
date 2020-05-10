@@ -9,8 +9,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController mobileController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  String _mobile = '';
+  var _passkey = GlobalKey<FormFieldState>();
 
   String validateMobile(String value) {
     // Indian Mobile number are of 10 digit only
@@ -23,97 +24,109 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blueGrey,
-        ),
-        body: Padding(
+      appBar: AppBar(
+        backgroundColor: Colors.blueGrey,
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(10),
+        child: ListView(children: <Widget>[
+          TitleWidget(),
+          Container(
+            alignment: Alignment.center,
             padding: EdgeInsets.all(10),
-            child: ListView(
-              children: <Widget>[
-                TitleWidget(),
-                Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    'Sign in',
-                    style: TextStyle(fontSize: 20),
+            child: Text(
+              'Sign in',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          Form(
+            key: _formKey,
+            child: Column(children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(10),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Mobile',
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextFormField(
-                    controller: mobileController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Mobile',
-                    ),
-                    keyboardType: TextInputType.phone,
-                    validator: validateMobile,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: TextField(
-                    obscureText: true,
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
-                    ),
-                  ),
-                ),
-                FlatButton(
-                  onPressed: () {
-                    //forgot password screen
+                  keyboardType: TextInputType.phone,
+                  validator: validateMobile,
+                  onSaved: (value) {
+                    setState(() {
+                      _mobile = value;
+                    });
                   },
-                  textColor: Colors.blue,
-                  child: Text('Forgot Password'),
                 ),
-                Container(
-                  height: 50,
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: RaisedButton(
-                    textColor: Colors.white,
-                    color: Colors.blueGrey,
-                    child: Text('Login'),
-                    onPressed: () {
-                      // TODO: add validation function
-                      // TODO: call login API
-                      // TODO: don't handle passwords in raw text
-                      print(mobileController.text);
-                      print(passwordController.text);
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: TextFormField(
+                  obscureText: true,
+                  key: _passkey,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                  ),
+                ),
+              ),
+              FlatButton(
+                onPressed: () {
+                  //forgot password screen
+                },
+                textColor: Colors.blue,
+                child: Text('Forgot Password'),
+              ),
+              Container(
+                height: 50,
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: RaisedButton(
+                  textColor: Colors.white,
+                  color: Colors.blueGrey,
+                  child: Text('Login'),
+                  onPressed: () {
+                    // FIXED: add validation function
+                    // TODO: call login API
+                    // TODO: don't handle passwords in raw text
+                    if (_formKey.currentState.validate()) {
+                      _formKey.currentState.save();
+
+                      print(_mobile);
+                      print(_passkey.currentState.value);
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                UserHome(name: mobileController.text)),
+                            builder: (context) => UserHome(name: _mobile)),
                       );
-                    },
-                  ),
+                    }
+                  },
                 ),
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      Text('Do not have an account?'),
-                      FlatButton(
-                        textColor: Colors.blue,
-                        child: Text(
-                          'Register',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        onPressed: () {
-                          //signup screen
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Register()),
-                          );
-                        },
-                      )
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.center,
+              ),
+            ]),
+          ),
+          Container(
+            child: Row(
+              children: <Widget>[
+                Text('Do not have an account?'),
+                FlatButton(
+                  textColor: Colors.blue,
+                  child: Text(
+                    'Register',
+                    style: TextStyle(fontSize: 20),
                   ),
+                  onPressed: () {
+                    //signup screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Register()),
+                    );
+                  },
                 )
               ],
-            )));
+              mainAxisAlignment: MainAxisAlignment.center,
+            ),
+          )
+        ]),
+      ),
+    );
   }
 }
