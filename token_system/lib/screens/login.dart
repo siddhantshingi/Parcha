@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:token_system/Entities/user.dart';
 import 'package:token_system/components/title.dart';
 import 'package:token_system/screens/register.dart';
 import 'package:token_system/screens/user_profile/home.dart';
@@ -92,10 +93,18 @@ class _LoginState extends State<Login> {
 
                       print(_mobile);
                       print(_passkey.currentState.value);
+                      
+                      // TODO: get user from Login API here
+                      User u = new User();
+                      u.contactNumber = _mobile;
+                      u.aadharNumber = '123456789012';
+                      u.pincode = '123456';
+                      u.name = 'Username';
+
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => UserHome(name: _mobile)),
+                            builder: (context) => UserHome(user: u)),
                       );
                     }
                   },
