@@ -16,6 +16,7 @@ connection.connect(() => {
 	require('../Models/Token').initialize();
 	require('../Models/ShopBooking').initialize();
 	require('../Models/Periodic').initialize();
+	require('../Models/Request').initialize();
 });
 
 let getDB = () => {
