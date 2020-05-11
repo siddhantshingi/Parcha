@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/components/title.dart';
 import 'package:token_system/screens/register.dart';
@@ -13,7 +14,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  String _mobile = '';
+  String _email = '';
   var _passkey = GlobalKey<FormFieldState>();
   SignAs _selected = SignAs.user;
 
@@ -21,6 +22,13 @@ class _LoginState extends State<Login> {
     // Indian Mobile number are of 10 digit only
     if (value.length != 10)
       return 'Mobile Number must be of 10 digits';
+    else
+      return null;
+  }
+
+  String validateEmail(String value) {
+    if (!EmailValidator.validate(value))
+      return 'Please enter a valid email address';
     else
       return null;
   }
@@ -94,13 +102,12 @@ class _LoginState extends State<Login> {
                 child: TextFormField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Mobile',
+                    labelText: 'Email',
                   ),
-                  keyboardType: TextInputType.phone,
-                  validator: validateMobile,
+                  validator: validateEmail,
                   onSaved: (value) {
                     setState(() {
-                      _mobile = value;
+                      _email = value;
                     });
                   },
                 ),
@@ -137,15 +144,16 @@ class _LoginState extends State<Login> {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();
 
-                      print(_mobile);
+                      print(_email);
                       print(_passkey.currentState.value);
                       
                       // TODO: get user from Login API here
                       User u = new User();
-                      u.contactNumber = _mobile;
-                      u.aadharNumber = '123456789012';
-                      u.pincode = '123456';
-                      u.name = 'Username';
+                      u.email = _email;
+                      u.contactNumber = 'Not added';
+                      u.aadharNumber = 'Not added';
+                      u.pincode = '000000';
+                      u.name = 'User';
 
                       Navigator.pushReplacement(
                         context,
