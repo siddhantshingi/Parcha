@@ -30,7 +30,7 @@ let createUser = (dataToSet, callback) => {
 	dataToSet.district ? setData += `, district = '${dataToSet.district}'` : true;
 	dataToSet.pincode ? setData += `, pincode = '${dataToSet.pincode}'` : true;
 	setData += `, verificationStatus = ${dataToSet.verificationStatus}`;
-	console.log(`insert into users set ${setData}`,'pankaj');
+	console.log(`insert into users set ${setData}`);
 	dbConfig.getDB().query(`insert into users set ${setData}`, callback);
 }
 

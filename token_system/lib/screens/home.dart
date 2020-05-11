@@ -1,0 +1,130 @@
+import 'package:flutter/material.dart';
+import 'package:token_system/Entities/user.dart';
+import 'package:token_system/components/tab_navigator.dart';
+import 'package:token_system/screens/user_profile/choose_category.dart';
+import 'package:token_system/screens/user_profile/profile.dart';
+import 'package:token_system/screens/user_profile/user_history.dart';
+
+class UserHome extends StatefulWidget {
+  final User user;
+
+  UserHome({Key key, @required this.user}) : super(key: key);
+
+  @override
+  _UserHomeState createState() => _UserHomeState();
+}
+
+class _UserHomeState extends State<UserHome> {
+  int _selectedIndex = 0;
+  List<GlobalKey<NavigatorState>> _navigatorKeys = [
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+  ];
+  List<GlobalKey<TabNavigatorState>> _tabNavigatorKeys = [
+    GlobalKey<TabNavigatorState>(),
+    GlobalKey<TabNavigatorState>(),
+    GlobalKey<TabNavigatorState>(),
+  ];
+  List<TabNavigator> _tabNavigators = [];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  void _selectTab(int index) {
+    if (index == _selectedIndex) {
+      // pop to first route
+      _navigatorKeys[index].currentState.popUntil((route) => route.isFirst);
+    } else {
+      setState(() => _selectedIndex = index);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Create a unique TabNavigator for each GlobalKey
+    for (var i = 0; i < 3; i++) {
+      TabNavigator tn = TabNavigator(
+        key: _tabNavigatorKeys[i],
+        navigatorKey: _navigatorKeys[i],
+        topWidget: _buildBody(i),
+      );
+      _tabNavigators.add(tn);
+    }
+
+    return WillPopScope(
+      onWillPop: () async {
+        final isFirstRouteInCurrentTab =
+            !await _navigatorKeys[_selectedIndex].currentState.maybePop();
+        if (isFirstRouteInCurrentTab) {
+          // if not on the 'main' tab
+          if (_selectedIndex != 0) {
+            // select 'main' tab
+            _selectTab(0);
+            // back button handled by app
+            return false;
+          }
+        }
+        // let system handle back button if we're on the first route
+        return isFirstRouteInCurrentTab;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('TokenDown'),
+          backgroundColor: Colors.blueGrey,
+        ),
+        body: Stack(children: <Widget>[
+          _buildOffstageNavigator(0),
+          _buildOffstageNavigator(1),
+          _buildOffstageNavigator(2),
+        ]),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              title: Text('Home'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.all_out),
+              title: Text('Token'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history),
+              title: Text('History'),
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          unselectedItemColor: Colors.blueGrey,
+          selectedItemColor: Colors.amber[800],
+          onTap: _onItemTapped,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOffstageNavigator(int index) {
+    return Offstage(
+      offstage: _selectedIndex != index,
+      child: _tabNavigators[index],
+    );
+  }
+
+  Widget _buildBody(int index) {
+    if (index == 1) {
+      return ChooseCategory(
+        user: widget.user,
+        tn: _tabNavigatorKeys[1],
+      );
+    }
+    if (index == 2) {
+      return UserHistory(
+        user: widget.user,
+        tn: _tabNavigatorKeys[2],
+      );
+    }
+    return ProfileScreen(user: widget.user);
+  }
+}

@@ -1,6 +1,5 @@
 import 'package:http/http.dart' as http;
 import '../Entities/user.dart';
-import 'dart:convert';
 
 class UserService {
   String userUrl = "";

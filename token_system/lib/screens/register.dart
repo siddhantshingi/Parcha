@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../Entities/user.dart';
-import '../Services/userService.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:token_system/Entities/user.dart';
+import 'package:token_system/Services/userService.dart';
 import 'package:token_system/components/title.dart';
 
 class Register extends StatefulWidget {
@@ -9,19 +10,21 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController contactNumberController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  TextEditingController aadharNumberController = TextEditingController();
-  TextEditingController stateController = TextEditingController();
-  TextEditingController districtController = TextEditingController();
-  TextEditingController pincodeController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  var _passKey = GlobalKey<FormFieldState>();
+  String _name = '';
+  String _email = '';
+  String _mobile = '';
+  String _aadhar = '';
+  String _pincode = '';
+
+  // TODO: State and district dropdown menu.
+  String _state = '';
+  String _district = '';
 
   UserService userService;
 
-  _RegisterState(){
+  _RegisterState() {
     userService = new UserService();
   }
 
@@ -31,6 +34,37 @@ class _RegisterState extends State<Register> {
       return 'Mobile Number must be of 10 digits';
     else
       return null;
+  }
+
+  String validateAadhar(String value) {
+    // Indian Mobile number are of 10 digit only
+    if (value.length != 12)
+      return 'Aadhar must be of 12 digits only';
+    else
+      return null;
+  }
+
+  String validatePincode(String value) {
+    // Indian Mobile number are of 10 digit only
+    if (value.length != 6)
+      return 'Pincode must be of 6 digits';
+    else
+      return null;
+  }
+
+  String validateEmail(String value) {
+    if (!EmailValidator.validate(value))
+      return 'Please enter a valid email address';
+    else
+      return null;
+  }
+
+  String validateConfirmPassword(String value) {
+    if (value.isEmpty) return 'Enter confirm password';
+    var password = _passKey.currentState.value;
+    if (!(value == password))
+      return 'Confirm Password mismatch';
+    return null;
   }
 
   @override
@@ -45,126 +79,198 @@ class _RegisterState extends State<Register> {
               children: <Widget>[
                 TitleWidget(),
                 Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      'Register',
-                      style: TextStyle(fontSize: 20),
-                    )),
-                Container(
+                  alignment: Alignment.center,
                   padding: EdgeInsets.all(10),
-                  child: TextField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Name',
-                    ),
+                  child: Text(
+                    'Register',
+                    style: TextStyle(fontSize: 20),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Email',
+                Form(
+                  key: _formKey,
+                  child: Column(children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Name',
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty)
+                            return 'Please enter your name';
+                          else
+                            return null;
+                        },
+                        onSaved: (value) {
+                          setState(() {
+                            _name = value;
+                          });
+                        },
+                      ),
                     ),
-                  ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Email',
+                        ),
+                        validator: validateEmail,
+                        onSaved: (value) {
+                          setState(() {
+                            _email = value;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Contact number',
+                        ),
+                        keyboardType: TextInputType.phone,
+                        validator: validateMobile,
+                        onSaved: (value) {
+                          setState(() {
+                            _mobile = value;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: TextFormField(
+                        key: _passKey,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Password',
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) return 'Please Enter password';
+                          if (value.length < 8)
+                            return 'Password should be atleast 8 characters';
+                          return null;
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: TextFormField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Confirm password',
+                        ),
+                        validator: validateConfirmPassword,
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Aadhar number',
+                        ),
+                        keyboardType: TextInputType.phone,
+                        validator: validateAadhar,
+                        onSaved: (value) {
+                          setState(() {
+                            _aadhar = value;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'State',
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty)
+                            return 'Please enter your state';
+                          else
+                            return null;
+                        },
+                        onSaved: (value) {
+                          setState(() {
+                            _state = value;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'District',
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty)
+                            return 'Please enter your district';
+                          else
+                            return null;
+                        },
+                        onSaved: (value) {
+                          setState(() {
+                            _state = value;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Pincode',
+                        ),
+                        keyboardType: TextInputType.phone,
+                        validator: validatePincode,
+                        onSaved: (value) {
+                          setState(() {
+                            _pincode = value;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                        height: 50,
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        child: RaisedButton(
+                          textColor: Colors.white,
+                          color: Colors.blueGrey,
+                          child: Text('Register'),
+                          onPressed: () {
+                            // FIXED: add validation function
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
+
+                              User newUser = new User();
+                              newUser.id = 0;
+                              newUser.name = _name;
+                              newUser.email = _email;
+                              newUser.contactNumber = _mobile;
+                              newUser.password = _passKey.currentState.value;
+                              newUser.aadharNumber = _aadhar;
+                              newUser.state = _state;
+                              newUser.district = _district;
+                              newUser.pincode = _pincode;
+                              newUser.verificationStatus = 0;
+                              print(newUser.toJson());
+                              userService.registerApiCall(newUser);
+                              Navigator.pop(context);
+                            }
+                          },
+                        )),
+                  ]),
                 ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextField(
-                    controller: contactNumberController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Contact number',
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: TextField(
-                    obscureText: true,
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
-                    ),
-                  ),
-                ),Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextField(
-                    obscureText: true,
-                    controller: confirmPasswordController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Confirm password',
-                    ),
-                  ),
-                ),Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextField(
-                    controller: aadharNumberController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Aadhar number',
-                    ),
-                  ),
-                ),Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextField(
-                    controller: stateController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'State',
-                    ),
-                  ),
-                ),Container(
-                  padding: EdgeInsets.all(10),
-                  child: TextField(
-                    controller: districtController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'District',
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: TextField(
-                    controller: pincodeController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Pincode',
-                    ),
-                  ),
-                ),
-                Container(
-                    height: 50,
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                    child: RaisedButton(
-                      textColor: Colors.white,
-                      color: Colors.blueGrey,
-                      child: Text('Register'),
-                      onPressed: () {
-                        // TODO: add validation function
-                        User newUser = new User();
-                        newUser.id = 0;
-                        newUser.name = nameController.text;
-                        newUser.email = emailController.text;
-                        newUser.contactNumber = contactNumberController.text;
-                        newUser.password = passwordController.text;
-                        newUser.aadharNumber = aadharNumberController.text;
-                        newUser.state = stateController.text;
-                        newUser.district = districtController.text;
-                        newUser.email = emailController.text;
-                        newUser.pincode = pincodeController.text;
-                        newUser.verificationStatus = 0;
-                        print (newUser.toJson());
-                        userService.registerApiCall(newUser);
-                        Navigator.pop(context);
-                      },
-                    )),
                 Container(
                     child: Row(
                   children: <Widget>[

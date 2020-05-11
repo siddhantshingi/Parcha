@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:token_system/Entities/user.dart';
+import 'package:token_system/components/tab_navigator.dart';
+import 'package:token_system/screens/user_profile/check.dart';
 
 enum UserOptions { logout, editProfile }
 
-class ProfileScreen extends StatelessWidget {
+class BookScreen extends StatelessWidget {
   final User user;
+  final GlobalKey<TabNavigatorState> tn;
 
-  ProfileScreen({Key key, @required this.user}) : super(key: key);
+  BookScreen({Key key, @required this.user, @required this.tn}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Update TabNavigator with the context and the next update screen
+    tn.currentState.updateScreen(DestinationView());
+
     return Column(children: <Widget>[
       Container(
         alignment: Alignment.topRight,
@@ -42,37 +48,21 @@ class ProfileScreen extends StatelessWidget {
           Container(
             alignment: Alignment.topCenter,
             child: Icon(
-              Icons.account_circle,
+              Icons.blur_circular,
               size: 100,
             ),
           ),
-          Container(
-            padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-            child: Text(
-              user.name,
-              style: TextStyle(color: Colors.amber[800], fontSize: 30),
-            ),
-          ),
-          Row(children: <Widget>[
-            Expanded(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(Icons.person_outline),
-                    Text(user.aadharNumber),
-                  ]),
-            ),
-            Expanded(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(Icons.call),
-                    Text(user.contactNumber),
-                  ]),
-            ),
-          ]),
         ]),
       ),
+      RaisedButton(
+        child: Text(
+          'PUSH',
+          style: TextStyle(fontSize: 32.0, color: Colors.orange),
+        ),
+        onPressed: () {
+          tn.currentState.push(context);
+        },
+      )
     ]);
   }
 }
