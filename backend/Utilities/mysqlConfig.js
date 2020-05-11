@@ -12,6 +12,7 @@ connection.connect(() => {
 	require('../Models/User').initialize();
 	require('../Models/Shop').initialize();
 	require('../Models/LocalAuth').initialize();
+	require('../Models/Token').initialize();
 });
 
 let getDB = () => {

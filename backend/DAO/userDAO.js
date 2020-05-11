@@ -29,7 +29,8 @@ let createUser = (dataToSet, callback) => {
 	dataToSet.state ? setData += `, state = '${dataToSet.state}'` : true;
 	dataToSet.district ? setData += `, district = '${dataToSet.district}'` : true;
 	dataToSet.pincode ? setData += `, pincode = '${dataToSet.pincode}'` : true;
-	setData += `, verificationStatus = ${dataToSet.verificationStatus}`;
+	if (typeof dataToSet.verificationStatus !== 'undefined' && dataToSet.verificationStatus !== null) 
+		setData += `, verificationStatus = ${dataToSet.verificationStatus}`;
 	console.log(`insert into users set ${setData}`);
 	dbConfig.getDB().query(`insert into users set ${setData}`, callback);
 }
