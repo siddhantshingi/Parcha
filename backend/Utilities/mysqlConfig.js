@@ -15,6 +15,7 @@ connection.connect(() => {
 	require('../Models/LocalAuth').initialize();
 	require('../Models/Token').initialize();
 	require('../Models/ShopBooking').initialize();
+	require('../Models/Periodic').initialize();
 });
 
 let getDB = () => {
