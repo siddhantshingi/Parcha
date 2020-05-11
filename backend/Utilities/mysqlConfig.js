@@ -11,6 +11,7 @@ connection.connect(() => {
 	console.log("connection setup");
 	require('../Models/User').initialize();
 	require('../Models/Shop').initialize();
+	require('../Models/LocalAuth').initialize();
 });
 
 let getDB = () => {
