@@ -7,6 +7,8 @@ http = require('http'),
 path = require('path');
 
 let userRoute = require('./Routes/user');
+let shopRoute = require('./Routes/shop');
+let localAuthRoute = require('./Routes/localAuth');
 let email   = require('emailjs/email');
 util = require('./Utilities/util');
 
@@ -20,6 +22,8 @@ app.use(function(err, req, res, next) {
 });
 
 app.use('/user', userRoute);
+app.use('/shop', shopRoute);
+app.use('/localAuth', localAuthRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

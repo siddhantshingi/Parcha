@@ -2,64 +2,49 @@ let async = require('async'),
 parseString = require('xml2js').parseString;
 
 let util = require('../Utilities/util'),
-userDAO = require('../DAO/userDAO');
+shopDAO = require('../DAO/shopDAO');
 
 let email   = require('emailjs/email');
 sender_email = require("../Utilities/config").sender_email;
 sender_password = require("../Utilities/config").sender_password;
 
-let sendEmail = (data_pack, callback) => {
-	var server  = email.server.connect({
-	   user:    sender_email,
-	   password:sender_password, 
-	   host:    "smtp.gmail.com", 
-	   ssl:     true
-	});
-	server.send({
-		   from:    sender_email, 
-		   to:      data_pack.email,
-		   subject: data_pack.subject,
-		   text:    data_pack.msg, 
-	}, (err, response) => { 
-	    if(err)
-	    	console.log(err);
-	    else {
-	    	console.log("Email Sent!!");
-	    	callback(response.user);
-	    }
-	});
-}
-
 /**API to create the user */
-let createUser = (data, callback) => {
+let createShop = (data, callback) => {
 	async.auto({
-		user: (cb) => {
+		shop: (cb) => {
+			console.log(data);
 			var dataToSet = {
-				"id":data.id,
-				"name":data.name,
+				"id": data.id,
+				"name": data.name,
 				"email":data.email,
 				"contactNumber":data.contactNumber,
+				"shopType":data.shopType,
+				"address":data.address,
+				"landmark":data.landmark,
 				"password":data.password,
-				"aadharNumber":data.aadharNumber,
 				"state":data.state,
 				"district":data.district,
 				"pincode":data.pincode,
 				"verificationStatus":data.verificationStatus,
+				"capacity":data.capacity,
+				"slotDuration":data.slotDuration,
+				"bufferDuration":data.bufferDuration,
+				"openTime":data.openTime,
+				"closeTime":data.closeTime,
 			}
+			console.log(dataToSet);
 			let criteria = {
-				"email":data.email
+				"email": data.email
 			}
-			userDAO.getUserDetailUsingEmail(criteria,(err, data) => {
+			shopDAO.getShopByEmail(criteria,(err, data) => {
 				if (data.length === 0) {
-					userDAO.createUser(dataToSet, (err, dbData) => {
+					shopDAO.createShop(dataToSet, (err, dbData) => {
 						if (err) {
 							cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 							return;
 						}
-
 						cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED, "result": dataToSet });
-						return;
-					});
+						});
 				} else {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + "EmailID already exists", "result": {} });
 					return;	
@@ -68,38 +53,46 @@ let createUser = (data, callback) => {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
 				}
+				
 			});
 			
 		}
 	}, (err, response) => {
-		callback(response.user);
+		callback(response.shop);
 	});
 }
 
 /**API to update the user */
-let updateUser = (data,callback) => {
+let updateShop = (data,callback) => {
 	async.auto({
-		userUpdate :(cb) =>{
+		shopUpdate :(cb) =>{
 			if (!data.id) {
 				cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ONE, "statusMessage": util.statusMessage.PARAMS_MISSING, "result": {} })
 				return;
 			}
 			var criteria = {
-				id : data.id,
+				id : Number(data.id),
 			}
 			var dataToSet={
 				"name":data.name,
-				"name":data.name,
 				"email":data.email,
 				"contactNumber":data.contactNumber,
+				"shopType":data.shopType,
+				"address":data.address,
+				"landmark":data.landmark,
 				"password":data.password,
-				"aadharNumber":data.aadharNumber,
 				"state":data.state,
 				"district":data.district,
 				"pincode":data.pincode,
-				"verificationStatus":data.verificationStatus
+				"verificationStatus":data.verificationStatus,
+				"capacity":data.capacity,
+				"slotDuration":data.slotDuration,
+				"bufferDuration":data.bufferDuration,
+				"openTime":data.openTime,
+				"closeTime":data.closeTime,
 			}
-            userDAO.updateUser(criteria, dataToSet, (err, dbData)=>{
+			console.log(dataToSet);
+            shopDAO.updateShop(criteria, dataToSet, (err, dbData)=>{
 	            if(err){
 					cb(null,{"statusCode":util.statusCode.FOUR_ZERO_ZERO,"statusMessage":util.statusMessage.BAD_REQUEST + err, "result": {} });
                     return; 
@@ -110,39 +103,18 @@ let updateUser = (data,callback) => {
             });
 		}
 	}, (err,response) => {
-		callback(response.userUpdate);
-	});
-}
-
-/**API to delete the user */
-let deleteUser = (data,callback) => {
-	async.auto({
-		removeUser :(cb) =>{
-			if (!data.id) {
-				cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ONE, "statusMessage": util.statusMessage.PARAMS_MISSING, "result": {} })
-				return;
-			}
-			var criteria = {
-				id : data.id,
-			}
-			userDAO.deleteUser(criteria,(err,dbData) => {
-				if (err) {
-					cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
-					return;
-				}
-				cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DELETE_DATA, "result": {} });
-			});
-		}
-	}, (err,response) => {
-		callback(response.removeUser);
+		callback(response.shopUpdate);
 	});
 }
 
 /***API to get the user list */
-let getUser = (data, callback) => {
+let getShopListByName = (data, callback) => {
 	async.auto({
-		user: (cb) => {
-			userDAO.getUser({},(err, data) => {
+		shopList: (cb) => {
+			let criteria = {
+				"name": data.name
+			}
+			shopDAO.getShopListByName(criteria,(err, data) => {
 				if (err) {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
@@ -152,39 +124,39 @@ let getUser = (data, callback) => {
 			});
 		}
 	}, (err, response) => {
-		callback(response.user);
+		callback(response.shopList);
 	})
 }
 
-/***API to get the user detail by id */
-let getUserById = (data, callback) => {
+/***API to get the user list */
+let getShopListByCategory = (data, callback) => {
 	async.auto({
-		user: (cb) => {
+		shopList: (cb) => {
 			let criteria = {
-				"id":data.id
+				"category": data.category
 			}
-			userDAO.getUserDetailUsingId(criteria,(err, data) => {
+			shopDAO.getShopListByCategory(criteria,(err, data) => {
 				if (err) {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
 				}
-				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data[0] });
+				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
 				return;
 			});
 		}
 	}, (err, response) => {
-		callback(response.user);
+		callback(response.shopList);
 	})
 }
 
-/***API to get the user detail by email */
-let getUserByEmail = (data, callback) => {
+/***API to get the shop details by email */
+let getShopByEmail = (data, callback) => {
 	async.auto({
-		user: (cb) => {
+		shop: (cb) => {
 			let criteria = {
-				"email":data.email
+				"email": data.email
 			}
-			userDAO.getUserDetailUsingEmail(criteria,(err, data) => {
+			shopDAO.getShopByEmail(criteria,(err, data) => {
 				if (data.length === 0) {
 					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND, "result": {} });
 					return;
@@ -198,16 +170,14 @@ let getUserByEmail = (data, callback) => {
 			});
 		}
 	}, (err, response) => {
-		callback(response.user);
+		callback(response.shop);
 	})
 }
 
 module.exports = {
-	sendEmail : sendEmail,
-	createUser : createUser,
-	updateUser : updateUser,
-	deleteUser : deleteUser,
-	getUser : getUser,
-	getUserById : getUserById,
-	getUserByEmail : getUserByEmail
+	createShop : createShop,
+	updateShop : updateShop,
+	getShopListByName : getShopListByName,
+	getShopListByCategory : getShopListByCategory,
+	getShopByEmail : getShopByEmail
 };
