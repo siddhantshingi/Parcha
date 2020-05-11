@@ -14,12 +14,6 @@ class ChooseCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Update TabNavigator with the context and the next update screen
-    tn.currentState.updateScreen(BookScreen(
-      user: user,
-      tn: tn,
-    ));
-
     return Column(children: <Widget>[
       Container(
         alignment: Alignment.topRight,
@@ -64,7 +58,13 @@ class ChooseCategory extends StatelessWidget {
           style: TextStyle(fontSize: 32.0, color: Colors.orange),
         ),
         onPressed: () {
-          tn.currentState.push(context);
+          tn.currentState.push(
+            context,
+            payload: BookScreen(
+              user: user,
+              tn: tn,
+            ),
+          );
         },
       )
     ]);

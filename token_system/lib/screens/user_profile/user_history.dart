@@ -9,13 +9,11 @@ class UserHistory extends StatelessWidget {
   final User user;
   final GlobalKey<TabNavigatorState> tn;
 
-  UserHistory({Key key, @required this.user, @required this.tn}) : super(key: key);
+  UserHistory({Key key, @required this.user, @required this.tn})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Update TabNavigator with the context and the next update screen
-    tn.currentState.updateScreen(DestinationView());
-
     return Column(children: <Widget>[
       Container(
         alignment: Alignment.topRight,
@@ -60,7 +58,10 @@ class UserHistory extends StatelessWidget {
           style: TextStyle(fontSize: 32.0, color: Colors.orange),
         ),
         onPressed: () {
-          tn.currentState.push(context);
+          tn.currentState.push(
+            context,
+            payload: DestinationView(),
+          );
         },
       )
     ]);
