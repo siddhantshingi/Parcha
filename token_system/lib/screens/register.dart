@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/Services/userService.dart';
 import 'package:token_system/components/title.dart';
+import 'package:token_system/screens/login.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _RegisterState extends State<Register> {
   String _mobile = '';
   String _aadhar = '';
   String _pincode = '';
+  SignAs _selected = SignAs.user;
 
   // TODO: State and district dropdown menu.
   String _state = '';
@@ -67,6 +69,12 @@ class _RegisterState extends State<Register> {
     return null;
   }
 
+  bool showCategory(selected) {
+    if (selected == SignAs.shop)
+      return true;
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,11 +87,45 @@ class _RegisterState extends State<Register> {
               children: <Widget>[
                 TitleWidget(),
                 Container(
-                  alignment: Alignment.center,
+                  alignment: Alignment.topLeft,
                   padding: EdgeInsets.all(10),
-                  child: Text(
-                    'Register',
-                    style: TextStyle(fontSize: 20),
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        'Register as : ',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      DropdownButton<SignAs> (
+                        value: _selected,
+                        icon: Icon(Icons.arrow_downward,
+                          color: Colors.blueGrey,),
+                        iconSize: 24,
+                        elevation: 8,
+                        style: TextStyle(
+                          color: Colors.blueGrey,
+                          fontSize: 20,
+                        ),
+                        onChanged: (SignAs result) {
+                          setState(() {
+                            _selected = result;
+                          });
+                        },
+                        items: <DropdownMenuItem<SignAs>>[
+                          const DropdownMenuItem<SignAs>(
+                            child: Text('  User  '),
+                            value: SignAs.user,
+                          ),
+                          const DropdownMenuItem<SignAs>(
+                            child: Text('  Shop  '),
+                            value: SignAs.shop,
+                          ),
+                          const DropdownMenuItem<SignAs>(
+                            child: Text('Authority'),
+                            value: SignAs.authority,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
                 Form(
@@ -124,21 +166,24 @@ class _RegisterState extends State<Register> {
                         },
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Contact number',
+                    Visibility (
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Contact number',
+                          ),
+                          keyboardType: TextInputType.phone,
+//                          validator: validateMobile,
+                          onSaved: (value) {
+                            setState(() {
+                              _mobile = value;
+                            });
+                          },
                         ),
-                        keyboardType: TextInputType.phone,
-                        validator: validateMobile,
-                        onSaved: (value) {
-                          setState(() {
-                            _mobile = value;
-                          });
-                        },
                       ),
+                      visible: false
                     ),
                     Container(
                       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -151,8 +196,8 @@ class _RegisterState extends State<Register> {
                         ),
                         validator: (value) {
                           if (value.isEmpty) return 'Please Enter password';
-                          if (value.length < 8)
-                            return 'Password should be atleast 8 characters';
+                          if (value.length < 6)
+                            return 'Password should be atleast 6 characters';
                           return null;
                         },
                       ),
@@ -168,21 +213,24 @@ class _RegisterState extends State<Register> {
                         validator: validateConfirmPassword,
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Aadhar number',
+                    Visibility(
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Aadhar number',
+                          ),
+                          keyboardType: TextInputType.phone,
+//                          validator: validateAadhar,
+                          onSaved: (value) {
+                            setState(() {
+                              _aadhar = value;
+                            });
+                          },
                         ),
-                        keyboardType: TextInputType.phone,
-                        validator: validateAadhar,
-                        onSaved: (value) {
-                          setState(() {
-                            _aadhar = value;
-                          });
-                        },
                       ),
+                      visible: false
                     ),
                     Container(
                       padding: EdgeInsets.all(10),

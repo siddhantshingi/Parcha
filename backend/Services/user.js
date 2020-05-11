@@ -89,7 +89,6 @@ let updateUser = (data,callback) => {
 			}
 			var dataToSet={
 				"name":data.name,
-				"name":data.name,
 				"email":data.email,
 				"contactNumber":data.contactNumber,
 				"password":data.password,
