@@ -4,6 +4,8 @@ import 'package:token_system/components/title.dart';
 import 'package:token_system/screens/register.dart';
 import 'package:token_system/screens/home.dart';
 
+enum SignAs {user, shop, authority}
+
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -13,6 +15,7 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   String _mobile = '';
   var _passkey = GlobalKey<FormFieldState>();
+  SignAs _selected = SignAs.user;
 
   String validateMobile(String value) {
     // Indian Mobile number are of 10 digit only
@@ -20,6 +23,15 @@ class _LoginState extends State<Login> {
       return 'Mobile Number must be of 10 digits';
     else
       return null;
+  }
+
+  String getAs (SignAs selected) {
+    if (selected == SignAs.user)
+      return 'User';
+    else if (selected == SignAs.shop)
+      return 'Shop';
+    else
+      return 'Authority';
   }
 
   @override
@@ -33,11 +45,45 @@ class _LoginState extends State<Login> {
         child: ListView(children: <Widget>[
           TitleWidget(),
           Container(
-            alignment: Alignment.center,
+            alignment: Alignment.topLeft,
             padding: EdgeInsets.all(10),
-            child: Text(
-              'Sign in',
-              style: TextStyle(fontSize: 20),
+            child: Row(
+              children: <Widget>[
+                Text(
+                  'Sign in as : ',
+                  style: TextStyle(fontSize: 20),
+                ),
+                DropdownButton<SignAs> (
+                  value: _selected,
+                  icon: Icon(Icons.arrow_downward,
+                    color: Colors.blueGrey,),
+                  iconSize: 24,
+                  elevation: 8,
+                  style: TextStyle(
+                      color: Colors.blueGrey,
+                      fontSize: 20,
+                      ),
+                  onChanged: (SignAs result) {
+                    setState(() {
+                      _selected = result;
+                    });
+                  },
+                  items: <DropdownMenuItem<SignAs>>[
+                    const DropdownMenuItem<SignAs>(
+                      child: Text('  User  '),
+                      value: SignAs.user,
+                    ),
+                    const DropdownMenuItem<SignAs>(
+                      child: Text('  Shop  '),
+                      value: SignAs.shop,
+                    ),
+                    const DropdownMenuItem<SignAs>(
+                      child: Text('Authority'),
+                      value: SignAs.authority,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           Form(
@@ -83,7 +129,7 @@ class _LoginState extends State<Login> {
                 child: RaisedButton(
                   textColor: Colors.white,
                   color: Colors.blueGrey,
-                  child: Text('Login'),
+                  child: Text(getAs(_selected) + ' Login'),
                   onPressed: () {
                     // FIXED: add validation function
                     // TODO: call login API
