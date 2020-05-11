@@ -13,7 +13,7 @@ let statusMessage = {
 	SUCCESS : 'Success',
 	SERVER_BUSY : 'Our Servers are busy. Please try again later.',
 	BAD_REQUEST : 'Bad request: ',
-	USER_NOT_FOUND : 'user not found',
+	NOT_FOUND : 'not found',
 	DATA_UPDATED: 'Data updated successfully.',
 	DELETE_DATA : 'Delete data successfully',
 

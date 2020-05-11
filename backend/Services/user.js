@@ -30,7 +30,7 @@ let sendEmail = (data_pack, callback) => {
 	});
 }
 
-/**API to create the atricle */
+/**API to create the user */
 let createUser = (data, callback) => {
 	async.auto({
 		user: (cb) => {
@@ -99,7 +99,7 @@ let updateUser = (data,callback) => {
 	});
 }
 
-/**API to delete the subject */
+/**API to delete the user */
 let deleteUser = (data,callback) => {
 	async.auto({
 		removeUser :(cb) =>{
@@ -171,7 +171,7 @@ let getUserByEmail = (data, callback) => {
 			}
 			userDAO.getUserDetailUsingEmail(criteria,(err, data) => {
 				if (data.length === 0) {
-					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.USER_NOT_FOUND, "result": {} });
+					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND, "result": {} });
 					return;
 				}
 				if (err) {

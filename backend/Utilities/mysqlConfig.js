@@ -10,6 +10,7 @@ var connection = mysql.createConnection({
 connection.connect(() => {
 	console.log("connection setup");
 	require('../Models/User').initialize();
+	require('../Models/Shop').initialize();
 });
 
 let getDB = () => {
