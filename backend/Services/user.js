@@ -35,7 +35,7 @@ let createUser = (data, callback) => {
 	async.auto({
 		user: (cb) => {
 			var dataToSet = {
-				"id":Number(data.id),
+				"id":data.id,
 				"name":data.name,
 				"email":data.email,
 				"contactNumber":data.contactNumber,
@@ -44,17 +44,32 @@ let createUser = (data, callback) => {
 				"state":data.state,
 				"district":data.district,
 				"pincode":data.pincode,
-				"verificationStatus":Number(data.verificationStatus),
+				"verificationStatus":data.verificationStatus,
 			}
-			userDAO.createUser(dataToSet, (err, dbData) => {
-			if (err) {
-				console.log("ERROR: ", dbData);
-				cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
-				return;
+			let criteria = {
+				"email":data.email
 			}
+			userDAO.getUserDetailUsingEmail(criteria,(err, data) => {
+				if (data.length === 0) {
+					userDAO.createUser(dataToSet, (err, dbData) => {
+						if (err) {
+							cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
+							return;
+						}
 
-			cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED, "result": dataToSet });
+						cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED, "result": dataToSet });
+						return;
+					});
+				} else {
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + "EmailID already exists", "result": {} });
+					return;	
+				}
+				if (err) {
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
+					return;
+				}
 			});
+			
 		}
 	}, (err, response) => {
 		callback(response.user);

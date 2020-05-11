@@ -14,19 +14,19 @@ let createShop = (data, callback) => {
 		shop: (cb) => {
 			console.log(data);
 			var dataToSet = {
-				"id":Number(data.id),
-				"name":data.name,
+				"id": data.id,
+				"name": data.name,
 				"email":data.email,
 				"contactNumber":data.contactNumber,
-				"shopType":Number(data.shopType),
+				"shopType":data.shopType,
 				"address":data.address,
 				"landmark":data.landmark,
 				"password":data.password,
 				"state":data.state,
 				"district":data.district,
 				"pincode":data.pincode,
-				"verificationStatus":Number(data.verificationStatus),
-				"capacity":Number(data.capacity),
+				"verificationStatus":data.verificationStatus,
+				"capacity":data.capacity,
 				"slotDuration":data.slotDuration,
 				"bufferDuration":data.bufferDuration,
 				"openTime":data.openTime,
@@ -49,6 +49,10 @@ let createShop = (data, callback) => {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + "EmailID already exists", "result": {} });
 					return;	
 				}
+				if (err) {
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
+					return;
+				}
 				
 			});
 			
@@ -67,20 +71,20 @@ let updateShop = (data,callback) => {
 				return;
 			}
 			var criteria = {
-				id : data.id,
+				id : Number(data.id),
 			}
 			var dataToSet={
 				"name":data.name,
 				"email":data.email,
 				"contactNumber":data.contactNumber,
-				"shopType":Number(data.shopType),
+				"shopType":data.shopType,
 				"address":data.address,
 				"landmark":data.landmark,
 				"password":data.password,
 				"state":data.state,
 				"district":data.district,
 				"pincode":data.pincode,
-				"verificationStatus":Number(data.verificationStatus),
+				"verificationStatus":data.verificationStatus,
 				"capacity":data.capacity,
 				"slotDuration":data.slotDuration,
 				"bufferDuration":data.bufferDuration,
