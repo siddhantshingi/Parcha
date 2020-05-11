@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:token_system/screens/login.dart';
 
 class TabNavigator extends StatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;
@@ -11,19 +12,15 @@ class TabNavigator extends StatefulWidget {
 }
 
 class TabNavigatorState extends State<TabNavigator> {
-  Widget _nextScreen;
-
-  void push(BuildContext context) {
+  void push<T>(BuildContext context, {@required T payload}) {
+    print('TabNavigator.push() called');
+    Widget nextScreen = payload as Widget;
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => _nextScreen,
+        builder: (context) => nextScreen,
       ),
     );
-  }
-
-  void updateScreen(Widget newScreen) {
-    _nextScreen = newScreen;
   }
 
   @override
@@ -31,7 +28,11 @@ class TabNavigatorState extends State<TabNavigator> {
     return Navigator(
         key: widget.navigatorKey,
         onGenerateRoute: (routeSettings) {
-          print('Check' + routeSettings.toString());
+          // Handle Named Routes to Login Screen
+          if (routeSettings.name == '/login')
+            Navigator.pushReplacementNamed(context, routeSettings.name);
+
+          print('Check ' + routeSettings.toString());
           return MaterialPageRoute(builder: (context) => widget.topWidget);
         });
   }
