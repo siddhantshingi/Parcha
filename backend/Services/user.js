@@ -49,11 +49,11 @@ let createUser = (data, callback) => {
 			userDAO.createUser(dataToSet, (err, dbData) => {
 			if (err) {
 				console.log("ERROR: ", dbData);
-				cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err });
+				cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 				return;
 			}
 
-			cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED,"result":dataToSet });
+			cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED, "result": dataToSet });
 			});
 		}
 	}, (err, response) => {
@@ -66,7 +66,7 @@ let updateUser = (data,callback) => {
 	async.auto({
 		userUpdate :(cb) =>{
 			if (!data.id) {
-				cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ONE, "statusMessage": util.statusMessage.PARAMS_MISSING })
+				cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ONE, "statusMessage": util.statusMessage.PARAMS_MISSING, "result": {} })
 				return;
 			}
 			var criteria = {
@@ -86,11 +86,11 @@ let updateUser = (data,callback) => {
 			}
             userDAO.updateUser(criteria, dataToSet, (err, dbData)=>{
 	            if(err){
-					cb(null,{"statusCode":util.statusCode.FOUR_ZERO_ZERO,"statusMessage":util.statusMessage.BAD_REQUEST + err});
+					cb(null,{"statusCode":util.statusCode.FOUR_ZERO_ZERO,"statusMessage":util.statusMessage.BAD_REQUEST + err, "result": {} });
                     return; 
                 }
                 else{
-					cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED,"result":dataToSet });                        
+					cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED, "result": dataToSet });                        
                 }
             });
 		}
@@ -104,7 +104,7 @@ let deleteUser = (data,callback) => {
 	async.auto({
 		removeUser :(cb) =>{
 			if (!data.id) {
-				cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ONE, "statusMessage": util.statusMessage.PARAMS_MISSING })
+				cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ONE, "statusMessage": util.statusMessage.PARAMS_MISSING, "result": {} })
 				return;
 			}
 			var criteria = {
@@ -112,10 +112,10 @@ let deleteUser = (data,callback) => {
 			}
 			userDAO.deleteUser(criteria,(err,dbData) => {
 				if (err) {
-					cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err });
+					cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
 				}
-				cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DELETE_DATA });
+				cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DELETE_DATA, "result": {} });
 			});
 		}
 	}, (err,response) => {
@@ -129,10 +129,10 @@ let getUser = (data, callback) => {
 		user: (cb) => {
 			userDAO.getUser({},(err, data) => {
 				if (err) {
-					cb(null, {"errorCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err});
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
 				}
-				cb(null, data);
+				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
 				return;
 			});
 		}
@@ -150,10 +150,10 @@ let getUserById = (data, callback) => {
 			}
 			userDAO.getUserDetailUsingId(criteria,(err, data) => {
 				if (err) {
-					cb(null, {"errorCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err});
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
 				}
-				cb(null, data[0]);
+				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data[0] });
 				return;
 			});
 		}
@@ -171,14 +171,14 @@ let getUserByEmail = (data, callback) => {
 			}
 			userDAO.getUserDetailUsingEmail(criteria,(err, data) => {
 				if (data.length === 0) {
-					cb(null,{"errorCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.USER_NOT_FOUND});
+					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.USER_NOT_FOUND, "result": {} });
 					return;
 				}
 				if (err) {
-					cb(null, {"errorCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err});
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
 				}
-				cb(null, data[0]);
+				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data[0] });
 				return;
 			});
 		}
