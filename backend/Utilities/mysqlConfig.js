@@ -14,6 +14,7 @@ connection.connect(() => {
 	require('../Models/Shop').initialize();
 	require('../Models/LocalAuth').initialize();
 	require('../Models/ShopBooking').initialize();
+	require('../Models/Request').initialize();
 });
 
 let getDB = () => {

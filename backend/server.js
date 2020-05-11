@@ -10,6 +10,7 @@ let userRoute = require('./Routes/user');
 let shopRoute = require('./Routes/shop');
 let localAuthRoute = require('./Routes/localAuth');
 let shopBookingRoute = require('./Routes/shopBooking');
+let requestRoute = require('./Routes/request');
 let email   = require('emailjs/email');
 util = require('./Utilities/util');
 
@@ -26,7 +27,7 @@ app.use('/user', userRoute);
 app.use('/shop', shopRoute);
 app.use('/localAuth', localAuthRoute);
 app.use('/shopBooking', shopBookingRoute);
-
+app.use('/request', requestRoute);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
 	next();
