@@ -5,11 +5,15 @@ var connection = mysql.createConnection({
 	user: config.DB_URL_MYSQL.user,
 	password: config.DB_URL_MYSQL.password,
 	database: config.DB_URL_MYSQL.database,
+	dateStrings:true,
 });
 
 connection.connect(() => {
 	console.log("connection setup");
 	require('../Models/User').initialize();
+	require('../Models/Shop').initialize();
+	require('../Models/LocalAuth').initialize();
+	require('../Models/ShopBooking').initialize();
 });
 
 let getDB = () => {
