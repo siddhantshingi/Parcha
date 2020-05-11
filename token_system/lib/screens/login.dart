@@ -5,7 +5,7 @@ import 'package:token_system/components/title.dart';
 import 'package:token_system/screens/register.dart';
 import 'package:token_system/screens/home.dart';
 
-enum SignAs {user, shop, authority}
+enum SignAs { user, shop, authority }
 
 class Login extends StatefulWidget {
   @override
@@ -33,7 +33,7 @@ class _LoginState extends State<Login> {
       return null;
   }
 
-  String getAs (SignAs selected) {
+  String getAs(SignAs selected) {
     if (selected == SignAs.user)
       return 'User';
     else if (selected == SignAs.shop)
@@ -55,22 +55,25 @@ class _LoginState extends State<Login> {
           Container(
             alignment: Alignment.topLeft,
             padding: EdgeInsets.all(10),
-            child: Row(
-              children: <Widget>[
-                Text(
-                  'Sign in as : ',
-                  style: TextStyle(fontSize: 20),
-                ),
-                DropdownButton<SignAs> (
+            child: Row(children: <Widget>[
+              Text(
+                'Sign in as: ',
+                style: TextStyle(fontSize: 20),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                child: DropdownButton<SignAs>(
                   value: _selected,
-                  icon: Icon(Icons.arrow_downward,
-                    color: Colors.blueGrey,),
+                  icon: Icon(
+                    Icons.arrow_downward,
+                    color: Colors.blueGrey,
+                  ),
                   iconSize: 24,
                   elevation: 8,
                   style: TextStyle(
-                      color: Colors.blueGrey,
-                      fontSize: 20,
-                      ),
+                    color: Colors.blueGrey,
+                    fontSize: 20,
+                  ),
                   onChanged: (SignAs result) {
                     setState(() {
                       _selected = result;
@@ -78,11 +81,11 @@ class _LoginState extends State<Login> {
                   },
                   items: <DropdownMenuItem<SignAs>>[
                     const DropdownMenuItem<SignAs>(
-                      child: Text('  User  '),
+                      child: Text('User'),
                       value: SignAs.user,
                     ),
                     const DropdownMenuItem<SignAs>(
-                      child: Text('  Shop  '),
+                      child: Text('Shop'),
                       value: SignAs.shop,
                     ),
                     const DropdownMenuItem<SignAs>(
@@ -91,8 +94,8 @@ class _LoginState extends State<Login> {
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ]),
           ),
           Form(
             key: _formKey,
@@ -146,7 +149,7 @@ class _LoginState extends State<Login> {
 
                       print(_email);
                       print(_passkey.currentState.value);
-                      
+
                       // TODO: get user from Login API here
                       User u = new User();
                       u.email = _email;
