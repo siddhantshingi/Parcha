@@ -3,7 +3,6 @@ import 'package:token_system/Entities/token.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/components/tab_navigator.dart';
 import 'package:token_system/components/token_card.dart';
-import 'package:token_system/screens/user_profile/check.dart';
 
 enum UserOptions { logout, editProfile }
 
@@ -25,7 +24,6 @@ class UserHistory extends StatelessWidget {
       Token.basic(tokenId: 2, date: '11 May', startTime: '15:30', status: 4),
       Token.basic(tokenId: 2, date: '11 May', startTime: '10:30', status: 3),
     ];
-    print('Building User History');
 
     return Scaffold(
       body: ListView.builder(
