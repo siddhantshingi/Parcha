@@ -38,8 +38,32 @@ let getToken = (criteria, callback) => {
 	dbConfig.getDB().query(`select * from tokens where 1 ${conditions}`, callback);
 }
 
+let updateLiveTokens = (criteria,dataToSet,callback) => {
+    let conditions = "";
+	let setData = "";
+	criteria.curr_time ? conditions += ` and startTime > CONVERT('${criteria.curr_time}', TIME) - INTERVAL 1 MINUTE and startTime <= CONVERT('${criteria.curr_time}', TIME) + INTERVAL 1 MINUTE` : true;
+	criteria.curr_date ? conditions += ` and date = '${criteria.curr_date}'` : true;
+	criteria.status ? conditions += ` and status = ${criteria.status}` : true;
+	dataToSet.status ? setData += `status = '${dataToSet.status}'` : true;
+	console.log(`UPDATE tokens SET ${setData} where 1 ${conditions}`);
+	dbConfig.getDB().query(`UPDATE tokens SET ${setData} where 1 ${conditions}`, callback);
+}
+
+let updateExpTokens = (criteria,dataToSet,callback) => {
+    let conditions = "";
+	let setData = "";
+	criteria.curr_time ? conditions += ` and startTime + duration > CONVERT('${criteria.curr_time}', TIME) - INTERVAL 1 MINUTE and startTime + duration <= CONVERT('${criteria.curr_time}', TIME) + INTERVAL 1 MINUTE` : true;
+	criteria.curr_date ? conditions += ` and date = '${criteria.curr_date}'` : true;
+	criteria.status ? conditions += ` and status = ${criteria.status}` : true;
+	dataToSet.status ? setData += `status = '${dataToSet.status}'` : true;
+	console.log(`UPDATE tokens SET ${setData} where 1 ${conditions}`);
+	dbConfig.getDB().query(`UPDATE tokens SET ${setData} where 1 ${conditions}`, callback);
+}
+
 module.exports = {
 	bookToken : bookToken,
 	cancelToken : cancelToken,
-	getToken : getToken
+	getToken : getToken,
+	updateLiveTokens : updateLiveTokens,
+	updateExpTokens : updateExpTokens
 }
