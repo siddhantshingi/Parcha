@@ -38,14 +38,14 @@ class ProfileScreen extends StatelessWidget {
                     Text(user.contactNumber),
                   ]),
             ),
-
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+            Expanded(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
                     Icon(Icons.email),
                     Text(user.email),
                   ]),
-
+            ),
           ]),
         ]),
       ),

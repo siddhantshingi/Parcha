@@ -138,30 +138,40 @@ class _LoginState extends State<Login> {
               Container(
                 height: 50,
                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: RaisedButton(
-                  textColor: Colors.white,
-                  color: Colors.blueGrey,
-                  child: Text(getAs(_selected) + ' Login'),
-                  onPressed: () {
-                    // FIXED: add validation function
-                    // TODO: call login API
-                    // TODO: don't handle passwords in raw text
-                    if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save();
+                child: Builder(builder: (BuildContext context) {
+                  return RaisedButton(
+                    textColor: Colors.white,
+                    color: Colors.blueGrey,
+                    child: Text(getAs(_selected) + ' Login'),
+                    onPressed: () {
+                      // FIXED: add validation function
+                      // TODO: call login API
+                      // TODO: don't handle passwords in raw text
+                      if (_formKey.currentState.validate()) {
+                        _formKey.currentState.save();
 
-                      UserService.verifyApiCall(_email).then((response){
-                        User u = User.fromJson(json.decode(response.body));
-                        if (u.password == _passkey.currentState.value) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UserHome(user: u)),
-                          );
-                        }
-                      });
-                    }
-                  },
-                ),
+                        UserService.verifyApiCall(_email).then((response) {
+                          User u = User.fromJson(json.decode(response.body));
+                          if (u.password == _passkey.currentState.value) {
+                            // Login successful
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UserHome(user: u)),
+                            );
+                          } else {
+                            // Unsuccessful login
+                            final snackbar = SnackBar(
+                              content:
+                                  Text('Unsuccessful login. Please try again!'),
+                            );
+                            Scaffold.of(context).showSnackBar(snackbar);
+                          }
+                        });
+                      }
+                    },
+                  );
+                }),
               ),
             ]),
           ),
