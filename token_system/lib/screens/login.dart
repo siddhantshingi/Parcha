@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:email_validator/email_validator.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/components/title.dart';
+import 'package:token_system/Services/userService.dart';
 import 'package:token_system/screens/register.dart';
 import 'package:token_system/screens/home.dart';
 
@@ -144,22 +146,16 @@ class _LoginState extends State<Login> {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();
 
-                      print(_email);
-                      print(_passkey.currentState.value);
-                      
-                      // TODO: get user from Login API here
-                      User u = new User();
-                      u.email = _email;
-                      u.contactNumber = 'Not added';
-                      u.aadharNumber = 'Not added';
-                      u.pincode = '000000';
-                      u.name = 'User';
-
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => UserHome(user: u)),
-                      );
+                      UserService.verifyApiCall(_email).then((response){
+                        User u = User.fromJson(json.decode(response.body));
+                        if (u.password == _passkey.currentState.value) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserHome(user: u)),
+                          );
+                        }
+                      });
                     }
                   },
                 ),

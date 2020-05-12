@@ -58,18 +58,18 @@ class ProfileScreen extends StatelessWidget {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(Icons.person_outline),
-                    Text(user.aadharNumber),
-                  ]),
-            ),
-            Expanded(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(Icons.call),
+                    Icon(Icons.phone),
                     Text(user.contactNumber),
                   ]),
             ),
+
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                    Icon(Icons.email),
+                    Text(user.email),
+                  ]),
+
           ]),
         ]),
       ),

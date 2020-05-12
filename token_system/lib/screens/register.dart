@@ -15,20 +15,14 @@ class _RegisterState extends State<Register> {
   var _passKey = GlobalKey<FormFieldState>();
   String _name = '';
   String _email = '';
-  String _mobile = '';
-  String _aadhar = '';
+  String _mobile = '----------';
+  String _aadhar = '------------';
   String _pincode = '';
   SignAs _selected = SignAs.user;
 
   // TODO: State and district dropdown menu.
   String _state = '';
   String _district = '';
-
-  UserService userService;
-
-  _RegisterState() {
-    userService = new UserService();
-  }
 
   String validateMobile(String value) {
     // Indian Mobile number are of 10 digit only
@@ -300,19 +294,20 @@ class _RegisterState extends State<Register> {
                             if (_formKey.currentState.validate()) {
                               _formKey.currentState.save();
 
-                              User newUser = new User();
-                              newUser.id = 0;
-                              newUser.name = _name;
-                              newUser.email = _email;
-                              newUser.contactNumber = _mobile;
-                              newUser.password = _passKey.currentState.value;
-                              newUser.aadharNumber = _aadhar;
-                              newUser.state = _state;
-                              newUser.district = _district;
-                              newUser.pincode = _pincode;
-                              newUser.verificationStatus = 0;
+                              User newUser = new User(0, _name, _email, _mobile,
+                                _passKey.currentState.value, _aadhar, _state, _district, _pincode, 0);
+//                              newUser.id = 0;
+//                              newUser.name = _name;
+//                              newUser.email = _email;
+//                              newUser.contactNumber = _mobile;
+//                              newUser.password = _passKey.currentState.value;
+//                              newUser.aadharNumber = _aadhar;
+//                              newUser.state = _state;
+//                              newUser.district = _district;
+//                              newUser.pincode = _pincode;
+//                              newUser.verificationStatus = 0;
                               print(newUser.toJson());
-                              userService.registerApiCall(newUser);
+                              UserService.registerApiCall(newUser);
                               Navigator.pop(context);
                             }
                           },
