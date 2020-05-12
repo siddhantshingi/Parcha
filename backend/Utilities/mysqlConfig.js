@@ -8,15 +8,19 @@ var connection = mysql.createConnection({
 	dateStrings:true,
 });
 
-connection.connect(() => {
-	console.log("connection setup");
-	require('../Models/User').initialize();
-	require('../Models/Shop').initialize();
-	require('../Models/LocalAuth').initialize();
-	require('../Models/Token').initialize();
-	require('../Models/ShopBooking').initialize();
-	require('../Models/Periodic').initialize();
-	require('../Models/Request').initialize();
+connection.connect((err) => {
+	if (err) throw err;
+	else{
+		console.log("connection setup");
+		require('../Models/User').initialize();
+		require('../Models/Shop').initialize();
+		require('../Models/LocalAuth').initialize();
+		require('../Models/Token').initialize();
+		require('../Models/ShopBooking').initialize();
+		require('../Models/Periodic').initialize();
+		require('../Models/Request').initialize();
+	}
+	
 });
 
 let getDB = () => {

@@ -10,7 +10,12 @@ grant all the privileges to the created user\
 	`GRANT ALL PRIVILEGES ON *.* TO 'token_system'@'%';`\
 login using token_system user\
 	`mysql -u token_system -p`\
-create database with name: token_system_db
+create database with name: token_system_db\
+	`create database token_system_db`\
+For MACOS, do the following too:
+	`ALTER USER 'token_system'@'%' IDENTIFIED WITH mysql_native_password BY 'password';`\
+	`flush privileges;`
+
  
 2. To run the backend server:\
 	`cd backend`\
