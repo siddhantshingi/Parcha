@@ -87,7 +87,6 @@ let updateShop = (data,callback) => {
 				"verifierId":data.verifierId,
 				"shopSize":data.shopSize
 			}
-			console.log(dataToSet);
             shopDAO.updateShop(criteria, dataToSet, (err, dbData)=>{
 	            if(err){
 					cb(null,{"statusCode":util.statusCode.FOUR_ZERO_ZERO,"statusMessage":util.statusMessage.BAD_REQUEST + err, "result": {} });
