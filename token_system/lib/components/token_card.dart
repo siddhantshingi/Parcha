@@ -52,7 +52,7 @@ class TokenCard extends StatelessWidget {
         color: borderColor,
         dashPattern: [8, 4],
         strokeWidth: 2,
-        padding: EdgeInsets.all(2),
+        padding: EdgeInsets.all(5),
         child: Column(children: <Widget>[
           Ink(
             child: ListTile(

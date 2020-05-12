@@ -29,7 +29,7 @@ class UserHistory extends StatelessWidget {
 
     return Scaffold(
       body: ListView.builder(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
           itemCount: tokens.length,
           itemBuilder: (BuildContext context, int index) {
             return TokenCard(
