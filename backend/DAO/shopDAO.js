@@ -14,12 +14,12 @@ let createShop = (dataToSet, callback) => {
 	dataToSet.pincode ? setData += `, pincode = '${dataToSet.pincode}'` : true;
 	if (typeof dataToSet.verificationStatus !== 'undefined' && dataToSet.verificationStatus !== null) 
 		setData += `, verificationStatus = ${dataToSet.verificationStatus}`;
-	if (typeof dataToSet.capacity !== 'undefined' && dataToSet.capacity !== null) 
-		setData += `, capacity = ${dataToSet.capacity}`;
-	dataToSet.slotDuration ? setData += `, slotDuration = '${dataToSet.slotDuration}'` : true;
-	dataToSet.bufferDuration ? setData += `, bufferDuration = '${dataToSet.bufferDuration}'` : true;
 	dataToSet.openTime ? setData += `, openTime = '${dataToSet.openTime}'` : true;
 	dataToSet.closeTime ? setData += `, closeTime = '${dataToSet.closeTime}'` : true;
+	if (typeof dataToSet.verifierId !== 'undefined' && dataToSet.verifierId !== null) 
+		setData += `, verifierId = ${dataToSet.verifierId}`;
+	if (typeof dataToSet.shopSize !== 'undefined' && dataToSet.shopSize !== null) 
+		setData += `, shopSize = ${dataToSet.shopSize}`;
 	console.log(`insert into shops set ${setData}`);
 	dbConfig.getDB().query(`insert into shops set ${setData}`, callback);
 }
@@ -39,13 +39,13 @@ let updateShop = (criteria,dataToSet,callback) => {
 	dataToSet.pincode ? setData += `, pincode = '${dataToSet.pincode}'` : true;
 	if (typeof dataToSet.verificationStatus !== 'undefined' && dataToSet.verificationStatus !== null) 
 		setData += `, verificationStatus = ${dataToSet.verificationStatus}`;
-	if (typeof dataToSet.capacity !== 'undefined' && dataToSet.capacity !== null) 
-		setData += `, capacity = ${dataToSet.capacity}`;
-	dataToSet.slotDuration ? setData += `, slotDuration = '${dataToSet.slotDuration}'` : true;
-	dataToSet.bufferDuration ? setData += `, bufferDuration = '${dataToSet.bufferDuration}'` : true;
 	dataToSet.openTime ? setData += `, openTime = '${dataToSet.openTime}'` : true;
 	dataToSet.closeTime ? setData += `, closeTime = '${dataToSet.closeTime}'` : true;
-
+	if (typeof dataToSet.verifierId !== 'undefined' && dataToSet.verifierId !== null) 
+		setData += `, verifierId = ${dataToSet.verifierId}`;
+	if (typeof dataToSet.shopSize !== 'undefined' && dataToSet.shopSize !== null) 
+		setData += `, shopSize = ${dataToSet.shopSize}`;
+	
     let conditions = "";
 	criteria.id ? conditions += ` and id = ${criteria.id}` : true;
 	
@@ -53,23 +53,14 @@ let updateShop = (criteria,dataToSet,callback) => {
 	dbConfig.getDB().query(`UPDATE shops SET ${setData} where 1 ${conditions}`, callback);
 }
 
-let getShopByEmail = (criteria, callback) => {
+let getShop = (criteria, callback) => {
     let conditions = "";
 	criteria.email ? conditions += ` and email = '${criteria.email}'` : true;
-	console.log(`select * from shops where 1 ${conditions}`);
-	dbConfig.getDB().query(`select * from shops where 1 ${conditions}`, callback);
-}
-
-let getShopListByName = (criteria, callback) => {
-    let conditions = "";
 	criteria.name ? conditions += ` and name = '${criteria.name}'` : true;
-	console.log(`select * from shops where 1 ${conditions}`);
-	dbConfig.getDB().query(`select * from shops where 1 ${conditions}`, callback);
-}
-
-let getShopListByCategory = (criteria, callback) => {
-    let conditions = "";
-	criteria.category ? conditions += ` and category = '${criteria.category}'` : true;
+	criteria.pincode ? conditions += ` and pincode = '${criteria.pincode}'` : true;
+	criteria.shopId ? conditions += ` and id = ${criteria.shopId}` : true;
+	criteria.shopType ? conditions += ` and shopType = ${criteria.shopType}` : true;
+	criteria.shopSize ? conditions += ` and shopSize = ${criteria.shopSize}` : true;
 	console.log(`select * from shops where 1 ${conditions}`);
 	dbConfig.getDB().query(`select * from shops where 1 ${conditions}`, callback);
 }
@@ -77,7 +68,5 @@ let getShopListByCategory = (criteria, callback) => {
 module.exports = {
 	createShop : createShop,
 	updateShop : updateShop,
-	getShopListByName : getShopListByName,
-	getShopListByCategory : getShopListByCategory,
-	getShopByEmail : getShopByEmail
+	getShop : getShop
 }

@@ -45,7 +45,7 @@ let updateLiveTokens = (criteria,dataToSet,callback) => {
 	criteria.curr_date ? conditions += ` and date = '${criteria.curr_date}'` : true;
 	criteria.status ? conditions += ` and status = ${criteria.status}` : true;
 	dataToSet.status ? setData += `status = '${dataToSet.status}'` : true;
-	console.log(`UPDATE tokens SET ${setData} where 1 ${conditions}`);
+	// console.log(`UPDATE tokens SET ${setData} where 1 ${conditions}`);
 	dbConfig.getDB().query(`UPDATE tokens SET ${setData} where 1 ${conditions}`, callback);
 }
 
@@ -56,7 +56,7 @@ let updateExpTokens = (criteria,dataToSet,callback) => {
 	criteria.curr_date ? conditions += ` and date = '${criteria.curr_date}'` : true;
 	criteria.status ? conditions += ` and status = ${criteria.status}` : true;
 	dataToSet.status ? setData += `status = '${dataToSet.status}'` : true;
-	console.log(`UPDATE tokens SET ${setData} where 1 ${conditions}`);
+	// console.log(`UPDATE tokens SET ${setData} where 1 ${conditions}`);
 	dbConfig.getDB().query(`UPDATE tokens SET ${setData} where 1 ${conditions}`, callback);
 }
 

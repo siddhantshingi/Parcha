@@ -12,7 +12,6 @@ sender_password = require("../Utilities/config").sender_password;
 let createShop = (data, callback) => {
 	async.auto({
 		shop: (cb) => {
-			console.log(data);
 			var dataToSet = {
 				"id": data.id,
 				"name": data.name,
@@ -26,17 +25,15 @@ let createShop = (data, callback) => {
 				"district":data.district,
 				"pincode":data.pincode,
 				"verificationStatus":data.verificationStatus,
-				"capacity":data.capacity,
-				"slotDuration":data.slotDuration,
-				"bufferDuration":data.bufferDuration,
 				"openTime":data.openTime,
 				"closeTime":data.closeTime,
+				"verifierId":data.verifierId,
+				"shopSize":data.shopSize
 			}
-			console.log(dataToSet);
 			let criteria = {
 				"email": data.email
 			}
-			shopDAO.getShopByEmail(criteria,(err, data) => {
+			shopDAO.getShop(criteria,(err, data) => {
 				if (data.length === 0) {
 					shopDAO.createShop(dataToSet, (err, dbData) => {
 						if (err) {
@@ -74,7 +71,7 @@ let updateShop = (data,callback) => {
 				id : Number(data.id),
 			}
 			var dataToSet={
-				"name":data.name,
+				"name": data.name,
 				"email":data.email,
 				"contactNumber":data.contactNumber,
 				"shopType":data.shopType,
@@ -85,11 +82,10 @@ let updateShop = (data,callback) => {
 				"district":data.district,
 				"pincode":data.pincode,
 				"verificationStatus":data.verificationStatus,
-				"capacity":data.capacity,
-				"slotDuration":data.slotDuration,
-				"bufferDuration":data.bufferDuration,
 				"openTime":data.openTime,
 				"closeTime":data.closeTime,
+				"verifierId":data.verifierId,
+				"shopSize":data.shopSize
 			}
 			console.log(dataToSet);
             shopDAO.updateShop(criteria, dataToSet, (err, dbData)=>{
@@ -107,65 +103,24 @@ let updateShop = (data,callback) => {
 	});
 }
 
-/***API to get the user list */
-let getShopListByName = (data, callback) => {
-	async.auto({
-		shopList: (cb) => {
-			let criteria = {
-				"name": data.name
-			}
-			shopDAO.getShopListByName(criteria,(err, data) => {
-				if (err) {
-					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
-					return;
-				}
-				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
-				return;
-			});
-		}
-	}, (err, response) => {
-		callback(response.shopList);
-	})
-}
-
-/***API to get the user list */
-let getShopListByCategory = (data, callback) => {
-	async.auto({
-		shopList: (cb) => {
-			let criteria = {
-				"category": data.category
-			}
-			shopDAO.getShopListByCategory(criteria,(err, data) => {
-				if (err) {
-					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
-					return;
-				}
-				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
-				return;
-			});
-		}
-	}, (err, response) => {
-		callback(response.shopList);
-	})
-}
-
 /***API to get the shop details by email */
-let getShopByEmail = (data, callback) => {
+let getShop = (data, callback) => {
 	async.auto({
 		shop: (cb) => {
 			let criteria = {
-				"email": data.email
+				"email": data.email,
+				"name" : data.name,
+				"shopType" : data.shopType,
+				"pincode" : data.pincode,
+				"shopId" : data.shopId,
+				"shopSize" : data.shopSize 
 			}
-			shopDAO.getShopByEmail(criteria,(err, data) => {
-				if (data.length === 0) {
-					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND, "result": {} });
-					return;
-				}
+			shopDAO.getShop(criteria,(err, data) => {
 				if (err) {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
 				}
-				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data[0] });
+				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
 				return;
 			});
 		}
@@ -177,7 +132,5 @@ let getShopByEmail = (data, callback) => {
 module.exports = {
 	createShop : createShop,
 	updateShop : updateShop,
-	getShopListByName : getShopListByName,
-	getShopListByCategory : getShopListByCategory,
-	getShopByEmail : getShopByEmail
+	getShop : getShop
 };

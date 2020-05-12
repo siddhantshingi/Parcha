@@ -18,22 +18,8 @@ router.put('/update-shop', (req, res) => {
 });
 
 /**Api to get the list of user */
-router.get('/get-shop-list-by-name', (req, res) => {
-	shopService.getShopListByName(req.query, (data) => {
-		res.send(data);
-	});
-});
-
-// /**API to get the user by id... */
-router.get('/get-shop-list-by-category', (req, res) => {
-	shopService.getShopListByCategory(req.query, (data) => {
-		res.send(data);
-	});
-});
-
-// /**API to get the user by email... */
-router.get('/get-shop-by-email', (req, res) => {
-	shopService.getShopByEmail(req.query, (data) => {
+router.get('/get-shop', (req, res) => {
+	shopService.getShop(req.query, (data) => {
 		res.send(data);
 	});
 });

@@ -12,7 +12,6 @@ let initialize = () => {
 		let now = new Date()
 		let time = ("0" + now.getHours()).slice(-2) + ":" + ("0" + now.getMinutes()).slice(-2) + ":" + ("0" + now.getSeconds()).slice(-2);
 		let date = now.getFullYear() + "-" + ("0" + (now.getMonth() + 1)).slice(-2) + "-" + ("0" + now.getDate()).slice(-2)
-		console.log("Date: ",date," Time: ",time);
 
 		let criteria = {
 			"curr_time" : time,
@@ -27,7 +26,7 @@ let initialize = () => {
 				console.log({"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 				return;
 			}
-			console.log({"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
+			// console.log({"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
 			return;
 		});
 
@@ -44,7 +43,7 @@ let initialize = () => {
 				console.log({"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 				return;
 			}
-			console.log({"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
+			// console.log({"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
 			return;
 		});
 	}
