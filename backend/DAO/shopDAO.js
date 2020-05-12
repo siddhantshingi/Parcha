@@ -74,8 +74,8 @@ let getShopWithShopSize = (criteria, callback) => {
     let conditions = "";
 	if (typeof criteria.verificationStatus !== 'undefined' && criteria.verificationStatus !== null) 
 		conditions += `and verificationStatus = ${criteria.verificationStatus}`;
-	console.log(`select * from shops left join shopSizes on shops.shopSize = shopSizes.id where 1 ${conditions}`);
-	dbConfig.getDB().query(`select * from shops left join shopSizes on shops.shopSize = shopSizes.id where 1 ${conditions}`, callback);
+	console.log(`select shops.id, shops.shopSize, shops.openTime, shops.closeTime, shopSizes.capacity, shopSizes.slotDuration, shopSizes.bufferDuration from shops left join shopSizes on shops.shopSize = shopSizes.id where 1 ${conditions}`);
+	dbConfig.getDB().query(`select shops.id, shops.shopSize, shops.openTime, shops.closeTime, shopSizes.capacity, shopSizes.slotDuration, shopSizes.bufferDuration from shops left join shopSizes on shops.shopSize = shopSizes.id where 1 ${conditions}`, callback);
 }
 
 module.exports = {

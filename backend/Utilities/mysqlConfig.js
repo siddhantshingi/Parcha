@@ -23,6 +23,7 @@ connection.connect((err) => {
 		require('../Models/Pincode').initialize();
 		require('../Models/District').initialize();
 		require('../Models/State').initialize();
+		require('../Models/ShopType').initialize();
 	}
 });
 

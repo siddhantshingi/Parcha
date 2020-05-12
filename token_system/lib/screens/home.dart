@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/components/tab_navigator.dart';
-import 'package:token_system/screens/user_profile/choose_category.dart';
+import 'package:token_system/screens/booking/choose_category.dart';
 import 'package:token_system/screens/user_profile/profile.dart';
 import 'package:token_system/screens/user_profile/user_history.dart';
 
