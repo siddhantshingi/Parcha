@@ -58,14 +58,12 @@ class _RegisterState extends State<Register> {
   String validateConfirmPassword(String value) {
     if (value.isEmpty) return 'Enter confirm password';
     var password = _passKey.currentState.value;
-    if (!(value == password))
-      return 'Confirm Password mismatch';
+    if (!(value == password)) return 'Confirm Password mismatch';
     return null;
   }
 
   bool showCategory(selected) {
-    if (selected == SignAs.shop)
-      return true;
+    if (selected == SignAs.shop) return true;
     return false;
   }
 
@@ -89,10 +87,12 @@ class _RegisterState extends State<Register> {
                         'Register as : ',
                         style: TextStyle(fontSize: 20),
                       ),
-                      DropdownButton<SignAs> (
+                      DropdownButton<SignAs>(
                         value: _selected,
-                        icon: Icon(Icons.arrow_downward,
-                          color: Colors.blueGrey,),
+                        icon: Icon(
+                          Icons.arrow_downward,
+                          color: Colors.blueGrey,
+                        ),
                         iconSize: 24,
                         elevation: 8,
                         style: TextStyle(
@@ -160,25 +160,24 @@ class _RegisterState extends State<Register> {
                         },
                       ),
                     ),
-                    Visibility (
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Contact number',
-                          ),
-                          keyboardType: TextInputType.phone,
+                    Visibility(
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Contact number',
+                            ),
+                            keyboardType: TextInputType.phone,
 //                          validator: validateMobile,
-                          onSaved: (value) {
-                            setState(() {
-                              _mobile = value;
-                            });
-                          },
+                            onSaved: (value) {
+                              setState(() {
+                                _mobile = value;
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                      visible: false
-                    ),
+                        visible: false),
                     Container(
                       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                       child: TextFormField(
@@ -208,24 +207,23 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                     Visibility(
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Aadhar number',
-                          ),
-                          keyboardType: TextInputType.phone,
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Aadhar number',
+                            ),
+                            keyboardType: TextInputType.phone,
 //                          validator: validateAadhar,
-                          onSaved: (value) {
-                            setState(() {
-                              _aadhar = value;
-                            });
-                          },
+                            onSaved: (value) {
+                              setState(() {
+                                _aadhar = value;
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                      visible: false
-                    ),
+                        visible: false),
                     Container(
                       padding: EdgeInsets.all(10),
                       child: TextFormField(
@@ -283,35 +281,53 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                     Container(
-                        height: 50,
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                        child: RaisedButton(
-                          textColor: Colors.white,
-                          color: Colors.blueGrey,
-                          child: Text('Register'),
-                          onPressed: () {
-                            // FIXED: add validation function
-                            if (_formKey.currentState.validate()) {
-                              _formKey.currentState.save();
+                      height: 50,
+                      padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: Builder(builder: (BuildContext context) {
+                        return RaisedButton(
+                            textColor: Colors.white,
+                            color: Colors.blueGrey,
+                            child: Text('Register'),
+                            onPressed: () {
+                              // FIXED: add validation function
+                              if (_formKey.currentState.validate()) {
+                                _formKey.currentState.save();
 
-                              User newUser = new User(0, _name, _email, _mobile,
-                                _passKey.currentState.value, _aadhar, _state, _district, _pincode, 0);
-//                              newUser.id = 0;
-//                              newUser.name = _name;
-//                              newUser.email = _email;
-//                              newUser.contactNumber = _mobile;
-//                              newUser.password = _passKey.currentState.value;
-//                              newUser.aadharNumber = _aadhar;
-//                              newUser.state = _state;
-//                              newUser.district = _district;
-//                              newUser.pincode = _pincode;
-//                              newUser.verificationStatus = 0;
-                              print(newUser.toJson());
-                              UserService.registerApiCall(newUser);
-                              Navigator.pop(context);
-                            }
-                          },
-                        )),
+                                User newUser = new User(
+                                    0,
+                                    _name,
+                                    _email,
+                                    _mobile,
+                                    _passKey.currentState.value,
+                                    _aadhar,
+                                    _state,
+                                    _district,
+                                    _pincode,
+                                    0);
+                                print(newUser.toJson());
+                                UserService.registerApiCall(newUser)
+                                    .then((code) {
+                                  if (code == 200) {
+                                    final snackbar = SnackBar(
+                                      content: Text('Registration successful!'),
+                                    );
+                                    Scaffold.of(context).showSnackBar(snackbar);
+                                    // Pop screen if successful
+                                    Future.delayed(Duration(seconds: 2), () {
+                                      Navigator.pop(context);
+                                    });
+                                  } else {
+                                    final snackbar = SnackBar(
+                                      content: Text(
+                                          'Registration not successful. Please try again!'),
+                                    );
+                                    Scaffold.of(context).showSnackBar(snackbar);
+                                  }
+                                });
+                              }
+                            });
+                      }),
+                    )
                   ]),
                 ),
                 Container(

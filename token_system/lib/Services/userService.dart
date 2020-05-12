@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:token_system/config/server_config.dart';
 import 'package:token_system/Entities/user.dart';
@@ -8,6 +10,8 @@ class UserService {
   static registerApiCall(User user) async {
     final response = await http.post(server + userUrl + "/create-user", body: user.toJson());
     print(response.body);
+    var responseJson = json.decode(response.body);
+    return responseJson['statusCode'];
   }
 
   static verifyApiCall(String email) async {
