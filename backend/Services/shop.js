@@ -113,7 +113,8 @@ let getShop = (data, callback) => {
 				"shopType" : data.shopType,
 				"pincode" : data.pincode,
 				"shopId" : data.shopId,
-				"shopSize" : data.shopSize 
+				"shopSize" : data.shopSize,
+				"verificationStatus" : data.verificationStatus 
 			}
 			shopDAO.getShop(criteria,(err, data) => {
 				if (err) {

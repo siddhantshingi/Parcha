@@ -30,7 +30,8 @@ let updateShop = (criteria,dataToSet,callback) => {
 	dataToSet.name ? setData += `name = '${dataToSet.name}'` : true;
 	dataToSet.email ? setData += `, email = '${dataToSet.email}'` : true;
 	dataToSet.contactNumber ? setData += `, contactNumber = '${dataToSet.contactNumber}'` : true;
-	dataToSet.shopType ? setData += `, shopType = '${dataToSet.shopType}'` : true;
+	if (typeof dataToSet.shopType !== 'undefined' && dataToSet.shopType !== null) 
+		setData += `, shopType = ${dataToSet.shopType}`;
 	dataToSet.address ? setData += `, address = '${dataToSet.address}'` : true;
 	dataToSet.landmark ? setData += `, landmark = '${dataToSet.landmark}'` : true;
 	dataToSet.password ? setData += `, password = '${dataToSet.password}'` : true;
@@ -59,14 +60,27 @@ let getShop = (criteria, callback) => {
 	criteria.name ? conditions += ` and name = '${criteria.name}'` : true;
 	criteria.pincode ? conditions += ` and pincode = '${criteria.pincode}'` : true;
 	criteria.shopId ? conditions += ` and id = ${criteria.shopId}` : true;
-	criteria.shopType ? conditions += ` and shopType = ${criteria.shopType}` : true;
-	criteria.shopSize ? conditions += ` and shopSize = ${criteria.shopSize}` : true;
+	if (typeof criteria.shopType !== 'undefined' && criteria.shopType !== null) 
+		conditions += `and shopType = ${criteria.shopType}`;
+	if (typeof criteria.shopSize !== 'undefined' && criteria.shopSize !== null) 
+		conditions += `and shopSize = ${criteria.shopSize}`;
+	if (typeof criteria.verificationStatus !== 'undefined' && criteria.verificationStatus !== null) 
+		conditions += `and verificationStatus = ${criteria.verificationStatus}`;
 	console.log(`select * from shops where 1 ${conditions}`);
 	dbConfig.getDB().query(`select * from shops where 1 ${conditions}`, callback);
+}
+
+let getShopWithShopSize = (criteria, callback) => {
+    let conditions = "";
+	if (typeof criteria.verificationStatus !== 'undefined' && criteria.verificationStatus !== null) 
+		conditions += `and verificationStatus = ${criteria.verificationStatus}`;
+	console.log(`select * from shops left join shopSizes on shops.shopSize = shopSizes.id where 1 ${conditions}`);
+	dbConfig.getDB().query(`select * from shops left join shopSizes on shops.shopSize = shopSizes.id where 1 ${conditions}`, callback);
 }
 
 module.exports = {
 	createShop : createShop,
 	updateShop : updateShop,
-	getShop : getShop
+	getShop : getShop,
+	getShopWithShopSize : getShopWithShopSize
 }

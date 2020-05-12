@@ -16,6 +16,7 @@ let statusMessage = {
 	NOT_FOUND : 'not found',
 	DATA_UPDATED: 'Data updated successfully.',
 	DELETE_DATA : 'Delete data successfully',
+	PARAMS_MISSING : 'Parameter missing'
 
 };
 
