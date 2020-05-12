@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:token_system/Entities/token.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/components/tab_navigator.dart';
+import 'package:token_system/components/token_card.dart';
 import 'package:token_system/screens/user_profile/check.dart';
 
 enum UserOptions { logout, editProfile }
@@ -14,56 +16,28 @@ class UserHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      Container(
-        alignment: Alignment.topRight,
-        child: PopupMenuButton<UserOptions>(
-            onSelected: (UserOptions result) {
-              if (result == UserOptions.logout) {
-                Navigator.pushReplacementNamed(context, '/login');
-              }
-              if (result == UserOptions.editProfile) {
-                // TODO: Navigate to Edit Profile screen
-                // Navigator.push(context, '/edit')
-              }
-            },
-            itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<UserOptions>>[
-                  const PopupMenuItem<UserOptions>(
-                    value: UserOptions.editProfile,
-                    child: Text('Edit Profile'),
-                  ),
-                  const PopupMenuItem<UserOptions>(
-                    value: UserOptions.logout,
-                    child: Text('Logout'),
-                  ),
-                ]),
-      ),
-      Container(
-        alignment: Alignment.topCenter,
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-        child: Column(children: <Widget>[
-          Container(
-            alignment: Alignment.topCenter,
-            child: Icon(
-              Icons.history,
-              size: 100,
-            ),
-          ),
-        ]),
-      ),
-      RaisedButton(
-        child: Text(
-          'PUSH',
-          style: TextStyle(fontSize: 32.0, color: Colors.orange),
-        ),
-        onPressed: () {
-          tn.currentState.push(
-            context,
-            payload: DestinationView(),
-          );
-        },
-      )
-    ]);
+    // TODO: Make call to User History API
+    List<Token> tokens = [
+      Token.basic(tokenId: 0, date: '11 May', startTime: '11:00', status: 0),
+      Token.basic(tokenId: 1, date: '11 May', startTime: '13:00', status: 1),
+      Token.basic(tokenId: 2, date: '11 May', startTime: '14:00', status: 2),
+      Token.basic(tokenId: 2, date: '11 May', startTime: '15:00', status: 1),
+      Token.basic(tokenId: 2, date: '11 May', startTime: '15:30', status: 4),
+      Token.basic(tokenId: 2, date: '11 May', startTime: '10:30', status: 3),
+    ];
+    print('Building User History');
+
+    return Scaffold(
+      body: ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: tokens.length,
+          itemBuilder: (BuildContext context, int index) {
+            return TokenCard(
+                date: '${tokens[index].date}',
+                startTime: '${tokens[index].startTime}',
+                shopId: tokens[index].shopId,
+                status: tokens[index].status);
+          }),
+    );
   }
 }
