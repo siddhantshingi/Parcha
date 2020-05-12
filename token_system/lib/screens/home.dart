@@ -75,6 +75,15 @@ class _UserHomeState extends State<UserHome> {
         appBar: AppBar(
           title: const Text('TokenDown'),
           backgroundColor: Colors.blueGrey,
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.power_settings_new),
+              tooltip: 'Logout',
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/login');
+              },
+            )
+          ],
         ),
         body: Stack(children: <Widget>[
           _buildOffstageNavigator(0),
@@ -112,19 +121,28 @@ class _UserHomeState extends State<UserHome> {
     );
   }
 
-  Widget _buildBody(int index) {
+  WidgetBuilder _buildBody(int index) {
+    // Returning WidgetBuilder makes it easier to implement callbacks
     if (index == 1) {
-      return ChooseCategory(
-        user: widget.user,
-        tn: _tabNavigatorKeys[1],
+      Builder builder = Builder(
+        builder: (context) => ChooseCategory(
+          user: widget.user,
+          tn: _tabNavigatorKeys[1],
+        ),
       );
-    }
-    if (index == 2) {
-      return UserHistory(
-        user: widget.user,
-        tn: _tabNavigatorKeys[2],
+      return builder.builder;
+    } else if (index == 2) {
+      Builder builder = Builder(
+        builder: (context) => UserHistory(
+          user: widget.user,
+          tn: _tabNavigatorKeys[2],
+        ),
       );
+      return builder.builder;
     }
-    return ProfileScreen(user: widget.user);
+    Builder builder = Builder(
+      builder: (context) => ProfileScreen(user: widget.user),
+    );
+    return builder.builder;
   }
 }

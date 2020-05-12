@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:token_system/screens/login.dart';
 
 class TabNavigator extends StatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;
-  final Widget topWidget;
+  final WidgetBuilder topWidget;
 
   TabNavigator({Key key, this.navigatorKey, this.topWidget}) : super(key: key);
 
@@ -33,7 +32,7 @@ class TabNavigatorState extends State<TabNavigator> {
             Navigator.pushReplacementNamed(context, routeSettings.name);
 
           print('Check ' + routeSettings.toString());
-          return MaterialPageRoute(builder: (context) => widget.topWidget);
+          return MaterialPageRoute(builder: widget.topWidget);
         });
   }
 }

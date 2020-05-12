@@ -12,32 +12,8 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
       Container(
-        alignment: Alignment.topRight,
-        child: PopupMenuButton<UserOptions>(
-            onSelected: (UserOptions result) {
-              if (result == UserOptions.logout) {
-                Navigator.pushReplacementNamed(context, '/login');
-              }
-              if (result == UserOptions.editProfile) {
-                // TODO: Navigate to Edit Profile screen
-                // Navigator.push(context, '/edit')
-              }
-            },
-            itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<UserOptions>>[
-                  const PopupMenuItem<UserOptions>(
-                    value: UserOptions.editProfile,
-                    child: Text('Edit Profile'),
-                  ),
-                  const PopupMenuItem<UserOptions>(
-                    value: UserOptions.logout,
-                    child: Text('Logout'),
-                  ),
-                ]),
-      ),
-      Container(
         alignment: Alignment.topCenter,
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+        padding: EdgeInsets.all(20),
         child: Column(children: <Widget>[
           Container(
             alignment: Alignment.topCenter,
