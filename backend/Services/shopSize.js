@@ -8,10 +8,6 @@ shopSizeDAO = require('../DAO/shopSizeDAO');
 let getShopSize = (data, callback) => {
 	async.auto({
 		shopSize: (cb) => {
-			if (!data.shopSize) {
-				cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ONE, "statusMessage": util.statusMessage.PARAMS_MISSING, "result": {} })
-				return;
-			}
 			let criteria = {
 				"id" : data.shopSize
 			}
@@ -24,8 +20,9 @@ let getShopSize = (data, callback) => {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
 				}
-				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data[0] });
+				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
 				return;
+								
 			});
 		}
 	}, (err, response) => {
