@@ -1,7 +1,6 @@
 import 'package:http/http.dart' as http;
-import '../Entities/user.dart';
-
-String server = 'http://8b1ef23b.ngrok.io/';
+import 'package:token_system/config/server_config.dart';
+import 'package:token_system/Entities/user.dart';
 
 class UserService {
   static String userUrl = "user";

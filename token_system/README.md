@@ -15,6 +15,17 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+## Server Configuration
+Add the file lib/config/server_config.dart and add the URL to the server, as follows:
+
+```
+// server_config.dart file : All constants for the app, regarding the server go here.
+
+const String server = 'http://8b1ef23b.ngrok.io/';
+```
+
+**Important**: This file shall not be committed to the repo.
+
 ## Using TabNavigator
 
 The `TabNavigator` class defined in lib/components/tab_navigator.dart is the basic element which can be used coupled with the BottomNavigationBar to provide separate Navigators for each tab on the BottomNavigationBar.
