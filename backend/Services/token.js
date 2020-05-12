@@ -2,7 +2,8 @@ let async = require('async'),
 parseString = require('xml2js').parseString;
 
 let util = require('../Utilities/util'),
-tokenDAO = require('../DAO/tokenDAO');
+tokenDAO = require('../DAO/tokenDAO'),
+shopBookingDAO = require('../DAO/shopBookingDAO');
 
 /**API to book a token */
 let bookToken = (data, callback) => {
@@ -25,19 +26,36 @@ let bookToken = (data, callback) => {
 				"startTime" : data.startTime,
 				"duration" : data.duration
 			}
-			console.log(dataToSet,criteria);
+			let criteria_booking = {
+				"shopId":data.shopId,
+				"date":data.date,
+				"startTime":data.startTime,
+				"duration":data.duration
+			}
 			tokenDAO.getToken(criteria,(err, data) => {
-				console.log(data);
 				if (data.length === 0) {
-					tokenDAO.bookToken(dataToSet, (err, dbData) => {
+					shopBookingDAO.getShopBookings(criteria_booking,(err, data) => {
 						if (err) {
-							cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
+							cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 							return;
 						}
+						if (data[0].capacityLeft != 0) {
+							dataToSet.status = "1";
+						} else {
+							dataToSet.status = "2";
+						}
+						tokenDAO.bookToken(dataToSet, (err, dbData) => {
+							if (err) {
+								cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
+								return;
+							}
 
-						cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED, "result": dataToSet });
+							cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED, "result": dataToSet });
+							return;
+						});
 						return;
 					});
+					
 				} else {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + "Token already exists", "result": {} });
 					return;	
@@ -47,7 +65,6 @@ let bookToken = (data, callback) => {
 					return;
 				}
 			});
-			
 		}
 	}, (err, response) => {
 		callback(response.token);

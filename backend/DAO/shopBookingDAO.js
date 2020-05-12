@@ -1,8 +1,11 @@
 let dbConfig = require("../Utilities/mysqlConfig");
 
-let getTimeSlotDetailUsingShopId = (criteria, callback) => {
+let getShopBookings = (criteria, callback) => {
     let conditions = "";
-	criteria.shopId ? conditions += ` and shopId = ${criteria.shopId} and date = curdate()` : true;
+	criteria.shopId ? conditions += ` and shopId = ${criteria.shopId}` : true;
+	criteria.date ? conditions += ` and date = '${criteria.date}'` : true;
+	criteria.startTime ? conditions += ` and startTime = '${criteria.startTime}'` : true;
+	criteria.duration ? conditions += ` and duration = '${criteria.duration}'` : true;
 	console.log(`select * from shopBookings where 1 ${conditions}`);
 	dbConfig.getDB().query(`select * from shopBookings where 1 ${conditions}`, callback);
 }
@@ -31,7 +34,7 @@ let deleteShopTimeSlot = (criteria, callback) => {
 }
 
 module.exports = {
-	getTimeSlotDetailUsingShopId : getTimeSlotDetailUsingShopId,
+	getShopBookings : getShopBookings,
 	addShopTimeSlot : addShopTimeSlot,
 	deleteShopTimeSlot : deleteShopTimeSlot
 }
