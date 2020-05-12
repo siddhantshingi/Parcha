@@ -20,6 +20,7 @@ connection.connect((err) => {
 		require('../Models/Periodic').initialize();
 		require('../Models/Request').initialize();
 		require('../Models/ShopSize').initialize();
+		require('../Models/ShopType').initialize();
 	}
 });
 
