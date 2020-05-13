@@ -24,7 +24,8 @@ let bookToken = (data, callback) => {
 				"userId" : data.userId,
 				"shopId" : data.shopId,
 				"startTime" : data.startTime,
-				"duration" : data.duration
+				"duration" : data.duration,
+				"status" : data.status
 			}
 			let criteria_booking = {
 				"shopId":data.shopId,
