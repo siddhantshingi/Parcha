@@ -86,15 +86,46 @@ let cancelToken = (data,callback) => {
 			var dataToSet={
 				"status" : "4",
 			}
-            tokenDAO.cancelToken(criteria, dataToSet, (err, dbData)=>{
-	            if(err){
-					cb(null,{"statusCode":util.statusCode.FOUR_ZERO_ZERO,"statusMessage":util.statusMessage.BAD_REQUEST + err, "result": {} });
-                    return; 
-                }
-                else{
-					cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED, "result": {"tokenId" : data.id, "status" : "4"} });                        
-                }
-            });
+			var wcriteria = {
+				"id1" : data.id,
+				"id2" : data.id,
+			}
+			var wdataToSet={
+				"status1" : "4",
+				"status2" : "1",
+			}
+			tokenDAO.findNextToken(criteria, (err, data)=>{
+				if (data.length === 0) {
+					tokenDAO.cancelToken(criteria, dataToSet, (err, dbData)=>{
+						if(err){
+							cb(null,{"statusCode":util.statusCode.FOUR_ZERO_ZERO,"statusMessage":util.statusMessage.BAD_REQUEST + err, "result": {} });
+							return; 
+						}
+						else{
+							cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED, "result": {"tokenId" : criteria.id, "status" : "4"} });                        
+						}
+					});
+				}
+				else
+				{
+					wcriteria.id2 = data[0].id;
+					tokenDAO.cancelAndUpdateNextToken(wcriteria, wdataToSet, (err, dbData)=>{
+						if(err){
+							cb(null,{"statusCode":util.statusCode.FOUR_ZERO_ZERO,"statusMessage":util.statusMessage.BAD_REQUEST + err, "result": {} });
+							return; 
+						}
+						else{
+							cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED, "result": {"tokenId1" : wcriteria.id1, "status1" : "4", "tokenId2" : wcriteria.id2, "status2" : "1"} });                        
+						}
+					});
+					
+				}
+				if (err) {
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
+					return;
+				}
+				
+			});	
 		}
 	}, (err,response) => {
 		callback(response.tokenCancel);

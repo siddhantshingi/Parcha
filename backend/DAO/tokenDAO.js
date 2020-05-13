@@ -45,7 +45,7 @@ let updateLiveTokens = (criteria,dataToSet,callback) => {
 	criteria.curr_date ? conditions += ` and date = '${criteria.curr_date}'` : true;
 	criteria.status ? conditions += ` and status = ${criteria.status}` : true;
 	dataToSet.status ? setData += `status = '${dataToSet.status}'` : true;
-	// console.log(`UPDATE tokens SET ${setData} where 1 ${conditions}`);
+	console.log(`UPDATE tokens SET ${setData} where 1 ${conditions}`);
 	dbConfig.getDB().query(`UPDATE tokens SET ${setData} where 1 ${conditions}`, callback);
 }
 
@@ -56,8 +56,28 @@ let updateExpTokens = (criteria,dataToSet,callback) => {
 	criteria.curr_date ? conditions += ` and date = '${criteria.curr_date}'` : true;
 	criteria.status ? conditions += ` and status = ${criteria.status}` : true;
 	dataToSet.status ? setData += `status = '${dataToSet.status}'` : true;
-	// console.log(`UPDATE tokens SET ${setData} where 1 ${conditions}`);
+	console.log(`UPDATE tokens SET ${setData} where 1 ${conditions}`);
 	dbConfig.getDB().query(`UPDATE tokens SET ${setData} where 1 ${conditions}`, callback);
+}
+
+let findNextToken = (criteria,callback) => {
+	console.log(`SELECT * from (SELECT * from tokens where shopId = (SELECT shopId from tokens where id = ${criteria.id}) and startTime = (SELECT startTime from tokens where id = ${criteria.id}) and duration = (SELECT duration from tokens where id = ${criteria.id}) and date = (SELECT date from tokens where id = ${criteria.id}) and status = 2) as waitlist order by createdAt limit 1`);
+	dbConfig.getDB().query(`SELECT * from (SELECT * from tokens where shopId = (SELECT shopId from tokens where id = ${criteria.id}) and startTime = (SELECT startTime from tokens where id = ${criteria.id}) and duration = (SELECT duration from tokens where id = ${criteria.id}) and date = (SELECT date from tokens where id = ${criteria.id}) and status = 2) as waitlist order by createdAt limit 1`, callback);
+}
+
+let cancelAndUpdateNextToken = (criteria,dataToSet,callback) => {
+    let conditions1 = "";
+	let setData1 = "";
+	criteria.id1 ? conditions1 += ` and id = ${criteria.id1}` : true;
+	dataToSet.status1 ? setData1 += `status = '${dataToSet.status1}'` : true;
+	console.log(`UPDATE tokens SET ${setData1} where 1 ${conditions1}`);
+	dbConfig.getDB().query(`UPDATE tokens SET ${setData1} where 1 ${conditions1}`);
+	let conditions2 = "";
+	let setData2 = "";
+	criteria.id2 ? conditions2 += ` and id = ${criteria.id2}` : true;
+	dataToSet.status2 ? setData2 += `status = '${dataToSet.status2}'` : true;
+	console.log(`UPDATE tokens SET ${setData2} where 1 ${conditions2}`);
+	dbConfig.getDB().query(`UPDATE tokens SET ${setData2} where 1 ${conditions2}`, callback);
 }
 
 module.exports = {
@@ -65,5 +85,7 @@ module.exports = {
 	cancelToken : cancelToken,
 	getToken : getToken,
 	updateLiveTokens : updateLiveTokens,
-	updateExpTokens : updateExpTokens
+	updateExpTokens : updateExpTokens,
+	findNextToken : findNextToken,
+	cancelAndUpdateNextToken : cancelAndUpdateNextToken
 }
