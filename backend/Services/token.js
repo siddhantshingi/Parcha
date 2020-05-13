@@ -78,7 +78,7 @@ let bookToken = (data, callback) => {
 	});
 }
 
-/**API to update the user */
+/**API to cancel a token */
 let cancelToken = (data,callback) => {
 	async.auto({
 		tokenCancel :(cb) =>{
@@ -139,7 +139,7 @@ let cancelToken = (data,callback) => {
 	});
 }
 
-/***API to get the user detail by id */
+/***API to get token detials */
 let getToken = (data, callback) => {
 	async.auto({
 		token: (cb) => {
@@ -169,11 +169,10 @@ let getToken = (data, callback) => {
 	});
 }
 
-/***API to get the user detail by id */
+/***API to verify a token */
 let verifyToken = (data, callback) => {
 	async.auto({
 		tokenVerify: (cb) => {
-			console.log(data.tokenId);
 			let criteria = {
 				"tokenId" : data.tokenId,
 				"userId" : data.userId,
@@ -182,7 +181,6 @@ let verifyToken = (data, callback) => {
 				"startTime" : data.startTime,
 				"duration" : data.duration,
 			}
-			console.log(criteria.tokenId);
 			tokenDAO.checkLive(criteria,(err, data) => {
 				if(data.length === 0)
 				{

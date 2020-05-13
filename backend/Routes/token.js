@@ -26,7 +26,7 @@ router.get('/get-token', (req, res) => {
 
 /**Api to verify token details given criteria */
 router.put('/verify-token', (req, res) => {
-	tokenService.verifyToken(req.query, (data) => {
+	tokenService.verifyToken(req.body, (data) => {
 		res.send(data);
 	});
 });

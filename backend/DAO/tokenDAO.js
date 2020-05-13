@@ -38,7 +38,7 @@ let getToken = (criteria, callback) => {
 	dbConfig.getDB().query(`select * from tokens where 1 ${conditions}`, callback);
 }
 
-let updateLiveTokens = (criteria,dataToSet,callback) => {
+let updateLiveTokens = (criteria,dataToSet,callback) => {//for periodic functions
     let conditions = "";
 	let setData = "";
 	criteria.curr_time ? conditions += ` and startTime > CONVERT('${criteria.curr_time}', TIME) - INTERVAL 1 MINUTE and startTime <= CONVERT('${criteria.curr_time}', TIME) + INTERVAL 1 MINUTE` : true;
@@ -49,7 +49,7 @@ let updateLiveTokens = (criteria,dataToSet,callback) => {
 	dbConfig.getDB().query(`UPDATE tokens SET ${setData} where 1 ${conditions}`, callback);
 }
 
-let updateExpTokens = (criteria,dataToSet,callback) => {
+let updateExpTokens = (criteria,dataToSet,callback) => {//for periodic functions
     let conditions = "";
 	let setData = "";
 	criteria.curr_time ? conditions += ` and startTime + duration > CONVERT('${criteria.curr_time}', TIME) - INTERVAL 1 MINUTE and startTime + duration <= CONVERT('${criteria.curr_time}', TIME) + INTERVAL 1 MINUTE` : true;
@@ -60,12 +60,12 @@ let updateExpTokens = (criteria,dataToSet,callback) => {
 	dbConfig.getDB().query(`UPDATE tokens SET ${setData} where 1 ${conditions}`, callback);
 }
 
-let findNextToken = (criteria,callback) => {
+let findNextToken = (criteria,callback) => {//find next waitlisted token
 	console.log(`SELECT * from (SELECT * from tokens where shopId = (SELECT shopId from tokens where id = ${criteria.id}) and startTime = (SELECT startTime from tokens where id = ${criteria.id}) and duration = (SELECT duration from tokens where id = ${criteria.id}) and date = (SELECT date from tokens where id = ${criteria.id}) and status = 2) as waitlist order by createdAt limit 1`);
 	dbConfig.getDB().query(`SELECT * from (SELECT * from tokens where shopId = (SELECT shopId from tokens where id = ${criteria.id}) and startTime = (SELECT startTime from tokens where id = ${criteria.id}) and duration = (SELECT duration from tokens where id = ${criteria.id}) and date = (SELECT date from tokens where id = ${criteria.id}) and status = 2) as waitlist order by createdAt limit 1`, callback);
 }
 
-let cancelAndUpdateNextToken = (criteria,dataToSet,callback) => {
+let cancelAndUpdateNextToken = (criteria,dataToSet,callback) => {//cancel the token and confirm waitlisted token
     let conditions1 = "";
 	let setData1 = "";
 	criteria.id1 ? conditions1 += ` and id = ${criteria.id1}` : true;
@@ -80,7 +80,7 @@ let cancelAndUpdateNextToken = (criteria,dataToSet,callback) => {
 	dbConfig.getDB().query(`UPDATE tokens SET ${setData2} where 1 ${conditions2}`, callback);
 }
 
-let checkLive = (criteria, callback) => {
+let checkLive = (criteria, callback) => {//check if a token is live or not
     let conditions = "";
 	criteria.tokenId ? conditions += ` and id = ${criteria.tokenId}` : true;
 	criteria.userId ? conditions += ` and userId = ${criteria.userId}` : true;

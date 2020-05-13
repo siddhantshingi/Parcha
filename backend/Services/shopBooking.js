@@ -9,7 +9,7 @@ sender_email = require("../Utilities/config").sender_email;
 sender_password = require("../Utilities/config").sender_password;
 
 
-/**Api to Get time slots details using shop ID */
+/**Api to Get time slots details using shop ID, date, startTime, duration */
 let getShopBookings = (data, callback) => {
 	async.auto({
 		shopBooking: (cb) => {

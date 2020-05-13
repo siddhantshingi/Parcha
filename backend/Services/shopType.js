@@ -4,7 +4,7 @@ parseString = require('xml2js').parseString;
 let util = require('../Utilities/util'),
 shopTypeDAO = require('../DAO/shopTypeDAO');
 
-/***API to get the shopSize by shopSizeId */
+/***API to get the shopType by shopTypeId */
 let getShopType = (data, callback) => {
 	async.auto({
 		shopType: (cb) => {

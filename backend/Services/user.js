@@ -8,6 +8,7 @@ let email   = require('emailjs/email');
 sender_email = require("../Utilities/config").sender_email;
 sender_password = require("../Utilities/config").sender_password;
 
+//send email
 let sendEmail = (data_pack, callback) => {
 	var server  = email.server.connect({
 	   user:    sender_email,

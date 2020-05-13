@@ -4,11 +4,7 @@ parseString = require('xml2js').parseString;
 let util = require('../Utilities/util'),
 requestDAO = require('../DAO/requestDAO');
 
-let email   = require('emailjs/email');
-sender_email = require("../Utilities/config").sender_email;
-sender_password = require("../Utilities/config").sender_password;
-
-/**API to create the user */
+/**API to create a request */
 let createRequest = (data, callback) => {
 	async.auto({
 		request: (cb) => {
@@ -89,7 +85,7 @@ let getRequestByPincode = (data, callback) => {
 	})
 }
 
-/***API to get request by pincode*/
+/***API to get request by shopId*/
 let getRequestById = (data, callback) => {
 	async.auto({
 		request: (cb) => {

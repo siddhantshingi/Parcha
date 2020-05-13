@@ -4,11 +4,7 @@ parseString = require('xml2js').parseString;
 let util = require('../Utilities/util'),
 shopDAO = require('../DAO/shopDAO');
 
-let email   = require('emailjs/email');
-sender_email = require("../Utilities/config").sender_email;
-sender_password = require("../Utilities/config").sender_password;
-
-/**API to create the user */
+/**API to create a shop */
 let createShop = (data, callback) => {
 	async.auto({
 		shop: (cb) => {
@@ -59,7 +55,7 @@ let createShop = (data, callback) => {
 	});
 }
 
-/**API to update the user */
+/**API to update the shop */
 let updateShop = (data,callback) => {
 	async.auto({
 		shopUpdate :(cb) =>{
@@ -102,7 +98,7 @@ let updateShop = (data,callback) => {
 	});
 }
 
-/***API to get the shop details by email */
+/***API to get the shop details */
 let getShop = (data, callback) => {
 	async.auto({
 		shop: (cb) => {

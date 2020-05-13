@@ -4,11 +4,7 @@ parseString = require('xml2js').parseString;
 let util = require('../Utilities/util'),
 localAuthDAO = require('../DAO/localAuthDAO');
 
-let email   = require('emailjs/email');
-sender_email = require("../Utilities/config").sender_email;
-sender_password = require("../Utilities/config").sender_password;
-
-/**API to create the user */
+/**API to create the localAuth */
 let createLocalAuth = (data, callback) => {
 	async.auto({
 		localAuth: (cb) => {
@@ -54,7 +50,7 @@ let createLocalAuth = (data, callback) => {
 	});
 }
 
-/**API to update the user */
+/**API to update the localAuth */
 let updateLocalAuth = (data,callback) => {
 	async.auto({
 		localAuthUpdate :(cb) =>{
@@ -92,7 +88,7 @@ let updateLocalAuth = (data,callback) => {
 	});
 }
 
-/***API to get the user detail by email */
+/***API to get the localAuth detail by email */
 let getLocalAuthByEmail = (data, callback) => {
 	async.auto({
 		localAuth: (cb) => {
