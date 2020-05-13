@@ -80,6 +80,31 @@ let cancelAndUpdateNextToken = (criteria,dataToSet,callback) => {
 	dbConfig.getDB().query(`UPDATE tokens SET ${setData2} where 1 ${conditions2}`, callback);
 }
 
+let checkLive = (criteria, callback) => {
+    let conditions = "";
+	criteria.tokenId ? conditions += ` and id = ${criteria.tokenId}` : true;
+	criteria.userId ? conditions += ` and userId = ${criteria.userId}` : true;
+	criteria.date ? conditions += ` and date = '${criteria.date}'` : true;
+	criteria.shopId ? conditions += ` and shopId = ${criteria.shopId}` : true;
+	criteria.startTime ? conditions += ` and startTime = '${criteria.startTime}'` : true;
+	criteria.duration ? conditions += ` and duration = '${criteria.duration}'` : true;
+	conditions += ` and status = 0`
+	console.log(`SELECT * FROM tokens where 1 ${conditions}`);
+	dbConfig.getDB().query(`SELECT * FROM tokens where 1 ${conditions}`, callback);
+}
+
+let verifyToken = (criteria, callback) => {
+    let conditions = "";
+	criteria.tokenId ? conditions += ` and id = ${criteria.tokenId}` : true;
+	criteria.userId ? conditions += ` and userId = ${criteria.userId}` : true;
+	criteria.date ? conditions += ` and date = '${criteria.date}'` : true;
+	criteria.shopId ? conditions += ` and shopId = ${criteria.shopId}` : true;
+	criteria.startTime ? conditions += ` and startTime = '${criteria.startTime}'` : true;
+	criteria.duration ? conditions += ` and duration = '${criteria.duration}'` : true;
+	console.log(`UPDATE tokens SET verified = 1 where 1 ${conditions}`);
+	dbConfig.getDB().query(`UPDATE tokens SET verified = 1 where 1 ${conditions}`, callback);
+}
+
 module.exports = {
 	bookToken : bookToken,
 	cancelToken : cancelToken,
@@ -87,5 +112,7 @@ module.exports = {
 	updateLiveTokens : updateLiveTokens,
 	updateExpTokens : updateExpTokens,
 	findNextToken : findNextToken,
-	cancelAndUpdateNextToken : cancelAndUpdateNextToken
+	cancelAndUpdateNextToken : cancelAndUpdateNextToken,
+	verifyToken : verifyToken,
+	checkLive : checkLive
 }

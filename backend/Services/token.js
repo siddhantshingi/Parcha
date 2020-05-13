@@ -159,11 +159,54 @@ let getToken = (data, callback) => {
 		}
 	}, (err, response) => {
 		callback(response.token);
-	})
+	});
+}
+
+/***API to get the user detail by id */
+let verifyToken = (data, callback) => {
+	async.auto({
+		tokenVerify: (cb) => {
+			console.log(data.tokenId);
+			let criteria = {
+				"tokenId" : data.tokenId,
+				"userId" : data.userId,
+				"date" : data.date,
+				"shopId" : data.shopId,
+				"startTime" : data.startTime,
+				"duration" : data.duration,
+			}
+			console.log(criteria.tokenId);
+			tokenDAO.checkLive(criteria,(err, data) => {
+				if(data.length === 0)
+				{
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + "Token is not live", "result": {} });
+					return;	
+				}
+				else
+				{
+					tokenDAO.verifyToken(criteria,(err, data) => {
+						if (err) {
+							cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
+							return;
+						}
+						cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
+						return;
+					});
+				}
+				if (err) {
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
+					return;
+				}
+			});
+		}
+	}, (err, response) => {
+		callback(response.tokenVerify);
+	});
 }
 
 module.exports = {
 	bookToken : bookToken,
 	cancelToken : cancelToken,
-	getToken : getToken
+	getToken : getToken,
+	verifyToken : verifyToken
 };
