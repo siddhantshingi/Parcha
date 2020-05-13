@@ -39,21 +39,27 @@ let bookToken = (data, callback) => {
 							cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 							return;
 						}
-						if (data[0].capacityLeft != 0) {
-							dataToSet.status = "1";
-						} else {
-							dataToSet.status = "2";
-						}
-						tokenDAO.bookToken(dataToSet, (err, dbData) => {
-							if (err) {
-								cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
-								return;
+						if (data[0])
+						{
+							if (data[0].capacityLeft != 0) {
+								dataToSet.status = "1";
+							} else {
+								dataToSet.status = "2";
 							}
+							tokenDAO.bookToken(dataToSet, (err, dbData) => {
+								if (err) {
+									cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
+									return;
+								}
 
-							cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED, "result": dataToSet });
+								cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED, "result": dataToSet });
+								return;
+							});
 							return;
-						});
-						return;
+						} else {
+							cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + "Requested shop time slot does not exists.", "result": {} });
+							return;
+						}
 					});
 					
 				} else {

@@ -24,6 +24,7 @@ connection.connect((err) => {
 		require('../Models/District').initialize();
 		require('../Models/State').initialize();
 		require('../Models/ShopType').initialize();
+		require('../Models/Triggers').initialize();
 	}
 });
 
