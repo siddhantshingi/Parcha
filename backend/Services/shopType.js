@@ -2,16 +2,16 @@ let async = require('async'),
 parseString = require('xml2js').parseString;
 
 let util = require('../Utilities/util'),
-shopSizeDAO = require('../DAO/shopSizeDAO');
+shopTypeDAO = require('../DAO/shopTypeDAO');
 
 /***API to get the shopSize by shopSizeId */
-let getShopSize = (data, callback) => {
+let getShopType = (data, callback) => {
 	async.auto({
-		shopSize: (cb) => {
+		shopType: (cb) => {
 			let criteria = {
-				"id" : data.shopSize
+				"id" : data.shopType
 			}
-			shopSizeDAO.getShopSize(criteria,(err, data) => {
+			shopTypeDAO.getShopType(criteria,(err, data) => {
 				if (data.length === 0) {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND, "result": {} });
 					return;
@@ -26,10 +26,10 @@ let getShopSize = (data, callback) => {
 			});
 		}
 	}, (err, response) => {
-		callback(response.shopSize);
+		callback(response.shopType);
 	})
 }
 
 module.exports = {
-	getShopSize : getShopSize
+	getShopType : getShopType
 };
