@@ -54,7 +54,7 @@ class _ShopDescription extends StatelessWidget {
                     Icon(Icons.phone, size: 14),
                     const Padding(padding: EdgeInsets.only(right: 2.0)),
                     Text(
-                      this.shop.contact,
+                      this.shop.contactNumber,
                       style: const TextStyle(
                         fontSize: 12.0,
                         color: Colors.black87,

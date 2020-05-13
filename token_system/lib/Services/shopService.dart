@@ -2,19 +2,19 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:token_system/config/server_config.dart';
-import 'package:token_system/Entities/user.dart';
+import 'package:token_system/Entities/shop.dart';
 
-class UserService {
-  static String userUrl = "user";
+class ShopService {
+  static String shopUrl = "shop";
 
-  static registerApiCall(User user) async {
-    final response = await http.post(server + userUrl + "/create-user", body: user.toJson());
+  static registerApiCall(Shop shop) async {
+    final response = await http.post(server + shopUrl + "/create-shop", body: shop.toJson());
     var responseJson = json.decode(response.body);
     return responseJson['statusCode'];
   }
 
   static verifyApiCall(String email) async {
-    final response = await http.get(server + userUrl + "/get-user-by-email?email=" + email);
+    final response = await http.get(server + shopUrl + "/get-shop?email=" + email);
     final responseJson = json.decode(response.body);
     return responseJson;
   }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:token_system/Entities/user.dart';
+import 'package:token_system/Entities/shop.dart';
+import 'package:token_system/Entities/authority.dart';
 import 'package:token_system/Services/userService.dart';
+import 'package:token_system/Services/shopService.dart';
+import 'package:token_system/Services/authorityService.dart';
 import 'package:token_system/components/title.dart';
 import 'package:token_system/screens/login.dart';
 
@@ -18,6 +22,12 @@ class _RegisterState extends State<Register> {
   String _mobile = '----------';
   String _aadhar = '------------';
   String _pincode = '';
+  String _address = 'XXX';
+  String _landmark = 'XXX';
+  int _shopSize = -1;
+  String _openTime = '11:00:00';
+  String _closeTime = '20:00:00';
+  int verifierId = 0;
   SignAs _selected = SignAs.user;
 
   // TODO: State and district dropdown menu.
@@ -292,38 +302,117 @@ class _RegisterState extends State<Register> {
                               // FIXED: add validation function
                               if (_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
-
-                                User newUser = new User(
-                                    0,
-                                    _name,
-                                    _email,
-                                    _mobile,
-                                    _passKey.currentState.value,
-                                    _aadhar,
-                                    _state,
-                                    _district,
-                                    _pincode,
-                                    0);
-                                print(newUser.toJson());
-                                UserService.registerApiCall(newUser)
-                                    .then((code) {
-                                  if (code == 200) {
-                                    final snackbar = SnackBar(
-                                      content: Text('Registration successful!'),
-                                    );
-                                    Scaffold.of(context).showSnackBar(snackbar);
-                                    // Pop screen if successful
-                                    Future.delayed(Duration(seconds: 2), () {
-                                      Navigator.pop(context);
-                                    });
-                                  } else {
-                                    final snackbar = SnackBar(
-                                      content: Text(
-                                          'Registration not successful. Please try again!'),
-                                    );
-                                    Scaffold.of(context).showSnackBar(snackbar);
-                                  }
-                                });
+                                if (_selected == SignAs.user) {
+                                  User newUser = new User(
+                                    id: 0,
+                                    name: _name,
+                                    email: _email,
+                                    contactNumber: _mobile,
+                                    password: _passKey.currentState.value,
+                                    aadharNumber: _aadhar,
+                                    state: _state,
+                                    district: _district,
+                                    pincode: _pincode,
+                                    verificationStatus: 0,);
+                                  UserService.registerApiCall(newUser)
+                                      .then((code) {
+                                    if (code == 200) {
+                                      final snackbar = SnackBar(
+                                        content: Text(
+                                            'Registration successful!'),
+                                      );
+                                      Scaffold.of(context).showSnackBar(
+                                          snackbar);
+                                      // Pop screen if successful
+                                      Future.delayed(Duration(seconds: 2), () {
+                                        Navigator.pop(context);
+                                      });
+                                    } else {
+                                      final snackbar = SnackBar(
+                                        content: Text(
+                                            'Registration not successful. Please try again!'),
+                                      );
+                                      Scaffold.of(context).showSnackBar(
+                                          snackbar);
+                                    }
+                                  });
+                                }
+                                else if (_selected == SignAs.shop) {
+                                  Shop newShop = new Shop(
+                                    id: 0,
+                                    name: _name,
+                                    email: _email,
+                                    contactNumber: _mobile,
+                                    password: _passKey.currentState.value,
+                                    shopType: 0,
+                                    address: _address,
+                                    landmark: _landmark,
+                                    state: _state,
+                                    district: _district,
+                                    pincode: _pincode,
+                                    verificationStatus: 0,
+                                    shopSize: _shopSize,
+                                    openTime: _openTime,
+                                    closeTime: _closeTime);
+                                  ShopService.registerApiCall(newShop)
+                                      .then((code) {
+                                        print ('Inside Api call');
+                                    if (code == 200) {
+                                      final snackbar = SnackBar(
+                                        content: Text(
+                                            'Registration successful!'),
+                                      );
+                                      Scaffold.of(context).showSnackBar(
+                                          snackbar);
+                                      // Pop screen if successful
+                                      Future.delayed(Duration(seconds: 2), () {
+                                        Navigator.pop(context);
+                                      });
+                                    } else {
+                                      final snackbar = SnackBar(
+                                        content: Text(
+                                            'Registration not successful. Please try again!'),
+                                      );
+                                      Scaffold.of(context).showSnackBar(
+                                          snackbar);
+                                    }
+                                  });
+                                }
+                                else {
+                                  Authority newAuth = new Authority(
+                                    id: 0,
+                                    name: _name,
+                                    email: _email,
+                                    contactNumber: _mobile,
+                                    password: _passKey.currentState.value,
+                                    aadharNumber: _aadhar,
+                                    state: _state,
+                                    district: _district,
+                                    pincode: _pincode,
+                                    verificationStatus: 0,);
+                                  AuthorityService.registerApiCall(newAuth)
+                                      .then((code) {
+                                    if (code == 200) {
+                                      final snackbar = SnackBar(
+                                        content: Text(
+                                            'Registration successful!'),
+                                      );
+                                      Scaffold.of(context).showSnackBar(
+                                          snackbar);
+                                      // Pop screen if successful
+                                      Future.delayed(Duration(seconds: 2), () {
+                                        Navigator.pop(context);
+                                      });
+                                    } else {
+                                      final snackbar = SnackBar(
+                                        content: Text(
+                                            'Registration not successful. Please try again!'),
+                                      );
+                                      Scaffold.of(context).showSnackBar(
+                                          snackbar);
+                                    }
+                                  });
+                                }
                               }
                             });
                       }),

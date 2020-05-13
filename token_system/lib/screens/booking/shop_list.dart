@@ -8,7 +8,7 @@ List<Shop> shops = [
       closeTime: '17:00',
       address: 'Aravali Hostel, IIT Delhi',
       landmark: 'Rajdhani Foods',
-      contact: '8826080933',
+      contactNumber: '8826080933',
       pincode: '226010'),
   Shop.forUser(
       id: 0,
@@ -17,7 +17,7 @@ List<Shop> shops = [
       closeTime: '17:00',
       address: 'Aravali Hostel, IIT Delhi',
       landmark: 'Rajdhani Foods',
-      contact: '8826080933',
+      contactNumber: '8826080933',
       pincode: '226010'),
   Shop.forUser(
       id: 1,
@@ -26,7 +26,7 @@ List<Shop> shops = [
       closeTime: '17:00',
       address: 'Aravali Hostel, IIT Delhi',
       landmark: 'Rajdhani Foods',
-      contact: '8826080933',
+      contactNumber: '8826080933',
       pincode: '226010'),
   Shop.forUser(
       id: 2,
@@ -35,7 +35,7 @@ List<Shop> shops = [
       closeTime: '17:00',
       address: 'Aravali Hostel, IIT Delhi',
       landmark: 'Rajdhani Foods',
-      contact: '8826080933',
+      contactNumber: '8826080933',
       pincode: '226010'),
   Shop.forUser(
       id: 3,
@@ -44,6 +44,6 @@ List<Shop> shops = [
       closeTime: '17:00',
       address: 'Aravali Hostel, IIT Delhi',
       landmark: 'Rajdhani Foods',
-      contact: '8826080933',
+      contactNumber: '8826080933',
       pincode: '226010'),
 ];

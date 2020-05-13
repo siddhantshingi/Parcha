@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
+//import 'dart:convert';
 import 'package:email_validator/email_validator.dart';
 import 'package:token_system/Entities/user.dart';
+import 'package:token_system/Entities/shop.dart';
+//import 'package:token_system/Entities/authority.dart';
 import 'package:token_system/components/title.dart';
 import 'package:token_system/Services/userService.dart';
+import 'package:token_system/Services/shopService.dart';
+//import 'package:token_system/Services/authorityService.dart';
 import 'package:token_system/screens/register.dart';
-import 'package:token_system/screens/home.dart';
+import 'package:token_system/screens/user_home.dart';
+import 'package:token_system/screens/shop_home.dart';
 
 enum SignAs { user, shop, authority }
 
@@ -149,25 +154,68 @@ class _LoginState extends State<Login> {
                       // TODO: don't handle passwords in raw text
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
-
-                        UserService.verifyApiCall(_email).then((response) {
-                          User u = User.fromJson(json.decode(response.body));
-                          if (u.password == _passkey.currentState.value) {
-                            // Login successful
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UserHome(user: u)),
-                            );
-                          } else {
-                            // Unsuccessful login
-                            final snackbar = SnackBar(
-                              content:
-                                  Text('Unsuccessful login. Please try again!'),
-                            );
-                            Scaffold.of(context).showSnackBar(snackbar);
-                          }
-                        });
+                        if (_selected == SignAs.user) {
+                          UserService.verifyApiCall(_email).then((json) {
+                            if (json['statusCode'] == 200) {
+                              User u = User.fromJson(json['result']);
+                              if (u.password == _passkey.currentState.value) {
+                                // Login successful
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => UserHome(user: u)),
+                                );
+                              } else {
+                                // Wrong password
+                                final snackbar = SnackBar(
+                                  content:
+                                  Text('Wrong password. Please try again!'),
+                                );
+                                Scaffold.of(context).showSnackBar(snackbar);
+                              }
+                            }
+                            else {
+                              // E-mail not registered
+                              final snackbar = SnackBar(
+                                content:
+                                Text(
+                                    'E-mail not registered. Please try again!'),
+                              );
+                              Scaffold.of(context).showSnackBar(snackbar);
+                            }
+                          });
+                        }
+                        else {
+                          ShopService.verifyApiCall(_email).then((json) {
+                            if (json['statusCode'] == 200) {
+                              Shop s = Shop.fromJson(json['result'][0]);
+                              if (s.password == _passkey.currentState.value) {
+                                // Login successful
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ShopHome(shop: s)),
+                                );
+                              } else {
+                                // Wrong password
+                                final snackbar = SnackBar(
+                                  content:
+                                  Text('Wrong password. Please try again!'),
+                                );
+                                Scaffold.of(context).showSnackBar(snackbar);
+                              }
+                            }
+                            else {
+                              // E-mail not registered
+                              final snackbar = SnackBar(
+                                content:
+                                Text(
+                                    'E-mail not registered. Please try again!'),
+                              );
+                              Scaffold.of(context).showSnackBar(snackbar);
+                            }
+                          });
+                        }
                       }
                     },
                   );
