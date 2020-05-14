@@ -30,7 +30,7 @@ let createShop = (data, callback) => {
 			let criteria = {
 				"email": data.email
 			}
-			shopDAO.getShop(criteria,(err, data) => {
+			shopDAO.getShopByEmail(criteria,(err, data) => {
 				if (data.length === 0) {
 					shopDAO.createShop(dataToSet, (err, dbData) => {
 						if (err) {

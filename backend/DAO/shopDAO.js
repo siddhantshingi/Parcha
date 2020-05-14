@@ -72,6 +72,13 @@ let getShop = (criteria, callback) => {
 	dbConfig.getDB().query(`select shops.*, shopTypes.typeName, shopSizes.description as sizeName from shops, shopTypes, shopSizes  where 1 and shops.shopType = shopTypes.id and shops.shopSize = shopSizes.id ${conditions}`, callback);
 }
 
+let getShopByEmail = (criteria, callback) => {
+    let conditions = "";
+	criteria.email ? conditions += ` and shops.email = '${criteria.email}'` : true;
+	console.log(`select * from shops where 1 ${conditions}`);
+	dbConfig.getDB().query(`select * from shops where 1 ${conditions}`, callback);
+}
+
 let getShopWithShopSize = (criteria, callback) => {
     let conditions = "";
 	if (typeof criteria.verificationStatus !== 'undefined' && criteria.verificationStatus !== null) 
@@ -84,5 +91,6 @@ module.exports = {
 	createShop : createShop,
 	updateShop : updateShop,
 	getShop : getShop,
+	getShopByEmail : getShopByEmail,
 	getShopWithShopSize : getShopWithShopSize
 }
