@@ -1,8 +1,10 @@
 let dbConfig = require("../Utilities/mysqlConfig");
 
-let getLocalAuthByEmail = (criteria, callback) => {
+let getLocalAuth = (criteria, callback) => {
     let conditions = "";
 	criteria.email ? conditions += ` and email = '${criteria.email}'` : true;
+	criteria.id ? conditions += ` and id = ${criteria.id}` : true;
+	criteria.pincode ? conditions += ` and pincode = '${criteria.pincode}'` : true;
 	console.log(`select * from localAuths where 1 ${conditions}`);
 	dbConfig.getDB().query(`select * from localAuths where 1 ${conditions}`, callback);
 }
@@ -26,7 +28,8 @@ let updateLocalAuth = (criteria,dataToSet,callback) => {
     let conditions = "";
 	let setData = "";
 	criteria.id ? conditions += ` and id = ${criteria.id}` : true;
-	dataToSet.name ? setData += `name = '${dataToSet.name}'` : true;
+	dataToSet.id ? setData += `id = ${dataToSet.id}` : true;
+	dataToSet.name ? setData += `, name = '${dataToSet.name}'` : true;
 	dataToSet.email ? setData += `, email = '${dataToSet.email}'` : true;
 	dataToSet.contactNumber ? setData += `, contactNumber = '${dataToSet.contactNumber}'` : true;
 	dataToSet.password ? setData += `, password = '${dataToSet.password}'` : true;
@@ -40,7 +43,7 @@ let updateLocalAuth = (criteria,dataToSet,callback) => {
 }
 
 module.exports = {
-	getLocalAuthByEmail : getLocalAuthByEmail,
+	getLocalAuth : getLocalAuth,
 	createLocalAuth : createLocalAuth,
 	updateLocalAuth : updateLocalAuth
 }

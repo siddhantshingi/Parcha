@@ -23,7 +23,7 @@ let createLocalAuth = (data, callback) => {
 			let criteria = {
 				"email":data.email
 			}
-			localAuthDAO.getLocalAuthByEmail(criteria,(err, data) => {
+			localAuthDAO.getLocalAuth(criteria,(err, data) => {
 				if (data.length === 0) {
 					localAuthDAO.createLocalAuth(dataToSet, (err, dbData) => {
 						if (err) {
@@ -59,9 +59,10 @@ let updateLocalAuth = (data,callback) => {
 				return;
 			}
 			var criteria = {
-				id : data.id,
+				"id" : data.id,
 			}
 			var dataToSet={
+				"id":data.id,
 				"name":data.name,
 				"name":data.name,
 				"email":data.email,
@@ -89,13 +90,15 @@ let updateLocalAuth = (data,callback) => {
 }
 
 /***API to get the localAuth detail by email */
-let getLocalAuthByEmail = (data, callback) => {
+let getLocalAuth = (data, callback) => {
 	async.auto({
 		localAuth: (cb) => {
 			let criteria = {
-				"email": data.email
+				"email": data.email,
+				"id": data.id,
+				"pincode": data.pincode,
 			}
-			localAuthDAO.getLocalAuthByEmail(criteria,(err, data) => {
+			localAuthDAO.getLocalAuth(criteria,(err, data) => {
 				if (data.length === 0) {
 					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND, "result": {} });
 					return;
@@ -104,7 +107,7 @@ let getLocalAuthByEmail = (data, callback) => {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
 				}
-				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data[0] });
+				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
 				return;
 			});
 		}
@@ -116,5 +119,5 @@ let getLocalAuthByEmail = (data, callback) => {
 module.exports = {
 	createLocalAuth : createLocalAuth,
 	updateLocalAuth : updateLocalAuth,
-	getLocalAuthByEmail : getLocalAuthByEmail
+	getLocalAuth : getLocalAuth
 };

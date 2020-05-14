@@ -25,8 +25,8 @@ router.get('/get-request-list-by-pincode', (req, res) => {
 });
 
 /**API to get the request by shopId... */
-router.get('/get-request-list-by-shopId', (req, res) => {
-	requestService.getRequestById(req.query, (data) => {
+router.get('/get-request-list', (req, res) => {
+	requestService.getRequestList(req.query, (data) => {
 		res.send(data);
 	});
 });
