@@ -79,6 +79,5 @@ class ChooseCategory extends StatelessWidget {
             }),
       ),
     ]);
-    // return CategoryGrid(shopCategories: shopCategories);
   }
 }
