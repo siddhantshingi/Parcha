@@ -28,8 +28,6 @@ class ShopBookingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: Make a call to get Shop Name and pincode from the shopId
-    String shopName = 'SAD General Store';
-    int pinCode = 226010;
 
     var borderColor;
     var statusText;
