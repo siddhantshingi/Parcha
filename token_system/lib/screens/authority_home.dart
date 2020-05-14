@@ -133,7 +133,10 @@ class _AuthorityHomeState extends State<AuthorityHome> {
       return builder.builder;
     } else if (index == 2) {
       Builder builder = Builder(
-        builder: (context) => MonitorShops(user: widget.user),
+        builder: (context) => MonitorShops(
+          user: widget.user,
+          tn: _tabNavigatorKeys[2],
+        ),
       );
       return builder.builder;
     }

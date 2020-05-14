@@ -35,23 +35,10 @@ class ApproveScreen extends StatelessWidget {
                 borderOnForeground: true,
                 child: Column(children: <Widget>[
                   SizedBox(
-                    height: 100,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        AspectRatio(
-                          aspectRatio: 1.0,
-                          child: Container(
-                            decoration: const BoxDecoration(color: Colors.pink),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: ShopCard(shop: shops[index]),
-                          ),
-                        ),
-                      ],
+                    height: 80,
+                    child: ShopCard(
+                      shop: shops[index],
+                      minimal: true,
                     ),
                   ),
                   Row(

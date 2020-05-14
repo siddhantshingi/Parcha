@@ -51,23 +51,7 @@ class ChooseShop extends StatelessWidget {
                           BookScreen(user: user, tn: tn, shop: shops[index]),
                     );
                   },
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      AspectRatio(
-                        aspectRatio: 1.0,
-                        child: Container(
-                          decoration: const BoxDecoration(color: Colors.pink),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 0, 2, 0),
-                          child: ShopCard(shop: shops[index]),
-                        ),
-                      )
-                    ],
-                  ),
+                  child: ShopCard(shop: shops[index]),
                 ),
               ),
             );

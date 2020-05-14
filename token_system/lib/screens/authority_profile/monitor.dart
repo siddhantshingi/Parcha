@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:token_system/Entities/authority.dart';
+import 'package:token_system/components/shop_card.dart';
+import 'package:token_system/components/tab_navigator.dart';
+import 'package:token_system/screens/authority_profile/shop_view.dart';
 import 'package:token_system/screens/shop_list.dart';
 
 class MonitorShops extends StatelessWidget {
   final Authority user;
+  final GlobalKey<TabNavigatorState> tn;
 
-  MonitorShops({Key key, @required this.user}) : super(key: key);
+  MonitorShops({Key key, @required this.user, @required this.tn})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,7 @@ class MonitorShops extends StatelessWidget {
         alignment: Alignment.center,
         padding: EdgeInsets.all(10),
         child: Text(
-          'Approve Shops',
+          'Monitor and Track Shops',
           style: TextStyle(
             fontSize: 20,
             color: Colors.amber,
@@ -29,25 +34,21 @@ class MonitorShops extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: SizedBox(
-                height: 100,
-                child: ExpansionTile(
-                  title: Text(
-                    shops[index].name,
-                    style: TextStyle(fontSize: 18),
+              child: InkWell(
+                splashColor: Colors.blueGrey[300],
+                onTap: () {
+                  // View shop profile (from Authority view)
+                  tn.currentState.push(
+                    context,
+                    payload: ShopProfile(user: user, shop: shops[index]),
+                  );
+                },
+                child: SizedBox(
+                  height: 80,
+                  child: ShopCard(
+                    shop: shops[index],
+                    minimal: true,
                   ),
-                  subtitle: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Text(shops[index].pincode.toString()),
-                        Text(shops[index].shopType.toString()),
-                        Text(shops[index].contactNumber)
-                      ]),
-                  children: <Widget>[
-                    // TODO: Update with shop bookings graph
-                    Text('Content to show when the Tile expands'),
-                    SizedBox(height: 100),
-                  ],
                 ),
               ),
             );
