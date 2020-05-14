@@ -63,9 +63,9 @@ let getShop = (criteria, callback) => {
 	criteria.pincode ? conditions += ` and shops.pincode = '${criteria.pincode}'` : true;
 	criteria.shopId ? conditions += ` and shops.id = ${criteria.shopId}` : true;
 	if (typeof criteria.shopType !== 'undefined' && criteria.shopType !== null) 
-		conditions += `and shopTypes.typeName = ${criteria.shopType}`;
+		conditions += `and shopTypes.typeName = '${criteria.shopType}'`;
 	if (typeof criteria.shopSize !== 'undefined' && criteria.shopSize !== null) 
-		conditions += `and shopSizes.description = ${criteria.shopSize}`;
+		conditions += `and shopSizes.description = '${criteria.shopSize}'`;
 	if (typeof criteria.verificationStatus !== 'undefined' && criteria.verificationStatus !== null) 
 		conditions += `and shops.verificationStatus = ${criteria.verificationStatus}`;
 	console.log(`select shops.*, shopTypes.typeName, shopSizes.description as sizeName from shops, shopTypes, shopSizes where 1 and shops.shopType = shopTypes.id and shops.shopSize = shopSizes.id ${conditions}`);
