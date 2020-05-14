@@ -40,22 +40,23 @@ let resolveRequest = (data,callback) => {
 				return;
 			}
 			var criteria = {
-                shopId : Number(data.shopId),
-                shopSize : Number(data.shopSize),
+                shopId : data.shopId,
+                shopSize : data.shopSize,
                 openTime : data.openTime,
                 closeTime : data.closeTime,
+                localAuthId : data.localAuthId
 			}
 			var dataToSet={
-				"status":data.status,
+				"status": data.status,
 			}
-			console.log(dataToSet);
+			// console.log(dataToSet);
             requestDAO.resolveRequest(criteria, dataToSet, (err, dbData)=>{
 	            if(err){
 					cb(null,{"statusCode":util.statusCode.FOUR_ZERO_ZERO,"statusMessage":util.statusMessage.BAD_REQUEST + err, "result": {} });
                     return; 
                 }
                 else{
-					cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED, "result": dataToSet });                        
+					cb(null, { "statusCode": util.statusCode.OK, "statusMessage": util.statusMessage.DATA_UPDATED, "result": data });                        
                 }
             });
 		}

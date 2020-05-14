@@ -22,8 +22,9 @@ let resolveRequest = (criteria,dataToSet,callback) => {
     criteria.shopSize ? conditions += ` and shopSize = ${criteria.shopSize}` : true;
     criteria.openTime ? conditions += ` and openTime = '${criteria.openTime}'` : true;
     criteria.closeTime ? conditions += ` and closeTime = '${criteria.closeTime}'` : true;
+    criteria.localAuthId ? conditions += ` and ${criteria.localAuthId} IN (select id from localAuths)` : true;
 	console.log(`UPDATE request SET ${setData} where 1 ${conditions}`);
-	dbConfig.getDB().query(`UPDATE request SET ${setData} where 1 ${conditions}`, callback);
+	dbConfig.getDB().query(`UPDATE request SET ${setData} where 1 ${conditions}`,callback);
 }
 
 let getRequestByPincode = (criteria, callback) => {
