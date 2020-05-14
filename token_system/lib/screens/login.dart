@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/Entities/shop.dart';
-//import 'package:token_system/Entities/authority.dart';
+import 'package:token_system/Entities/authority.dart';
 import 'package:token_system/components/title.dart';
 import 'package:token_system/Services/userService.dart';
 import 'package:token_system/Services/shopService.dart';
-//import 'package:token_system/Services/authorityService.dart';
+import 'package:token_system/Services/authorityService.dart';
+import 'package:token_system/screens/authority_home.dart';
 import 'package:token_system/screens/register.dart';
 import 'package:token_system/screens/user_home.dart';
 import 'package:token_system/screens/shop_home.dart';
@@ -150,7 +151,7 @@ class _LoginState extends State<Login> {
                     child: Text(getAs(_selected) + ' Login'),
                     onPressed: () {
                       // FIXED: add validation function
-                      // TODO: call login API
+                      // FIXED: call login API
                       // TODO: don't handle passwords in raw text
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
@@ -169,23 +170,20 @@ class _LoginState extends State<Login> {
                                 // Wrong password
                                 final snackbar = SnackBar(
                                   content:
-                                  Text('Wrong password. Please try again!'),
+                                      Text('Wrong password. Please try again!'),
                                 );
                                 Scaffold.of(context).showSnackBar(snackbar);
                               }
-                            }
-                            else {
+                            } else {
                               // E-mail not registered
                               final snackbar = SnackBar(
-                                content:
-                                Text(
+                                content: Text(
                                     'E-mail not registered. Please try again!'),
                               );
                               Scaffold.of(context).showSnackBar(snackbar);
                             }
                           });
-                        }
-                        else {
+                        } else if (_selected == SignAs.shop) {
                           ShopService.verifyApiCall(_email).then((json) {
                             if (json['statusCode'] == 200) {
                               Shop s = Shop.fromJson(json['result'][0]);
@@ -200,16 +198,45 @@ class _LoginState extends State<Login> {
                                 // Wrong password
                                 final snackbar = SnackBar(
                                   content:
-                                  Text('Wrong password. Please try again!'),
+                                      Text('Wrong password. Please try again!'),
                                 );
                                 Scaffold.of(context).showSnackBar(snackbar);
                               }
-                            }
-                            else {
+                            } else {
                               // E-mail not registered
                               final snackbar = SnackBar(
-                                content:
-                                Text(
+                                content: Text(
+                                    'E-mail not registered. Please try again!'),
+                              );
+                              Scaffold.of(context).showSnackBar(snackbar);
+                            }
+                          });
+                        } else {
+                          AuthorityService.verifyApiCall(_email).then((json) {
+                            if (json['statusCode'] == 200) {
+                              Authority auth =
+                                  Authority.fromJson(json['result']);
+                              if (auth.password ==
+                                  _passkey.currentState.value) {
+                                // Login successful
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AuthorityHome(user: auth)),
+                                );
+                              } else {
+                                // Wrong password
+                                final snackbar = SnackBar(
+                                  content:
+                                      Text('Wrong password. Please try again!'),
+                                );
+                                Scaffold.of(context).showSnackBar(snackbar);
+                              }
+                            } else {
+                              // E-mail not registered
+                              final snackbar = SnackBar(
+                                content: Text(
                                     'E-mail not registered. Please try again!'),
                               );
                               Scaffold.of(context).showSnackBar(snackbar);

@@ -18,8 +18,8 @@ router.put('/update-localAuth', (req, res) => {
 });
 
 // /**API to get the user by email... */
-router.get('/get-localAuth-by-email', (req, res) => {
-	localAuthService.getLocalAuthByEmail(req.query, (data) => {
+router.get('/get-localAuth', (req, res) => {
+	localAuthService.getLocalAuth(req.query, (data) => {
 		res.send(data);
 	});
 });

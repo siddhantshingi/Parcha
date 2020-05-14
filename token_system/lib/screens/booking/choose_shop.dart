@@ -1,82 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:token_system/Entities/shop.dart';
+import 'package:token_system/components/shop_card.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/components/tab_navigator.dart';
 import 'package:token_system/screens/booking/book_token.dart';
-import 'shop_list.dart';
-
-enum UserOptions { logout, editProfile }
-
-class _ShopDescription extends StatelessWidget {
-  final Shop shop;
-
-  _ShopDescription({Key key, @required this.shop}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  this.shop.name,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(bottom: 2.0)),
-                Text(
-                  this.shop.address,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black54,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Row(children: <Widget>[
-                    Icon(Icons.phone, size: 14),
-                    const Padding(padding: EdgeInsets.only(right: 2.0)),
-                    Text(
-                      this.shop.contactNumber,
-                      style: const TextStyle(
-                        fontSize: 12.0,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ]),
-                  Row(children: <Widget>[
-                    Icon(Icons.timelapse, size: 14),
-                    const Padding(padding: EdgeInsets.only(right: 2.0)),
-                    Text(
-                      '${this.shop.openTime} - ${this.shop.closeTime}',
-                      style: const TextStyle(
-                        fontSize: 12.0,
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ]),
-                ]),
-          ),
-        ]);
-  }
-}
+import '../shop_list.dart';
 
 class ChooseShop extends StatelessWidget {
   final User user;
@@ -120,28 +47,11 @@ class ChooseShop extends StatelessWidget {
                     // Confirm user booking
                     tn.currentState.push(
                       context,
-                      payload: BookScreen(user: user, tn: tn, shop: shops[index]),
+                      payload:
+                          BookScreen(user: user, tn: tn, shop: shops[index]),
                     );
                   },
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      AspectRatio(
-                        aspectRatio: 1.0,
-                        child: Container(
-                          decoration: const BoxDecoration(color: Colors.pink),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 0, 2, 0),
-                          child: _ShopDescription(
-                            shop: shops[index],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                  child: ShopCard(shop: shops[index]),
                 ),
               ),
             );
