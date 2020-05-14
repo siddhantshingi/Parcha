@@ -11,6 +11,7 @@ let createShop = (data, callback) => {
 			var dataToSet = {
 				"id": data.id,
 				"name": data.name,
+				"owner": data.owner,
 				"email":data.email,
 				"contactNumber":data.contactNumber,
 				"shopType":data.shopType,
@@ -68,6 +69,7 @@ let updateShop = (data,callback) => {
 			}
 			var dataToSet={
 				"name": data.name,
+				"owner": data.owner,
 				"email":data.email,
 				"contactNumber":data.contactNumber,
 				"shopType":data.shopType,

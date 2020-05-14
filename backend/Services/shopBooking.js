@@ -4,11 +4,6 @@ parseString = require('xml2js').parseString;
 let util = require('../Utilities/util'),
 shopBookingDAO = require('../DAO/shopBookingDAO');
 
-let email   = require('emailjs/email');
-sender_email = require("../Utilities/config").sender_email;
-sender_password = require("../Utilities/config").sender_password;
-
-
 /**Api to Get time slots details using shop ID, date, startTime, duration */
 let getShopBookings = (data, callback) => {
 	async.auto({

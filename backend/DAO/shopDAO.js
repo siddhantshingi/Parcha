@@ -3,6 +3,7 @@ let dbConfig = require("../Utilities/mysqlConfig");
 let createShop = (dataToSet, callback) => {
 	let setData = "";
 	dataToSet.name ? setData += `name = '${dataToSet.name}'` : true;
+	dataToSet.owner ? setData += `, owner = '${dataToSet.owner}'` : true;
 	dataToSet.email ? setData += `, email = '${dataToSet.email}'` : true;
 	dataToSet.contactNumber ? setData += `, contactNumber = '${dataToSet.contactNumber}'` : true;
 	dataToSet.shopType ? setData += `, shopType = '${dataToSet.shopType}'` : true;
@@ -28,6 +29,7 @@ let createShop = (dataToSet, callback) => {
 let updateShop = (criteria,dataToSet,callback) => {
 	let setData = "";
 	dataToSet.name ? setData += `name = '${dataToSet.name}'` : true;
+	dataToSet.owner ? setData += `, owner = '${dataToSet.owner}'` : true;
 	dataToSet.email ? setData += `, email = '${dataToSet.email}'` : true;
 	dataToSet.contactNumber ? setData += `, contactNumber = '${dataToSet.contactNumber}'` : true;
 	if (typeof dataToSet.shopType !== 'undefined' && dataToSet.shopType !== null) 
