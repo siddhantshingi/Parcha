@@ -88,7 +88,7 @@ let checkLive = (criteria, callback) => {//check if a token is live or not
 	criteria.shopId ? conditions += ` and shopId = ${criteria.shopId}` : true;
 	criteria.startTime ? conditions += ` and startTime = '${criteria.startTime}'` : true;
 	criteria.duration ? conditions += ` and duration = '${criteria.duration}'` : true;
-	conditions += ` and status = 0`
+	conditions += ` and status = 0`;
 	console.log(`SELECT * FROM tokens where 1 ${conditions}`);
 	dbConfig.getDB().query(`SELECT * FROM tokens where 1 ${conditions}`, callback);
 }
@@ -101,6 +101,7 @@ let verifyToken = (criteria, callback) => {
 	criteria.shopId ? conditions += ` and shopId = ${criteria.shopId}` : true;
 	criteria.startTime ? conditions += ` and startTime = '${criteria.startTime}'` : true;
 	criteria.duration ? conditions += ` and duration = '${criteria.duration}'` : true;
+	conditions += ` and status = 0`;
 	console.log(`UPDATE tokens SET verified = 1 where 1 ${conditions}`);
 	dbConfig.getDB().query(`UPDATE tokens SET verified = 1 where 1 ${conditions}`, callback);
 }

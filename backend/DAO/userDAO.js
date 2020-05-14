@@ -46,7 +46,8 @@ let updateUser = (criteria,dataToSet,callback) => {
     let conditions = "";
 	let setData = "";
 	criteria.id ? conditions += ` and id = ${criteria.id}` : true;
-	dataToSet.name ? setData += `name = '${dataToSet.name}'` : true;
+	criteria.id ? setData += `id = '${criteria.id}'` : true;
+	dataToSet.name ? setData += `, name = '${dataToSet.name}'` : true;
 	dataToSet.email ? setData += `, email = '${dataToSet.email}'` : true;
 	dataToSet.contactNumber ? setData += `, contactNumber = '${dataToSet.contactNumber}'` : true;
 	dataToSet.password ? setData += `, password = '${dataToSet.password}'` : true;

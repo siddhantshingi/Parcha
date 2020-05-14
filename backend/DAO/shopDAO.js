@@ -27,7 +27,8 @@ let createShop = (dataToSet, callback) => {
 
 let updateShop = (criteria,dataToSet,callback) => {
 	let setData = "";
-	dataToSet.name ? setData += `name = '${dataToSet.name}'` : true;
+	criteria.id ? setData += `id = '${criteria.id}'` : true;
+	dataToSet.name ? setData += `,name = '${dataToSet.name}'` : true;
 	dataToSet.email ? setData += `, email = '${dataToSet.email}'` : true;
 	dataToSet.contactNumber ? setData += `, contactNumber = '${dataToSet.contactNumber}'` : true;
 	if (typeof dataToSet.shopType !== 'undefined' && dataToSet.shopType !== null) 
@@ -56,18 +57,18 @@ let updateShop = (criteria,dataToSet,callback) => {
 
 let getShop = (criteria, callback) => {
     let conditions = "";
-	criteria.email ? conditions += ` and email = '${criteria.email}'` : true;
-	criteria.name ? conditions += ` and name = '${criteria.name}'` : true;
-	criteria.pincode ? conditions += ` and pincode = '${criteria.pincode}'` : true;
-	criteria.shopId ? conditions += ` and id = ${criteria.shopId}` : true;
+	criteria.email ? conditions += ` and shops.email = '${criteria.email}'` : true;
+	criteria.name ? conditions += ` and shops.name = '${criteria.name}'` : true;
+	criteria.pincode ? conditions += ` and shops.pincode = '${criteria.pincode}'` : true;
+	criteria.shopId ? conditions += ` and shops.id = ${criteria.shopId}` : true;
 	if (typeof criteria.shopType !== 'undefined' && criteria.shopType !== null) 
-		conditions += `and shopType = ${criteria.shopType}`;
+		conditions += `and shopTypes.typeName = ${criteria.shopType}`;
 	if (typeof criteria.shopSize !== 'undefined' && criteria.shopSize !== null) 
-		conditions += `and shopSize = ${criteria.shopSize}`;
+		conditions += `and shopSizes.description = ${criteria.shopSize}`;
 	if (typeof criteria.verificationStatus !== 'undefined' && criteria.verificationStatus !== null) 
-		conditions += `and verificationStatus = ${criteria.verificationStatus}`;
-	console.log(`select * from shops where 1 ${conditions}`);
-	dbConfig.getDB().query(`select * from shops where 1 ${conditions}`, callback);
+		conditions += `and shops.verificationStatus = ${criteria.verificationStatus}`;
+	console.log(`select shops.*, shopTypes.typeName, shopSizes.description as sizeName from shops, shopTypes, shopSizes where 1 and shops.shopType = shopTypes.id and shops.shopSize = shopSizes.id ${conditions}`);
+	dbConfig.getDB().query(`select shops.*, shopTypes.typeName, shopSizes.description as sizeName from shops, shopTypes, shopSizes  where 1 and shops.shopType = shopTypes.id and shops.shopSize = shopSizes.id ${conditions}`, callback);
 }
 
 let getShopWithShopSize = (criteria, callback) => {
