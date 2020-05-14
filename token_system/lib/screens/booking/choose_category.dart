@@ -22,7 +22,6 @@ class ChooseCategory extends StatelessWidget {
       'Sabzi Mandi',
       'Restaurant and Cafes',
       'Supermarket',
-      'Medical Store',
       'Garments Store',
       'Hardware and Construction Shops',
       'Stationery Shop',
@@ -45,7 +44,7 @@ class ChooseCategory extends StatelessWidget {
       Expanded(
         child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: 2),
+                crossAxisCount: 2, childAspectRatio: 2.75),
             itemCount: shopCategories.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
@@ -70,7 +69,7 @@ class ChooseCategory extends StatelessWidget {
                       child: Text(
                         shopCategories[index],
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16, color: Colors.blueGrey[800]),
                       ),
                     ),
                   ),
