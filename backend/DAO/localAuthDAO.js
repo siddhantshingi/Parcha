@@ -19,7 +19,7 @@ let createLocalAuth = (dataToSet, callback) => {
 	dataToSet.state ? setData += `, state = '${dataToSet.state}'` : true;
 	dataToSet.district ? setData += `, district = '${dataToSet.district}'` : true;
 	dataToSet.pincode ? setData += `, pincode = '${dataToSet.pincode}'` : true;
-	setData += `, verificationStatus = ${dataToSet.verificationStatus}`;
+	dataToSet.verificationStatus ? setData += `, verificationStatus = ${dataToSet.verificationStatus}` : true;
 	console.log(`insert into localAuths set ${setData}`);
 	dbConfig.getDB().query(`insert into localAuths set ${setData}`, callback);
 }

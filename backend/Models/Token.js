@@ -1,7 +1,7 @@
 let mysqlConfig = require("../Utilities/mysqlConfig");
 
 let initialize = () => {
-	mysqlConfig.getDB().query("create table IF NOT EXISTS tokens (id INT auto_increment primary key, verified INT, date DATE, userId INT, shopId INT, startTime TIME, duration TIME, status INT, createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
+	mysqlConfig.getDB().query("create table IF NOT EXISTS tokens (id INT auto_increment primary key, verified INT, date DATE, userId INT, shopId INT, startTime TIME, duration TIME, status INT, createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, encryptedId VARCHAR(684))");
 	console.log("table created if not EXISTS");
 }
 
