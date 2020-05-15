@@ -62,7 +62,7 @@ let createUser = (data, callback) => {
 						return;
 					});
 				} else {
-					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + "EmailID already exists", "result": {} });
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_NINE,"statusMessage": util.statusMessage.DUPLICATE_ENTRY, "result": {} });
 					return;	
 				}
 				if (err) {

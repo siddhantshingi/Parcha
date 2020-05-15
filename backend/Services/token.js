@@ -58,13 +58,13 @@ let bookToken = (data, callback) => {
 							});
 							return;
 						} else {
-							cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + "Requested shop time slot does not exists.", "result": {} });
+							cb(null, {"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND, "result": {} });
 							return;
 						}
 					});
 					
 				} else {
-					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + "Token already exists", "result": {} });
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_NINE,"statusMessage": util.statusMessage.DUPLICATE_ENTRY, "result": {} });
 					return;	
 				}
 				if (err) {

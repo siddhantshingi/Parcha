@@ -327,6 +327,13 @@ class _RegisterState extends State<Register> {
                                       Future.delayed(Duration(seconds: 2), () {
                                         Navigator.pop(context);
                                       });
+                                    } else if (code == 409) {
+                                      final snackbar = SnackBar(
+                                        content: Text(
+                                            'This Email ID already exists'),
+                                      );
+                                      Scaffold.of(context).showSnackBar(
+                                          snackbar);
                                     } else {
                                       final snackbar = SnackBar(
                                         content: Text(
@@ -368,6 +375,13 @@ class _RegisterState extends State<Register> {
                                       Future.delayed(Duration(seconds: 2), () {
                                         Navigator.pop(context);
                                       });
+                                    } else if (code == 409) {
+                                      final snackbar = SnackBar(
+                                        content: Text(
+                                            'This Email ID already exists'),
+                                      );
+                                      Scaffold.of(context).showSnackBar(
+                                          snackbar);
                                     } else {
                                       final snackbar = SnackBar(
                                         content: Text(
@@ -403,6 +417,13 @@ class _RegisterState extends State<Register> {
                                       Future.delayed(Duration(seconds: 2), () {
                                         Navigator.pop(context);
                                       });
+                                    } else if (code == 409) {
+                                      final snackbar = SnackBar(
+                                        content: Text(
+                                            'This Email ID already exists'),
+                                      );
+                                      Scaffold.of(context).showSnackBar(
+                                          snackbar);
                                     } else {
                                       final snackbar = SnackBar(
                                         content: Text(
