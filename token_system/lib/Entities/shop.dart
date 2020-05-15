@@ -61,7 +61,7 @@ class Shop {
         "district": this.district,
         "pincode": this.pincode,
         "verificationStatus": this.verificationStatus.toString(),
-        "shopsize": this.shopSize.toString(),
+        "shopSize": this.shopSize.toString(),
         "closeTime": this.closeTime,
         "openTime": this.openTime,
         "verifierId":this.verifierId.toString()
@@ -80,7 +80,7 @@ class Shop {
       district: json['district'] as String,
       pincode: json['pincode'] as String,
       verificationStatus: json['verificationStatus'] as int,
-      shopSize: json['shopsize'] as int,
+      shopSize: json['shopSize'] as int,
       closeTime: json['closeTime'] as String,
       openTime: json['openTime'] as String,
       verifierId: json['verifierId'] as int
