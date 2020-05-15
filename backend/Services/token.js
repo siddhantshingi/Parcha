@@ -200,7 +200,7 @@ let getEncryptedToken = (data, callback) => {
 				"status" : data.status,
 				"verified" : data.verified,
 			}
-			tokenDAO.getToken(criteria,(err, data) => {
+			tokenDAO.getEncryptedToken(criteria,(err, data) => {
 				if (err) {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
@@ -213,7 +213,8 @@ let getEncryptedToken = (data, callback) => {
 						startTime: data[0].startTime,
 						duration: data[0].duration,
 						status: data[0].status,
-						date: data[0].date
+						date: data[0].date,
+						userName = data[0].userName
 					}
 					var clearText = JSON.stringify(jsonData);
 					var hashedToken = encryptStringWithRsaPrivateKey(clearText);

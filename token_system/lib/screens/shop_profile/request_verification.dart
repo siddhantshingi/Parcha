@@ -32,7 +32,7 @@ class _RequestState extends State<RequestScreen> {
   int _endHour = 16;
   String _endMinutes = '00';
   String _endMeridian = 'PM';
-  RangeValues _timings = RangeValues(6.0, 22.0);
+  RangeValues _timings = RangeValues(10.0, 16.0);
   RequestOptions _category;
 
   @override
@@ -149,7 +149,8 @@ class _RequestState extends State<RequestScreen> {
                       _startMinutes = '00';
                       _endMinutes = '00';
 
-                      if (newValue.start - _startHour > 0.4) _startMinutes = '30';
+                      if (newValue.start - _startHour > 0.4)
+                        _startMinutes = '30';
                       if (newValue.end - _endHour > 0.4) _endMinutes = '30';
 
                       if (_endHour > 11) {
@@ -236,29 +237,28 @@ class _RequestState extends State<RequestScreen> {
                         onPressed: () {
                           if (_category == null) {
                             final snackbar = SnackBar(
-                              content: Text(
-                                  'Please Select a Slotting Style'),
+                              content: Text('Please Select a Slotting Style'),
                             );
-                            Scaffold.of(context).showSnackBar(
-                                snackbar);
+                            Scaffold.of(context).showSnackBar(snackbar);
                           } else {
                             Request newRequest = new Request(
-                              shopId: widget.shop.id,
-                              pincode: widget.shop.pincode,
-                              openTime: convertFormat(_startHour,_startMinutes,_startMeridian),
-                              closeTime: convertFormat(_endHour,_endMinutes,_endMeridian),
-                              shopSize: mapRequestOptions[_category],
-                              status: 0,
-                              time: "");
+                                shopId: widget.shop.id,
+                                pincode: widget.shop.pincode,
+                                openTime: convertFormat(
+                                    _startHour, _startMinutes, _startMeridian),
+                                closeTime: convertFormat(
+                                    _endHour, _endMinutes, _endMeridian),
+                                shopSize: mapRequestOptions[_category],
+                                status: 0,
+                                time: "");
                             RequestService.registerRequestApiCall(newRequest)
                                 .then((code) {
                               if (code == 200) {
                                 final snackbar = SnackBar(
-                                  content: Text(
-                                      'Request Registration successful!'),
+                                  content:
+                                      Text('Request Registration successful!'),
                                 );
-                                Scaffold.of(context).showSnackBar(
-                                    snackbar);
+                                Scaffold.of(context).showSnackBar(snackbar);
 //                                // Pop screen if successful
 //                                Future.delayed(Duration(seconds: 2), () {
 //                                  Navigator.pop(context);
@@ -268,8 +268,7 @@ class _RequestState extends State<RequestScreen> {
                                   content: Text(
                                       'Registration not successful. Please try again!'),
                                 );
-                                Scaffold.of(context).showSnackBar(
-                                    snackbar);
+                                Scaffold.of(context).showSnackBar(snackbar);
                               }
                             });
                           }
