@@ -68,8 +68,8 @@ let getShop = (criteria, callback) => {
 		conditions += `and shopSizes.description = '${criteria.shopSize}'`;
 	if (typeof criteria.verificationStatus !== 'undefined' && criteria.verificationStatus !== null) 
 		conditions += `and shops.verificationStatus = ${criteria.verificationStatus}`;
-	console.log(`select shops.*, shopTypes.typeName, shopSizes.description as sizeName from shops, shopTypes, shopSizes where 1 and shops.shopType = shopTypes.id and shops.shopSize = shopSizes.id ${conditions}`);
-	dbConfig.getDB().query(`select shops.*, shopTypes.typeName, shopSizes.description as sizeName from shops, shopTypes, shopSizes  where 1 and shops.shopType = shopTypes.id and shops.shopSize = shopSizes.id ${conditions}`, callback);
+	console.log(`select shops.*, shopTypes.typeName, shopSizes.description as sizeName, shopSizes.capacity from shops, shopTypes, shopSizes where 1 and shops.shopType = shopTypes.id and shops.shopSize = shopSizes.id ${conditions}`);
+	dbConfig.getDB().query(`select shops.*, shopTypes.typeName, shopSizes.description as sizeName, shopSizes.capacity from shops, shopTypes, shopSizes  where 1 and shops.shopType = shopTypes.id and shops.shopSize = shopSizes.id ${conditions}`, callback);
 }
 
 let getShopByEmail = (criteria, callback) => {
