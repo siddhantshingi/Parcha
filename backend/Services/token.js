@@ -185,7 +185,7 @@ let getEncryptedToken = (data, callback) => {
 				"status" : data.status,
 				"verified" : data.verified,
 			}
-			tokenDAO.getToken(criteria,(err, data) => {
+			tokenDAO.getEncryptedToken(criteria,(err, data) => {
 				if (err) {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;

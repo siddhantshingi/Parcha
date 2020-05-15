@@ -34,6 +34,22 @@ let getToken = (criteria, callback) => {
 	criteria.dateUpperLim ? conditions += ` and tokens.date <= '${criteria.dateUpperLim}'` : true;
 	criteria.status ? conditions += ` and tokens.status = ${criteria.status}` : true;
 	criteria.verified ? conditions += ` and tokens.verified = ${criteria.verified}` : true;
+	console.log(`select tokens.*, shops.name as shopName from tokens left join shops on tokens.shopId = shops.id where 1 ${conditions}`);
+	dbConfig.getDB().query(`select tokens.*, shops.name as shopName from tokens left join shops on tokens.shopId = shops.id where 1 ${conditions}`, callback);
+}
+
+let getEncryptedToken = (criteria, callback) => {
+    let conditions = "";
+	criteria.tokenId ? conditions += ` and tokens.id = ${criteria.tokenId}` : true;
+	criteria.userId ? conditions += ` and tokens.userId = ${criteria.userId}` : true;
+	criteria.date ? conditions += ` and tokens.date = '${criteria.date}'` : true;
+	criteria.shopId ? conditions += ` and tokens.shopId = ${criteria.shopId}` : true;
+	criteria.startTime ? conditions += ` and tokens.startTime = '${criteria.startTime}'` : true;
+	criteria.duration ? conditions += ` and tokens.duration = '${criteria.duration}'` : true;
+	criteria.dateLowerLim ? conditions += ` and tokens.date >= '${criteria.dateLowerLim}'` : true;
+	criteria.dateUpperLim ? conditions += ` and tokens.date <= '${criteria.dateUpperLim}'` : true;
+	criteria.status ? conditions += ` and tokens.status = ${criteria.status}` : true;
+	criteria.verified ? conditions += ` and tokens.verified = ${criteria.verified}` : true;
 	console.log(`select tokens.*, shops.name as shopName, users.name as userName from tokens left join shops on tokens.shopId = shops.id left join users on tokens.userId = users.id where 1 ${conditions}`);
 	dbConfig.getDB().query(`select tokens.*, shops.name as shopName, users.name as userName from tokens left join shops on tokens.shopId = shops.id left join users on tokens.userId = users.id where 1 ${conditions}`, callback);
 }
@@ -115,5 +131,6 @@ module.exports = {
 	findNextToken : findNextToken,
 	cancelAndUpdateNextToken : cancelAndUpdateNextToken,
 	verifyToken : verifyToken,
-	checkLive : checkLive
+	checkLive : checkLive,
+	getEncryptedToken : getEncryptedToken
 }
