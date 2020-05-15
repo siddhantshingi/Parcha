@@ -23,6 +23,7 @@ let createRequest = (data, callback) => {
 				"openTime": data.openTime,
 				"closeTime": data.closeTime
 			}
+			console.log(data,dataToSet,criteria);
 			requestDAO.getRequestList(criteria,(err, data) => {
 				if (data.length === 0) {
 					requestDAO.createRequest(dataToSet, (err, dbData) => {
@@ -39,7 +40,7 @@ let createRequest = (data, callback) => {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
 				}
-				cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + "this request already exists", "result": {} });
+				cb(null, {"statusCode": util.statusCode.FOUR_ZERO_NINE,"statusMessage": util.statusMessage.DUPLICATE_ENTRY, "result": {} });
 				return;
 			});
 			// console.log(dataToSet);
@@ -74,7 +75,7 @@ let resolveRequest = (data,callback) => {
 			// console.log(dataToSet);
 			localAuthDAO.getLocalAuth(criteria_localAuth,(err, data) => {
 				if (data.length === 0) {
-					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + "You are not authorised", "result": {} });
+					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_ONE,"statusMessage": util.statusMessage.UNAUTHORIZED, "result": {} });
 					return;
 				}
 				if (err) {
@@ -111,7 +112,7 @@ let getRequestByPincode = (data, callback) => {
 			}
 			localAuthDAO.getLocalAuth(criteria_localAuth,(err, data) => {
 				if (data.length === 0) {
-					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + "You are not authorised", "result": {} });
+					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_ONE,"statusMessage": util.statusMessage.UNAUTHORIZED, "result": {} });
 					return;
 				}
 				if (err) {

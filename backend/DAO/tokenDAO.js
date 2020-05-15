@@ -30,8 +30,8 @@ let getToken = (criteria, callback) => {
 	criteria.shopId ? conditions += ` and shopId = ${criteria.shopId}` : true;
 	criteria.startTime ? conditions += ` and startTime = '${criteria.startTime}'` : true;
 	criteria.duration ? conditions += ` and duration = '${criteria.duration}'` : true;
-	criteria.dateLowerLim ? conditions += ` and dateLowerLim = '${criteria.dateLowerLim}'` : true;
-	criteria.dateUpperLim ? conditions += ` and dateUpperLim = '${criteria.dateUpperLim}'` : true;
+	criteria.dateLowerLim ? conditions += ` and date >= '${criteria.dateLowerLim}'` : true;
+	criteria.dateUpperLim ? conditions += ` and date <= '${criteria.dateUpperLim}'` : true;
 	criteria.status ? conditions += ` and status = ${criteria.status}` : true;
 	criteria.verified ? conditions += ` and verified = ${criteria.verified}` : true;
 	console.log(`select * from tokens where 1 ${conditions}`);

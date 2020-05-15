@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:token_system/Entities/shop.dart';
+import 'package:token_system/Entities/request.dart';
+import 'package:token_system/Services/requestService.dart';
 import 'package:token_system/components/section_title.dart';
 import 'package:token_system/components/tab_navigator.dart';
 import 'package:token_system/components/request_card.dart';
 import 'package:token_system/screens/request_list.dart';
 
 enum RequestOptions { small, medium, large }
+const Map<RequestOptions, int> mapRequestOptions = {
+  RequestOptions.small: 1,
+  RequestOptions.medium: 2,
+  RequestOptions.large: 3
+};
 
 class RequestScreen extends StatefulWidget {
   final Shop shop;
@@ -39,6 +46,13 @@ class _RequestState extends State<RequestScreen> {
       Colors.blueGrey[600]
     ];
     var _stops = [0.01, 0.03, 0.07, 0.93, 0.97, 0.99];
+    String convertFormat(int hours, String minutes, String meridian) {
+      if (meridian == 'PM') {
+        return (hours + 12).toString() + ":" + minutes + ":00";
+      } else {
+        return hours.toString() + ":" + minutes + ":00";
+      }
+    }
 
     return ListView(shrinkWrap: true, children: <Widget>[
       Container(
@@ -135,8 +149,7 @@ class _RequestState extends State<RequestScreen> {
                       _startMinutes = '00';
                       _endMinutes = '00';
 
-                      if (newValue.start - _startHour > 0.4)
-                        _startMinutes = '30';
+                      if (newValue.start - _startHour > 0.4) _startMinutes = '30';
                       if (newValue.end - _endHour > 0.4) _endMinutes = '30';
 
                       if (_endHour > 11) {
@@ -220,7 +233,47 @@ class _RequestState extends State<RequestScreen> {
                               color: Colors.white,
                               letterSpacing: 1.0),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          if (_category == null) {
+                            final snackbar = SnackBar(
+                              content: Text(
+                                  'Please Select a Slotting Style'),
+                            );
+                            Scaffold.of(context).showSnackBar(
+                                snackbar);
+                          } else {
+                            Request newRequest = new Request(
+                              shopId: widget.shop.id,
+                              pincode: widget.shop.pincode,
+                              openTime: convertFormat(_startHour,_startMinutes,_startMeridian),
+                              closeTime: convertFormat(_endHour,_endMinutes,_endMeridian),
+                              shopSize: mapRequestOptions[_category],
+                              status: 0,
+                              time: "");
+                            RequestService.registerRequestApiCall(newRequest)
+                                .then((code) {
+                              if (code == 200) {
+                                final snackbar = SnackBar(
+                                  content: Text(
+                                      'Request Registration successful!'),
+                                );
+                                Scaffold.of(context).showSnackBar(
+                                    snackbar);
+//                                // Pop screen if successful
+//                                Future.delayed(Duration(seconds: 2), () {
+//                                  Navigator.pop(context);
+//                                });
+                              } else {
+                                final snackbar = SnackBar(
+                                  content: Text(
+                                      'Registration not successful. Please try again!'),
+                                );
+                                Scaffold.of(context).showSnackBar(
+                                    snackbar);
+                              }
+                            });
+                          }
+                        },
                       ),
                     )
                   ],
@@ -246,11 +299,11 @@ class _RequestState extends State<RequestScreen> {
               return RequestCard(
                   openTime: '${requests[index].openTime}',
                   closeTime: '${requests[index].closeTime}',
-                  maxCapacity: requests[index].maxCapacity,
-                  duration: '${requests[index].duration}',
-                  bufferTime: '${requests[index].bufferTime}',
+                  maxCapacity: requests[index].capacity,
+                  duration: '${requests[index].slotDuration}',
+                  bufferTime: '${requests[index].bufferDuration}',
                   status: requests[index].status,
-                  timestamp: '${requests[index].timestamp}');
+                  timestamp: '${requests[index].time}');
             },
           )
         ]),

@@ -5,7 +5,8 @@ let statusCode = {
 	FOUR_ZERO_THREE: 403,
 	FOUR_ZERO_ONE: 401,
 	FOUR_ZERO_ZERO: 400,
-	FIVE_ZERO_ZERO: 500
+	FIVE_ZERO_ZERO: 500,
+	FOUR_ZERO_NINE: 409,
 };
 
 // Define Error Messages
@@ -16,8 +17,9 @@ let statusMessage = {
 	NOT_FOUND : 'not found',
 	DATA_UPDATED: 'Data updated successfully.',
 	DELETE_DATA : 'Delete data successfully',
-	PARAMS_MISSING : 'Parameter missing'
-
+	PARAMS_MISSING : 'Parameter missing',
+	DUPLICATE_ENTRY : 'Duplicate entry',
+	UNAUTHORIZED : 'You are not authorized'
 };
 
 module.exports = {
