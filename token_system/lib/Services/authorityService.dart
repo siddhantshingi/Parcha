@@ -14,7 +14,7 @@ class AuthorityService {
   }
 
   static verifyApiCall(String email) async {
-    final response = await http.get(server + authUrl + "/get-localAuth-by-email?email=" + email);
+    final response = await http.get(server + authUrl + "/get-localAuth?email=" + email);
     final responseJson = json.decode(response.body);
     return responseJson;
   }

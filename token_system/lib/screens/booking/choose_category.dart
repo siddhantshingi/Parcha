@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/Services/miscServices.dart';
 import 'package:token_system/components/async_builder.dart';
+import 'package:token_system/components/section_title.dart';
 import 'package:token_system/components/tab_navigator.dart';
 import 'package:token_system/screens/booking/choose_shop.dart';
 
@@ -33,17 +34,7 @@ class ChooseCategory extends StatelessWidget {
       builder: (shopCategories) {
         // Construct widget
         return Column(children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(10),
-            child: Text(
-              'Choose Shop Category',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.amber,
-              ),
-            ),
-          ),
+          SectionTitle(heading: 'Choose Category'),
           Expanded(
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

@@ -215,7 +215,7 @@ class _LoginState extends State<Login> {
                           AuthorityService.verifyApiCall(_email).then((json) {
                             if (json['statusCode'] == 200) {
                               Authority auth =
-                                  Authority.fromJson(json['result']);
+                                  Authority.fromJson(json['result'][0]);
                               if (auth.password ==
                                   _passkey.currentState.value) {
                                 // Login successful
