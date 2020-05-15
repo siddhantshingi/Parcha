@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:token_system/Entities/shop.dart';
+import 'package:token_system/components/section_title.dart';
 import 'package:token_system/components/tab_navigator.dart';
 import 'package:token_system/components/request_card.dart';
 import 'package:token_system/screens/request_list.dart';
@@ -17,10 +18,6 @@ class RequestScreen extends StatefulWidget {
   _RequestState createState() => _RequestState();
 }
 
-//class _DoubleConv extends RangeValues {
-//
-//}
-
 class _RequestState extends State<RequestScreen> {
   int _startHour = 10;
   String _startMinutes = '00';
@@ -34,12 +31,12 @@ class _RequestState extends State<RequestScreen> {
   @override
   Widget build(BuildContext context) {
     var _color = [
-      Colors.cyan[700],
-      Colors.cyan[800],
-      Colors.cyan[900],
-      Colors.cyan[900],
-      Colors.cyan[800],
-      Colors.cyan[700]
+      Colors.blueGrey[600],
+      Colors.blueGrey[700],
+      Colors.blueGrey[800],
+      Colors.blueGrey[800],
+      Colors.blueGrey[700],
+      Colors.blueGrey[600]
     ];
     var _stops = [0.01, 0.03, 0.07, 0.93, 0.97, 0.99];
 
@@ -49,31 +46,7 @@ class _RequestState extends State<RequestScreen> {
         padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
         child: Column(
           children: <Widget>[
-            Container(
-              alignment: Alignment.topCenter,
-              child: Container(
-                padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.elliptical(10.0, 6.0),
-                  ),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: _color,
-                    stops: _stops,
-                  ),
-                ),
-                child: Text(
-                  'Make new Request',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                      letterSpacing: 0.5),
-                ),
-              ),
-            ),
+            SectionTitle(heading: 'Make New Request'),
             Container(
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -263,17 +236,7 @@ class _RequestState extends State<RequestScreen> {
       ),
       Container(
         child: Column(children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(10),
-            child: Text(
-              'Submitted Requests',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.amber,
-              ),
-            ),
-          ),
+          SectionTitle(heading: 'Submitted Requests'),
           ListView.builder(
             shrinkWrap: true,
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),

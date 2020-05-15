@@ -28,9 +28,6 @@ class RequestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: Make a call to get Shop Name and pincode from the shopId
-    String shopName = 'SAD General Store';
-    int pinCode = 226010;
-
     var borderColor;
     var statusText;
     var icon;
@@ -64,14 +61,14 @@ class RequestCard extends StatelessWidget {
             child: ListTile(
                 leading: Icon(
                   icon,
-                  size: 48,
+                  size: 36,
                 ),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Text(
                       'Timings:  ' + openTime + ' - ' + closeTime,
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 16),
                     ),
 //                    Text(
 //                      'Close: ' + closeTime,
