@@ -4,7 +4,7 @@ import 'package:token_system/components/tab_navigator.dart';
 import 'package:token_system/screens/shop_profile/profile.dart';
 import 'package:token_system/screens/shop_profile/booking_history.dart';
 import 'package:token_system/screens/shop_profile/verify_token.dart';
-import 'package:token_system/screens/shop_profile/request.dart';
+import 'package:token_system/screens/shop_profile/request_verification.dart';
 
 class ShopHome extends StatefulWidget {
   final Shop shop;
@@ -101,7 +101,7 @@ class _ShopHomeState extends State<ShopHome> {
               title: Text('Home'),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.all_out),
+              icon: Icon(Icons.assignment_turned_in),
               title: Text('Request'),
             ),
             BottomNavigationBarItem(

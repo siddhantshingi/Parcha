@@ -24,7 +24,7 @@ class _RegisterState extends State<Register> {
   String _pincode = '';
   String _address = 'XXX';
   String _landmark = 'XXX';
-  int _shopSize = -1;
+  int _shopSize = 0;
   String _openTime = '11:00:00';
   String _closeTime = '20:00:00';
   int verifierId = 0;
@@ -344,7 +344,7 @@ class _RegisterState extends State<Register> {
                                     email: _email,
                                     contactNumber: _mobile,
                                     password: _passKey.currentState.value,
-                                    shopType: 0,
+                                    shopType: 1,
                                     address: _address,
                                     landmark: _landmark,
                                     state: _state,
