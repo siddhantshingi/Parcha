@@ -197,6 +197,7 @@ let getEncryptedToken = (data, callback) => {
 					var startTime = data[0].startTime;
 					var duration = data[0].duration;
 					var status = data[0].status;
+					var userName = data[0].userName;
 					//KHARE HASH THEM
 					cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
 				}
