@@ -58,11 +58,11 @@ class TokenCard extends StatelessWidget {
             child: ListTile(
                 leading: Icon(
                   Icons.bookmark,
-                  size: 48,
+                  size: 36,
                 ),
                 title: Text(
                   shopName,
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 16),
                 ),
                 subtitle: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

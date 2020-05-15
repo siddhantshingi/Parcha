@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:token_system/components/async_builder.dart';
+import 'package:token_system/components/section_title.dart';
 import 'package:token_system/components/shop_card.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/Entities/shop.dart';
@@ -22,7 +23,7 @@ class ChooseShop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Get shops list based on category
+    // FIXED: Get shops list based on category
     var onReceiveJson = (snapshot) {
       // Construct List of Shops
       List<Shop> shops = [];
@@ -44,17 +45,7 @@ class ChooseShop extends StatelessWidget {
       future: ShopService.getShopListApiCall(user, category),
       builder: (shops) {
         return Column(children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(10),
-            child: Text(
-              'Choose Shop',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.amber,
-              ),
-            ),
-          ),
+          SectionTitle(heading: 'Choose Shop'),
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),

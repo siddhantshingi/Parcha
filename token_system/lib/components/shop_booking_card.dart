@@ -58,18 +58,18 @@ class ShopBookingCard extends StatelessWidget {
             child: ListTile(
                 leading: Icon(
                   Icons.bookmark,
-                  size: 48,
+                  size: 36,
                 ),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Text(
                       'Bookings: ' + (maxCapacity - capacityLeft).toString(),
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 16),
                     ),
                     Text(
                       'Verified: ' + (tokensVerified).toString(),
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
