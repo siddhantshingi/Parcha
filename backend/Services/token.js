@@ -4,6 +4,9 @@ parseString = require('xml2js').parseString;
 let util = require('../Utilities/util'),
 tokenDAO = require('../DAO/tokenDAO'),
 shopBookingDAO = require('../DAO/shopBookingDAO');
+var crypto = require("crypto");
+var fs = require("fs");
+var path = require("path");
 
 /**API to book a token */
 let bookToken = (data, callback) => {
@@ -168,7 +171,19 @@ let getToken = (data, callback) => {
 		callback(response.token);
 	});
 }
+var encryptStringWithRsaPrivateKey = function(toEncrypt) {
+    var absolutePath = path.resolve("private.pem");
+    var privateKey = fs.readFileSync(absolutePath, "utf8");
+    // console.log(privateKey.toString())
+    var buffer = new Buffer.from(toEncrypt);
+    // var encrypted = crypto.privateEncrypt(privateKey, buffer);
+    var encrypted = crypto.privateEncrypt({
+            key: privateKey.toString(),
+            passphrase: passphrase,
+        }, buffer);
 
+    return encrypted.toString("base64");
+};
 /***API to get encrypted token detials */
 let getEncryptedToken = (data, callback) => {
 	async.auto({
@@ -192,13 +207,18 @@ let getEncryptedToken = (data, callback) => {
 				}
 				if(data.length === 1)
 				{
-					var shopId = data[0].shopId;
-					var userId = data[0].userId;
-					var startTime = data[0].startTime;
-					var duration = data[0].duration;
-					var status = data[0].status;
+					var jsonData = {
+						shopId: data[0].shopId,
+						userId: data[0].userId,
+						startTime: data[0].startTime,
+						duration: data[0].duration,
+						status: data[0].status,
+						date: data[0].date
+					}
+					var clearText = JSON.stringify(jsonData);
+					var hashedToken = encryptStringWithRsaPrivateKey(clearText);
 					//KHARE HASH THEM
-					cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
+					cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": hashedToken });
 				}
 				else
 				{
