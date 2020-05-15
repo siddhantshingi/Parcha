@@ -22,4 +22,7 @@ doc/api/
 
 # Configuration Files
 server_config.dart
-*.pem		# Rsa private and public keys
+
+# Rsa private and public keys
+backend/private.pem
+backend/public.pem

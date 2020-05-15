@@ -1,0 +1,6 @@
+makeUser = '/user/create-user'
+makeShop = '/shop/create-shop'
+makeAuth = '/localAuth/create-localAuth'
+bookToken = '/token/book-token'
+createRequest = '/request/create-request'
+makeBooking = '/shopBooking/create-shop-booking'

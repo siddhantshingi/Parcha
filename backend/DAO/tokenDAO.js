@@ -2,7 +2,7 @@ let dbConfig = require("../Utilities/mysqlConfig");
 
 let bookToken = (dataToSet, callback) => {
 	let setData = "";
-	dataToSet.verified ? setData += `verified = ${dataToSet.verified}` : `verified = 0`;
+	dataToSet.verified ? setData += `verified = ${dataToSet.verified}` : setData += `verified = 0`;
 	dataToSet.date ? setData += `, date = '${dataToSet.date}'` : true;
 	dataToSet.userId ? setData += `, userId = ${dataToSet.userId}` : true;
 	dataToSet.shopId ? setData += `, shopId = ${dataToSet.shopId}` : true;
