@@ -6,8 +6,8 @@ let getShopBookings = (criteria, callback) => {
 	criteria.date ? conditions += ` and date = '${criteria.date}'` : true;
 	criteria.startTime ? conditions += ` and startTime = '${criteria.startTime}'` : true;
 	criteria.duration ? conditions += ` and duration = '${criteria.duration}'` : true;
-	console.log(`select * from shopBookings where 1 ${conditions}`);
-	dbConfig.getDB().query(`select * from shopBookings where 1 ${conditions}`, callback);
+	console.log(`select * from shopBookings where 1 ${conditions} ORDER BY date, startTime`);
+	dbConfig.getDB().query(`select * from shopBookings where 1 ${conditions} ORDER BY date, startTime`, callback);
 }
 
 let addShopTimeSlot = (dataToSet, callback) => {

@@ -24,6 +24,13 @@ router.get('/get-token', (req, res) => {
 	});
 });
 
+/**Api to get encrypted token given criteria */
+router.get('/get-encrypted-token', (req, res) => {
+	tokenService.getEncryptedToken(req.query, (data) => {
+		res.send(data);
+	});
+});
+
 /**Api to verify token details given criteria */
 router.put('/verify-token', (req, res) => {
 	tokenService.verifyToken(req.body, (data) => {

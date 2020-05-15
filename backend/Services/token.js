@@ -169,6 +169,50 @@ let getToken = (data, callback) => {
 	});
 }
 
+/***API to get encrypted token detials */
+let getEncryptedToken = (data, callback) => {
+	async.auto({
+		token: (cb) => {
+			let criteria = {
+				"tokenId" : data.tokenId,
+				"userId" : data.userId,
+				"date" : data.date,
+				"shopId" : data.shopId,
+				"startTime" : data.startTime,
+				"duration" : data.duration,
+				"dateLowerLim" : data.dateLowerLim,
+				"dateUpperLim" : data.dateUpperLim,
+				"status" : data.status,
+				"verified" : data.verified,
+			}
+			tokenDAO.getToken(criteria,(err, data) => {
+				if (err) {
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
+					return;
+				}
+				if(data.length === 1)
+				{
+					var shopId = data[0].shopId;
+					var userId = data[0].userId;
+					var startTime = data[0].startTime;
+					var duration = data[0].duration;
+					var status = data[0].status;
+					//KHARE HASH THEM
+					cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
+				}
+				else
+				{
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + "NO UNIQUE TOKEN EXISTS", "result": {} });
+				}
+				
+				return;
+			});
+		}
+	}, (err, response) => {
+		callback(response.token);
+	});
+}
+
 /***API to verify a token */
 let verifyToken = (data, callback) => {
 	async.auto({
@@ -213,5 +257,6 @@ module.exports = {
 	bookToken : bookToken,
 	cancelToken : cancelToken,
 	getToken : getToken,
-	verifyToken : verifyToken
+	verifyToken : verifyToken,
+	getEncryptedToken : getEncryptedToken
 };
