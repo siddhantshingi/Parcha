@@ -14,6 +14,7 @@ let shopBookingRoute = require('./Routes/shopBooking');
 let requestRoute = require('./Routes/request');
 let shopSizeRoute = require('./Routes/shopSize');
 let shopTypeRoute = require('./Routes/shopType');
+let pincodeRoute = require('./Routes/pincode');
 let email   = require('emailjs/email');
 util = require('./Utilities/util');
 
@@ -34,6 +35,7 @@ app.use('/shopBooking', shopBookingRoute);
 app.use('/request', requestRoute);
 app.use('/shopSize', shopSizeRoute);
 app.use('/shopType', shopTypeRoute);
+app.use('/pincode', pincodeRoute);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
 	next();

@@ -1,12 +1,14 @@
 // Define Error Codes
 let statusCode = {
 	OK: 200,
+	TWO_ZERO_ONE: 201,
 	FOUR_ZERO_FOUR: 404,
 	FOUR_ZERO_THREE: 403,
 	FOUR_ZERO_ONE: 401,
 	FOUR_ZERO_ZERO: 400,
 	FIVE_ZERO_ZERO: 500,
 	FOUR_ZERO_NINE: 409,
+	FOUR_ONE_TWO: 412,
 };
 
 // Define Error Messages
@@ -19,7 +21,9 @@ let statusMessage = {
 	DELETE_DATA : 'Delete data successfully',
 	PARAMS_MISSING : 'Parameter missing',
 	DUPLICATE_ENTRY : 'Duplicate entry',
-	UNAUTHORIZED : 'You are not authorized'
+	UNAUTHORIZED : 'You are not authorized',
+	CREATED : 'Object created',
+	PRECONDITION_FAILED : 'Precondition failed'
 };
 
 // Encryption Function

@@ -203,7 +203,6 @@ let getEncryptedToken = (data, callback) => {
 					}
 					var clearText = JSON.stringify(jsonData);
 					var hashedToken = util.encryptStringWithRsaPrivateKey(clearText);
-					//KHARE HASH THEM
 					cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": hashedToken });
 				}
 				else

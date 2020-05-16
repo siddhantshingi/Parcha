@@ -17,9 +17,23 @@ router.post('/create-user', (req, res) => {
 	});
 });
 
+/**Api to create user */
+router.get('/verify-user', (req, res) => {
+	userService.verifyUser(req.body, (data) => {
+		res.send(data);
+	});
+});
+
 // /**Api to update user */
 router.put('/update-user', (req, res) => {
 	userService.updateUser(req.body, (data) => {
+		res.send(data);
+	});
+});
+
+// /**Api to update user password */
+router.put('/update-user-password', (req, res) => {
+	userService.updateUserPassword(req.body, (data) => {
 		res.send(data);
 	});
 });

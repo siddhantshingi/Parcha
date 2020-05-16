@@ -23,16 +23,16 @@ let createUser = (dataToSet, callback) => {
 	let setData = "";
 	dataToSet.name ? setData += `name = '${dataToSet.name}'` : true;
 	dataToSet.email ? setData += `, email = '${dataToSet.email}'` : true;
-	dataToSet.contactNumber ? setData += `, contactNumber = '${dataToSet.contactNumber}'` : true;
+	dataToSet.mobileNumber ? setData += `, mobileNumber = '${dataToSet.mobileNumber}'` : true;
 	dataToSet.password ? setData += `, password = '${dataToSet.password}'` : true;
-	dataToSet.aadharNumber ? setData += `, aadharNumber = '${dataToSet.aadharNumber}'` : true;
-	dataToSet.state ? setData += `, state = '${dataToSet.state}'` : true;
-	dataToSet.district ? setData += `, district = '${dataToSet.district}'` : true;
+	dataToSet.aadharNumber ? setData += `, aadharNumber = '${dataToSet.aadharNumber}'` : setData +=  `, aadharNumber = '------------'`;
 	dataToSet.pincode ? setData += `, pincode = '${dataToSet.pincode}'` : true;
-	if (typeof dataToSet.verificationStatus !== 'undefined' && dataToSet.verificationStatus !== null) 
-		setData += `, verificationStatus = ${dataToSet.verificationStatus}`;
+	setData += `, emailVerification = 1`;
+	setData += `, mobileVerification = 0`;
 	console.log(`insert into users set ${setData}`);
-	dbConfig.getDB().query(`insert into users set ${setData}`, callback);
+	console.log(`update users, pincode set users.state = pincode.state, users.district = pincode.district where users.pincode = pincode.pincode and users.email = '${dataToSet.email}'`);
+	dbConfig.getDB().query(`insert into users set ${setData}`);
+	dbConfig.getDB().query(`update users, pincode set users.state = pincode.state, users.district = pincode.district where users.pincode = pincode.pincode and users.email = '${dataToSet.email}'`, callback);
 }
 
 let deleteUser = (criteria, callback) => {
@@ -48,14 +48,21 @@ let updateUser = (criteria,dataToSet,callback) => {
 	criteria.id ? conditions += ` and id = ${criteria.id}` : true;
 	criteria.id ? setData += `id = '${criteria.id}'` : true;
 	dataToSet.name ? setData += `, name = '${dataToSet.name}'` : true;
-	dataToSet.email ? setData += `, email = '${dataToSet.email}'` : true;
-	dataToSet.contactNumber ? setData += `, contactNumber = '${dataToSet.contactNumber}'` : true;
-	dataToSet.password ? setData += `, password = '${dataToSet.password}'` : true;
+	dataToSet.mobileNumber ? setData += `, mobileNumber = '${dataToSet.mobileNumber}'` : true;
 	dataToSet.aadharNumber ? setData += `, aadharNumber = '${dataToSet.aadharNumber}'` : true;
-	dataToSet.state ? setData += `, state = '${dataToSet.state}'` : true;
-	dataToSet.district ? setData += `, district = '${dataToSet.district}'` : true;
 	dataToSet.pincode ? setData += `, pincode = '${dataToSet.pincode}'` : true;
-	dataToSet.verificationStatus ? setData += `, verificationStatus = '${dataToSet.verificationStatus}'` : true;
+	console.log(`UPDATE users SET ${setData} where 1 ${conditions}`);
+	console.log(`update users, pincode set users.state = pincode.state, users.district = pincode.district where users.pincode = pincode.pincode and users.id = '${criteria.id}'`);
+	dbConfig.getDB().query(`UPDATE users SET ${setData} where 1 ${conditions}`);
+	dbConfig.getDB().query(`update users, pincode set users.state = pincode.state, users.district = pincode.district where users.pincode = pincode.pincode and users.id = '${criteria.id}'`, callback);
+}
+
+let updateUserPassword = (criteria,dataToSet,callback) => {
+    let conditions = "";
+	let setData = "";
+	criteria.id ? conditions += ` and id = ${criteria.id}` : true;
+	criteria.id ? setData += `id = '${criteria.id}'` : true;
+	dataToSet.password ? setData += `, password = '${dataToSet.password}'` : true;
 	console.log(`UPDATE users SET ${setData} where 1 ${conditions}`);
 	dbConfig.getDB().query(`UPDATE users SET ${setData} where 1 ${conditions}`, callback);
 }
@@ -66,5 +73,6 @@ module.exports = {
 	getUserDetailUsingEmail : getUserDetailUsingEmail,
 	createUser : createUser,
 	deleteUser : deleteUser,
-	updateUser : updateUser
+	updateUser : updateUser,
+	updateUserPassword : updateUserPassword
 }
