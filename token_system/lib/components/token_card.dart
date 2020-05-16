@@ -4,23 +4,23 @@ import 'package:flutter/material.dart';
 class TokenCard extends StatelessWidget {
   final String date;
   final String startTime;
-  final int shopId;
+  final String shopName;
+  final String pincode;
   final int status;
+  final VoidCallback bookAgain;
 
   TokenCard(
       {Key key,
       @required this.date,
       @required this.startTime,
-      @required this.shopId,
-      @required this.status})
+      @required this.shopName,
+      @required this.pincode,
+      @required this.status,
+      @required this.bookAgain})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Make a call to get Shop Name and pincode from the shopId
-    String shopName = 'SAD General Store';
-    int pinCode = 226010;
-
     var borderColor;
     var statusText;
     switch (this.status) {
@@ -61,13 +61,13 @@ class TokenCard extends StatelessWidget {
                   size: 36,
                 ),
                 title: Text(
-                  shopName,
+                  this.shopName,
                   style: TextStyle(fontSize: 16),
                 ),
                 subtitle: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    Text(pinCode.toString()),
+                    Text(this.pincode),
                     Text(this.date),
                     Text(this.startTime)
                   ],
@@ -90,6 +90,7 @@ class TokenCard extends StatelessWidget {
                   child: FlatButton(
                     onPressed: () {
                       // TODO: Book slot in the same shop again
+                      bookAgain();
                     },
                     textColor: Colors.blue,
                     child: const Text('BOOK AGAIN'),

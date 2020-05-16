@@ -35,7 +35,7 @@ let getToken = (criteria, callback) => {
 	criteria.status ? conditions += ` and tokens.status = ${criteria.status}` : true;
 	criteria.verified ? conditions += ` and tokens.verified = ${criteria.verified}` : true;
 	console.log(`select tokens.*, shops.name as shopName from tokens left join shops on tokens.shopId = shops.id where 1 ${conditions}`);
-	dbConfig.getDB().query(`select tokens.*, shops.name as shopName from tokens left join shops on tokens.shopId = shops.id where 1 ${conditions}`, callback);
+	dbConfig.getDB().query(`select tokens.*, shops.name  as shopName, shops.address, shops.shopType, shops.pincode from tokens left join shops on tokens.shopId = shops.id where 1 ${conditions}`, callback);
 }
 
 let getEncryptedToken = (criteria, callback) => {

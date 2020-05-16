@@ -26,4 +26,10 @@ class ShopService {
     final responseJson = json.decode(response.body);
     return responseJson;
   }
+
+  static getShopByIdApiCall(int shopId) async {
+    final response = await http.get(server + shopUrl + "/get-shop?shopId=" + shopId.toString());
+    final responseJson = json.decode(response.body);
+    return responseJson;
+  }
 }

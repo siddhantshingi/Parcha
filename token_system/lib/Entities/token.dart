@@ -1,10 +1,12 @@
 class Token {
   int tokenId;
-  bool verified;
-  String date;
+  int verified;
   int shopId;
+  String date;
+  String shopName;
+  String pincode;
   String startTime;
-  int duration;
+  String duration;
   int status;
 
   // Ctor : For checking only
@@ -13,27 +15,31 @@ class Token {
     this.date,
     this.startTime,
     this.status,
-    this.shopId: 0,
+    this.shopName,
   });
 
   Token({
     this.tokenId,
+    this.shopId,
     this.verified,
     this.date,
-    this.shopId,
+    this.shopName,
+    this.pincode,
     this.startTime,
     this.duration,
     this.status,
   });
 
-  Token fromJson(Map<String, dynamic> json) {
+  factory Token.fromJson(Map<String, dynamic> json) {
     return Token(
       tokenId: json['tokenId'] as int,
-      verified: json['verified'] as bool,
-      date: json['date'] as String,
       shopId: json['shopId'] as int,
+      verified: json['verified'] as int,
+      date: json['date'] as String,
+      shopName: json['shopName'] as String,
+      pincode: json['pincode'] as String,
       startTime: json['startTime'] as String,
-      duration: json['duration'] as int,
+      duration: json['duration'] as String,
       status: json['status'] as int,
     );
   }

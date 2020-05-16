@@ -26,3 +26,6 @@ server_config.dart
 # Rsa private and public keys
 backend/private.pem
 backend/public.pem
+
+# Custom ignores
+.vscode/
