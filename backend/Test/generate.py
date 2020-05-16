@@ -14,9 +14,12 @@ num_pincodes = 2
 start_pincode = 226010
 
 # Generate names
-start_user = 100
-start_auth = 100
-start_shop = 501
+start_user = 100  # Used in names
+start_user_id = 1  # Starting id in the database (used in creating Tokens)
+start_auth = 100  # Used in names
+start_auth_id = 1  # Starting id in the database
+start_shop = 501  # Used in names
+start_shop_id = 1  # Starting id in the database
 
 # Number of entities per pincode
 shops_per_pin = 40
@@ -67,10 +70,11 @@ for pincode in range(num_pincodes):
 
     # User objects
     for _ in range(users_per_pin):
-        user_id = start_user + num_users
+        user_name = start_user + num_users
+        user_id = start_user_id + num_users
         user_dict = {}
-        user_dict['name'] = 'User ' + str(user_id)
-        user_dict['email'] = 'user' + str(user_id) + '@user.com'
+        user_dict['name'] = 'User ' + str(user_name)
+        user_dict['email'] = 'user' + str(user_name) + '@user.com'
         user_dict['password'] = password
         user_dict['contactNumber'] = generate_mobile()
         user_dict['aadharNumber'] = generate_aadhar()
@@ -84,11 +88,12 @@ for pincode in range(num_pincodes):
 
     # Shop objects
     for _ in range(shops_per_pin):
-        shop_id = start_shop + num_shops
+        shop_name = start_shop + num_shops
+        shop_id = start_shop_id + num_shops
         shop_dict = {}
-        shop_dict['name'] = 'Shop ' + str(shop_id)
-        shop_dict['owner'] = 'Owner ' + str(shop_id)
-        shop_dict['email'] = 'shop' + str(shop_id) + '@shop.com'
+        shop_dict['name'] = 'Shop ' + str(shop_name)
+        shop_dict['owner'] = 'Owner ' + str(shop_name)
+        shop_dict['email'] = 'shop' + str(shop_name) + '@shop.com'
         shop_dict['contactNumber'] = generate_mobile()
         shop_dict['shopType'] = random.randint(1, shop_types)
         shop_dict['address'] = 'Vibhav Khand, Gomti Nagar, Lucknow'
