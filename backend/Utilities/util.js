@@ -26,10 +26,10 @@ let statusMessage = {
 let crypto = require("crypto"),
 fs = require("fs"),
 path = require("path");
-let privateKey = fs.readFileSync(path.resolve("private.pem"), "utf8");
+// let privateKey = fs.readFileSync(path.resolve("private.pem"), "utf8");
 let encryptStringWithRsaPrivateKey = function(toEncrypt) {
-    // var absolutePath = path.resolve("private.pem");
-    // var privateKey = fs.readFileSync(absolutePath, "utf8");
+    var absolutePath = path.resolve("private.pem");
+    var privateKey = fs.readFileSync(absolutePath, "utf8");
     // console.log(privateKey.toString())
     var buffer = new Buffer.from(toEncrypt);
     // var encrypted = crypto.privateEncrypt(privateKey, buffer);
