@@ -23,7 +23,8 @@ let statusMessage = {
 	DUPLICATE_ENTRY : 'Duplicate entry',
 	UNAUTHORIZED : 'You are not authorized',
 	CREATED : 'Object created',
-	PRECONDITION_FAILED : 'Precondition failed'
+	PRECONDITION_FAILED : 'Precondition failed',
+	CONFLICT : 'There is some cnflict'
 };
 
 // Encryption Function

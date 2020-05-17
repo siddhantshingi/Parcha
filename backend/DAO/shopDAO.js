@@ -85,7 +85,7 @@ let getShopForAuth = (criteria, callback) => {
 //service/shop.js/updateShop
 let getShopById = (criteria, callback) => {
     let conditions = "";
-	criteria.id ? conditions += ` and shops.id = '${criteria.id}'` : true;
+	criteria.id ? conditions += ` and shops.id = ${criteria.id}` : true;
 	console.log(`select * from shops where 1 ${conditions}`);
 	dbConfig.getDB().query(`select * from shops where 1 ${conditions}`, callback);
 }
