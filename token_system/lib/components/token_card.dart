@@ -65,7 +65,7 @@ class TokenCard extends StatelessWidget {
                   style: TextStyle(fontSize: 16),
                 ),
                 subtitle: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(this.pincode),
                     Text(this.date),

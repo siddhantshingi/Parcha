@@ -29,14 +29,13 @@ class ChooseCategory extends StatelessWidget {
     };
 
     // Call FutureBuilder to get category list
-    return AsyncBuilder(
-      future: MiscService.getShopTypesApiCall(),
-      builder: (shopCategories) {
-        // Construct widget
-        return Column(children: <Widget>[
-          SectionTitle(heading: 'Choose Category'),
-          Expanded(
-            child: GridView.builder(
+    return Column(children: <Widget>[
+      SectionTitle(heading: 'Choose Category'),
+      Expanded(
+        child: AsyncBuilder(
+          future: MiscService.getShopTypesApiCall(),
+          builder: (shopCategories) {
+            return GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, childAspectRatio: 2.75),
               itemCount: shopCategories.length,
@@ -71,11 +70,11 @@ class ChooseCategory extends StatelessWidget {
                   ),
                 );
               },
-            ),
-          ),
-        ]);
-      },
-      onReceiveJson: onReceiveJson,
-    );
+            );
+          },
+          onReceiveJson: onReceiveJson,
+        ),
+      ),
+    ]);
   }
 }

@@ -75,6 +75,7 @@ class _UserHomeState extends State<UserHome> {
         appBar: AppBar(
           title: const Text('TokenDown'),
           backgroundColor: Colors.blueGrey,
+          elevation: 0,
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.power_settings_new),
