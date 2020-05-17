@@ -105,7 +105,6 @@ let updateUser = (data,callback) => {
 			var dataToSet={
 				"name":data.name,
 				"mobileNumber":data.mobileNumber,
-				"password":data.password,
 				"aadharNumber":data.aadharNumber,
 				"pincode":data.pincode
 			}
