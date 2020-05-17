@@ -70,6 +70,7 @@ let updateUserPassword = (criteria,dataToSet,callback) => {
 
 module.exports = {
 	getUserDetailUsingEmail : getUserDetailUsingEmail,
+	getUserDetailUsingId : getUserDetailUsingId,
 	createUser : createUser,
 	deleteUser : deleteUser,
 	updateUser : updateUser,
