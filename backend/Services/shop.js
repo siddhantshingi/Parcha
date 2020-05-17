@@ -39,7 +39,7 @@ let createShop = (data, callback) => {
 									return;
 								}
 
-								cb(null, { "statusCode": util.statusCode.TWO_ZERO_ONE, "statusMessage": util.statusMessage.CREATED + " New User Created", "result": dataToSet });
+								cb(null, { "statusCode": util.statusCode.TWO_ZERO_ONE, "statusMessage": util.statusMessage.CREATED + " New Shop Created", "result": dataToSet });
 								return;
 							});
 						}
