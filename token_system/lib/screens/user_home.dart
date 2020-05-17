@@ -142,7 +142,10 @@ class _UserHomeState extends State<UserHome> {
       return builder.builder;
     }
     Builder builder = Builder(
-      builder: (context) => ProfileScreen(user: widget.user),
+      builder: (context) => UserProfile(
+        user: widget.user,
+        tn: _tabNavigatorKeys[0],
+      ),
     );
     return builder.builder;
   }

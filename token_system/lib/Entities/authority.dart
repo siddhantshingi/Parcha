@@ -1,4 +1,6 @@
-class Authority {
+import 'package:token_system/Entities/abstract.dart';
+
+class Authority extends Entity {
   int id;
   String email;
   String contactNumber;

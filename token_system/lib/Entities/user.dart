@@ -1,4 +1,6 @@
-class User {
+import 'package:token_system/Entities/abstract.dart';
+
+class User extends Entity {
   int id;
   String name;
   String email;

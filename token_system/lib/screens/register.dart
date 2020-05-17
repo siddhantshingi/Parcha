@@ -24,17 +24,12 @@ class _RegisterState extends State<Register> {
   String _mobile = '----------';
   String _aadhar = '------------';
   String _pincode = '';
+
+  // Required for Shops
   String _address = 'XXX';
   String _landmark = 'XXX';
   int _shopType;
-  String _openTime = '11:00:00';
-  String _closeTime = '20:00:00';
-  int verifierId = 0;
   SignAs _selected = SignAs.user;
-
-  // FIXED: State and district dropdown menu. To be handled on backend.
-  String _state = '';
-  String _district = '';
 
   String validateMobile(String value) {
     // Indian Mobile number are of 10 digit only
@@ -360,8 +355,6 @@ class _RegisterState extends State<Register> {
                                     contactNumber: _mobile,
                                     password: _passKey.currentState.value,
                                     aadharNumber: _aadhar,
-                                    state: _state,
-                                    district: _district,
                                     pincode: _pincode,
                                     verificationStatus: 0,
                                   );
@@ -404,13 +397,9 @@ class _RegisterState extends State<Register> {
                                       shopType: 1,
                                       address: _address,
                                       landmark: _landmark,
-                                      state: _state,
-                                      district: _district,
                                       pincode: _pincode,
                                       verificationStatus: 0,
-                                      shopSize: _shopType,
-                                      openTime: _openTime,
-                                      closeTime: _closeTime);
+                                      shopSize: _shopType);
                                   ShopService.registerApiCall(newShop)
                                       .then((code) {
                                     print('Inside Api call');
@@ -449,8 +438,6 @@ class _RegisterState extends State<Register> {
                                     contactNumber: _mobile,
                                     password: _passKey.currentState.value,
                                     aadharNumber: _aadhar,
-                                    state: _state,
-                                    district: _district,
                                     pincode: _pincode,
                                     verificationStatus: 0,
                                   );
