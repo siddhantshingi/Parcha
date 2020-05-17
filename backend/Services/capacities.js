@@ -2,20 +2,16 @@ let async = require('async'),
 parseString = require('xml2js').parseString;
 
 let util = require('../Utilities/util'),
-shopSizeDAO = require('../DAO/shopSizeDAO');
+capacitiesDAO = require('../DAO/capacitiesDAO');
 
 /***API to get the shopSize by shopSizeId */
-let getShopSize = (data, callback) => {
+let getCapacities = (data, callback) => {
 	async.auto({
-		shopSize: (cb) => {
+		capacities: (cb) => {
 			let criteria = {
-				"id" : data.shopSize
+				"id" : data.id
 			}
-			shopSizeDAO.getShopSize(criteria,(err, data) => {
-				if (data.length === 0) {
-					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND, "result": {} });
-					return;
-				}
+			capacitiesDAO.getCapacities(criteria,(err, data) => {
 				if (err) {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
@@ -26,10 +22,10 @@ let getShopSize = (data, callback) => {
 			});
 		}
 	}, (err, response) => {
-		callback(response.shopSize);
+		callback(response.capacities);
 	})
 }
 
 module.exports = {
-	getShopSize : getShopSize
+	getCapacities : getCapacities
 };

@@ -12,7 +12,7 @@ let localAuthRoute = require('./Routes/localAuth');
 let tokenRoute = require('./Routes/token');
 let shopBookingRoute = require('./Routes/shopBooking');
 let requestRoute = require('./Routes/request');
-let shopSizeRoute = require('./Routes/shopSize');
+let capacitiesRoute = require('./Routes/capacities');
 let shopTypeRoute = require('./Routes/shopType');
 let pincodeRoute = require('./Routes/pincode');
 let email   = require('emailjs/email');
@@ -33,7 +33,7 @@ app.use('/localAuth', localAuthRoute);
 app.use('/token', tokenRoute);
 app.use('/shopBooking', shopBookingRoute);
 app.use('/request', requestRoute);
-app.use('/shopSize', shopSizeRoute);
+app.use('/capacities', capacitiesRoute);
 app.use('/shopType', shopTypeRoute);
 app.use('/pincode', pincodeRoute);
 // catch 404 and forward to error handler
