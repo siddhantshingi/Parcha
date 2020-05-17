@@ -17,14 +17,14 @@ connection.connect((err) => {
 		require('../Models/LocalAuth').initialize();
 		require('../Models/Token').initialize();
 		require('../Models/ShopBooking').initialize();
-		require('../Models/Periodic').initialize();
+		// require('../Models/Periodic').initialize();
 		require('../Models/Request').initialize();
 		require('../Models/ShopSize').initialize();
 		require('../Models/Pincode').initialize();
 		require('../Models/District').initialize();
 		require('../Models/State').initialize();
 		require('../Models/ShopType').initialize();
-		require('../Models/Triggers').initialize();
+		// require('../Models/Triggers').initialize();
 	}
 });
 
