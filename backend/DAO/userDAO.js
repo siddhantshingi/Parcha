@@ -1,17 +1,14 @@
 let dbConfig = require("../Utilities/mysqlConfig");
 
-let getUser = (criteria, callback) => {
-	console.log(`select * from users where 1`);
-	dbConfig.getDB().query(`select * from users where 1`, callback);
-}
-
+//service/user.js/updateShop
 let getUserDetailUsingId = (criteria, callback) => {
     let conditions = "";
-	criteria.id ? conditions += ` and id = ${criteria.id}` : true;
+	criteria.id ? conditions += ` and id = '${criteria.id}'` : true;
 	console.log(`select * from users where 1 ${conditions}`);
 	dbConfig.getDB().query(`select * from users where 1 ${conditions}`, callback);
 }
 
+//service/user.js/createShop
 let getUserDetailUsingEmail = (criteria, callback) => {
     let conditions = "";
 	criteria.email ? conditions += ` and email = '${criteria.email}'` : true;
@@ -19,6 +16,7 @@ let getUserDetailUsingEmail = (criteria, callback) => {
 	dbConfig.getDB().query(`select * from users where 1 ${conditions}`, callback);
 }
 
+//service/user.js/createShop
 let createUser = (dataToSet, callback) => {
 	let setData = "";
 	dataToSet.name ? setData += `name = '${dataToSet.name}'` : true;
@@ -35,6 +33,7 @@ let createUser = (dataToSet, callback) => {
 	dbConfig.getDB().query(`update users, pincode set users.state = pincode.state, users.district = pincode.district where users.pincode = pincode.pincode and users.email = '${dataToSet.email}'`, callback);
 }
 
+//service/user.js/deleteUser
 let deleteUser = (criteria, callback) => {
 	let conditions = "";
 	criteria.id ? conditions += ` and id = ${criteria.id}` : true;
@@ -42,6 +41,7 @@ let deleteUser = (criteria, callback) => {
 	dbConfig.getDB().query(`delete from users where 1 ${conditions}`, callback);
 }
 
+//service/user.js/updateUser
 let updateUser = (criteria,dataToSet,callback) => {
     let conditions = "";
 	let setData = "";
@@ -57,6 +57,7 @@ let updateUser = (criteria,dataToSet,callback) => {
 	dbConfig.getDB().query(`update users, pincode set users.state = pincode.state, users.district = pincode.district where users.pincode = pincode.pincode and users.id = '${criteria.id}'`, callback);
 }
 
+//service/user.js/updatePassword
 let updateUserPassword = (criteria,dataToSet,callback) => {
     let conditions = "";
 	let setData = "";
@@ -68,8 +69,6 @@ let updateUserPassword = (criteria,dataToSet,callback) => {
 }
 
 module.exports = {
-	getUser : getUser,
-	getUserDetailUsingId : getUserDetailUsingId,
 	getUserDetailUsingEmail : getUserDetailUsingEmail,
 	createUser : createUser,
 	deleteUser : deleteUser,

@@ -45,25 +45,4 @@ router.delete('/delete-user', (req, res) => {
 	});
 });
 
-/**Api to get the list of user */
-router.get('/get-user', (req, res) => {
-	userService.getUser(req.query, (data) => {
-		res.send(data);
-	});
-});
-
-// /**API to get the user by id... */
-router.get('/get-user-by-id', (req, res) => {
-	userService.getUserById(req.query, (data) => {
-		res.send(data);
-	});
-});
-
-// /**API to get the user by email... */
-router.get('/get-user-by-email', (req, res) => {
-	userService.getUserByEmail(req.query, (data) => {
-		res.send(data);
-	});
-});
-
 module.exports = router;

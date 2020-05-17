@@ -1,7 +1,7 @@
 let mysqlConfig = require("../Utilities/mysqlConfig");
 
 let initialize = () => {
-	mysqlConfig.getDB().query("create table IF NOT EXISTS shops (id INT auto_increment primary key, name VARCHAR(30), owner	 VARCHAR(30), email VARCHAR(30), contactNumber VARCHAR(30), shopType INT, address VARCHAR(50), landmark VARCHAR(30), password VARCHAR(30), state VARCHAR(30), district VARCHAR(30), pincode VARCHAR(30), verificationStatus INT, openTime TIME, closeTime TIME, verifierId INT, shopSize INT)");
+	mysqlConfig.getDB().query("create table IF NOT EXISTS shops (id INT auto_increment primary key, shopName VARCHAR(255), ownerName VARCHAR(255), email VARCHAR(255), password VARCHAR(255), mobileNumber VARCHAR(10), aadhaarNumber varchar(12), address VARCHAR(255), landmark VARCHAR(255), shopTypeId INT, shopType VARCHAR(255), currOpeningTime TIME DEFAULT '00:00:00', currClosingTime TIME DEFAULT '00:00:00', capacityIdApp INT DEFAULT 0, capacityApp INT DEFAULT 0, openingTimeApp TIME DEFAULT '00:00:00', closingTimeApp TIME DEFAULT '00:00:00', state VARCHAR(255), district VARCHAR(255), pincode VARCHAR(6), emailVerification INT DEFAULT 1, mobileVerification INT DEFAULT 0, authVerification INT DEFAULT 0)");
 	console.log("table created if not EXISTS");
 }
 

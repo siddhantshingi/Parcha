@@ -67,7 +67,7 @@ let createUser = (data, callback) => {
 						}
 						else
 						{
-							cb(null, { "statusCode": util.statusCode.FOUR_ONE_TWO, "statusMessage": util.statusMessage.PRECONDITION_FAILED + "NO OR MULTIPLE PINCODE MATCHED", "result": {} });
+							cb(null, { "statusCode": util.statusCode.FOUR_ONE_TWO, "statusMessage": util.statusMessage.PRECONDITION_FAILED + " NO OR MULTIPLE PINCODE MATCHED", "result": {} });
 							return;
 						}
 						if (err) {
@@ -160,7 +160,7 @@ let updateUser = (data,callback) => {
 let updateUserPassword = (data,callback) => {
 	async.auto({
 		userUpdate :(cb) =>{
-			if (!data.id) {
+			if (!data.id || !data.newPassword || !data.newPassword) {
 				cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ONE, "statusMessage": util.statusMessage.PARAMS_MISSING, "result": {} })
 				return;
 			}
@@ -230,6 +230,10 @@ let deleteUser = (data,callback) => {
 let verifyUser = (data, callback) => {
 	async.auto({
 		user: (cb) => {
+			if (!data.email || !data.password) {
+				cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ONE, "statusMessage": util.statusMessage.PARAMS_MISSING, "result": {} })
+				return;
+			}
 			let criteria = {
 				"email":data.email
 			}
@@ -263,78 +267,11 @@ let verifyUser = (data, callback) => {
 	})
 }
 
-/***API to get the user list */
-let getUser = (data, callback) => {
-	async.auto({
-		user: (cb) => {
-			userDAO.getUser({},(err, data) => {
-				if (err) {
-					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
-					return;
-				}
-				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
-				return;
-			});
-		}
-	}, (err, response) => {
-		callback(response.user);
-	})
-}
-
-/***API to get the user detail by id */
-let getUserById = (data, callback) => {
-	async.auto({
-		user: (cb) => {
-			let criteria = {
-				"id":data.id
-			}
-			userDAO.getUserDetailUsingId(criteria,(err, data) => {
-				if (err) {
-					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
-					return;
-				}
-				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data[0] });
-				return;
-			});
-		}
-	}, (err, response) => {
-		callback(response.user);
-	})
-}
-
-/***API to get the user detail by email */
-let getUserByEmail = (data, callback) => {
-	async.auto({
-		user: (cb) => {
-			let criteria = {
-				"email":data.email
-			}
-			userDAO.getUserDetailUsingEmail(criteria,(err, data) => {
-				if (data.length === 0) {
-					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND, "result": {} });
-					return;
-				}
-				if (err) {
-					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
-					return;
-				}
-				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data[0] });
-				return;
-			});
-		}
-	}, (err, response) => {
-		callback(response.user);
-	})
-}
-
 module.exports = {
 	sendEmail : sendEmail,
 	createUser : createUser,
 	updateUser : updateUser,
 	deleteUser : deleteUser,
-	getUser : getUser,
-	getUserById : getUserById,
-	getUserByEmail : getUserByEmail,
 	verifyUser : verifyUser,
 	updateUserPassword : updateUserPassword
 };

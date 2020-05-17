@@ -1,5 +1,9 @@
 let dbConfig = require("../Utilities/mysqlConfig");
 
+//service/shop.js/createShop
+//service/shop.js/updateShop
+//service/user.js/createUser
+//service/user.js/updateUser
 let getPincode = (criteria, callback) => {
     let conditions = "";
 	criteria.pincode ? conditions += ` and pincode = '${criteria.pincode}'` : true;

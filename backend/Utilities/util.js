@@ -27,26 +27,26 @@ let statusMessage = {
 };
 
 // Encryption Function
-let crypto = require("crypto"),
-fs = require("fs"),
-path = require("path");
-let privateKey = fs.readFileSync(path.resolve("private.pem"), "utf8");
-let encryptStringWithRsaPrivateKey = function(toEncrypt) {
-    // var absolutePath = path.resolve("private.pem");
-    // var privateKey = fs.readFileSync(absolutePath, "utf8");
-    // console.log(privateKey.toString())
-    var buffer = new Buffer.from(toEncrypt);
-    // var encrypted = crypto.privateEncrypt(privateKey, buffer);
-    var encrypted = crypto.privateEncrypt({
-            key: privateKey.toString(),
-            passphrase: "mySecret",
-        }, buffer);
+// let crypto = require("crypto"),
+// fs = require("fs"),
+// path = require("path");
+// let privateKey = fs.readFileSync(path.resolve("private.pem"), "utf8");
+// let encryptStringWithRsaPrivateKey = function(toEncrypt) {
+//     // var absolutePath = path.resolve("private.pem");
+//     // var privateKey = fs.readFileSync(absolutePath, "utf8");
+//     // console.log(privateKey.toString())
+//     var buffer = new Buffer.from(toEncrypt);
+//     // var encrypted = crypto.privateEncrypt(privateKey, buffer);
+//     var encrypted = crypto.privateEncrypt({
+//             key: privateKey.toString(),
+//             passphrase: "mySecret",
+//         }, buffer);
 
-    return encrypted.toString("base64");
-};
+//     return encrypted.toString("base64");
+// };
 
 module.exports = {
 	statusCode: statusCode,
 	statusMessage: statusMessage,
-	encryptStringWithRsaPrivateKey: encryptStringWithRsaPrivateKey
+	// encryptStringWithRsaPrivateKey: encryptStringWithRsaPrivateKey
 }
