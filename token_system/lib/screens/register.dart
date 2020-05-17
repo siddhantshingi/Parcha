@@ -3,9 +3,11 @@ import 'package:email_validator/email_validator.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/Entities/shop.dart';
 import 'package:token_system/Entities/authority.dart';
+import 'package:token_system/Services/miscServices.dart';
 import 'package:token_system/Services/userService.dart';
 import 'package:token_system/Services/shopService.dart';
 import 'package:token_system/Services/authorityService.dart';
+import 'package:token_system/components/async_builder.dart';
 import 'package:token_system/components/title.dart';
 import 'package:token_system/screens/login.dart';
 
@@ -24,13 +26,13 @@ class _RegisterState extends State<Register> {
   String _pincode = '';
   String _address = 'XXX';
   String _landmark = 'XXX';
-  int _shopSize = 0;
+  int _shopType;
   String _openTime = '11:00:00';
   String _closeTime = '20:00:00';
   int verifierId = 0;
   SignAs _selected = SignAs.user;
 
-  // TODO: State and district dropdown menu.
+  // FIXED: State and district dropdown menu. To be handled on backend.
   String _state = '';
   String _district = '';
 
@@ -44,6 +46,7 @@ class _RegisterState extends State<Register> {
 
   String validateAadhar(String value) {
     // Indian Mobile number are of 10 digit only
+    if (value == null) return null;
     if (value.length != 12)
       return 'Aadhar must be of 12 digits only';
     else
@@ -72,13 +75,23 @@ class _RegisterState extends State<Register> {
     return null;
   }
 
-  bool showCategory(selected) {
-    if (selected == SignAs.shop) return true;
+  bool isShop() {
+    if (_selected == SignAs.shop) return true;
     return false;
   }
 
   @override
   Widget build(BuildContext context) {
+    // Call the Shop Categories API
+    var onReceiveJson = (snapshot) {
+      // Construct List of Categories
+      List<String> shopCategories = [];
+      for (var item in snapshot.data['result']) {
+        shopCategories.add(item['typeName']);
+      }
+      return shopCategories;
+    };
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blueGrey,
@@ -116,11 +129,11 @@ class _RegisterState extends State<Register> {
                         },
                         items: <DropdownMenuItem<SignAs>>[
                           const DropdownMenuItem<SignAs>(
-                            child: Text('  User  '),
+                            child: Text('User'),
                             value: SignAs.user,
                           ),
                           const DropdownMenuItem<SignAs>(
-                            child: Text('  Shop  '),
+                            child: Text('Shop'),
                             value: SignAs.shop,
                           ),
                           const DropdownMenuItem<SignAs>(
@@ -140,11 +153,13 @@ class _RegisterState extends State<Register> {
                       child: TextFormField(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Name',
+                          labelText: isShop() ? 'Shop Name' : 'Name',
                         ),
                         validator: (value) {
                           if (value.isEmpty)
-                            return 'Please enter your name';
+                            return isShop()
+                                ? 'Please enter your Shop name'
+                                : 'Please enter your name';
                           else
                             return null;
                         },
@@ -154,6 +169,85 @@ class _RegisterState extends State<Register> {
                           });
                         },
                       ),
+                    ),
+                    Visibility(
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Shop Owner Name',
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty)
+                              return 'Please enter your name';
+                            else
+                              return null;
+                          },
+                          onSaved: (value) {
+                            setState(() {
+                              _name = value;
+                            });
+                          },
+                        ),
+                      ),
+                      visible: isShop(),
+                    ),
+                    Visibility(
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                          decoration: ShapeDecoration(
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  width: 1.0,
+                                  style: BorderStyle.solid,
+                                  color: Colors.blueGrey),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5.0)),
+                            ),
+                          ),
+                          child: AsyncBuilder(
+                            future: MiscService.getShopTypesApiCall(),
+                            builder: (shopCategories) {
+                              List<DropdownMenuItem> items = [];
+                              for (var index = 0;
+                                  index < shopCategories.length;
+                                  index++) {
+                                items.add(DropdownMenuItem(
+                                  child: Text(shopCategories[index]),
+                                  value: 2*index,
+                                ));
+                                items.add(DropdownMenuItem(
+                                  child: Text(shopCategories[index]),
+                                  value: 2*index + 1,
+                                ));
+                              }
+                              return DropdownButton(
+                                iconDisabledColor: Colors.blueGrey,
+                                iconEnabledColor: Colors.blue,
+                                hint: Text('Shop Type'),
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
+                                underline: Container(height: 0),
+                                isExpanded: true,
+                                items: items,
+                                value: _shopType,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _shopType = value;
+                                    print(_shopType);
+                                  });
+                                },
+                              );
+                            },
+                            onReceiveJson: onReceiveJson,
+                            size: 40,
+                          ),
+                        ),
+                      ),
+                      visible: isShop(),
                     ),
                     Container(
                       padding: EdgeInsets.all(10),
@@ -170,24 +264,54 @@ class _RegisterState extends State<Register> {
                         },
                       ),
                     ),
-                    Visibility(
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Contact number',
-                            ),
-                            keyboardType: TextInputType.phone,
-//                          validator: validateMobile,
-                            onSaved: (value) {
-                              setState(() {
-                                _mobile = value;
-                              });
-                            },
-                          ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Contact number',
                         ),
-                        visible: false),
+                        keyboardType: TextInputType.phone,
+                        validator: validateMobile,
+                        onSaved: (value) {
+                          setState(() {
+                            _mobile = value;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Aadhar number',
+                        ),
+                        keyboardType: TextInputType.phone,
+                        validator: validateAadhar,
+                        onSaved: (value) {
+                          setState(() {
+                            _aadhar = value;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Pincode',
+                        ),
+                        keyboardType: TextInputType.phone,
+                        validator: validatePincode,
+                        onSaved: (value) {
+                          setState(() {
+                            _pincode = value;
+                          });
+                        },
+                      ),
+                    ),
                     Container(
                       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                       child: TextFormField(
@@ -216,80 +340,6 @@ class _RegisterState extends State<Register> {
                         validator: validateConfirmPassword,
                       ),
                     ),
-                    Visibility(
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Aadhar number',
-                            ),
-                            keyboardType: TextInputType.phone,
-//                          validator: validateAadhar,
-                            onSaved: (value) {
-                              setState(() {
-                                _aadhar = value;
-                              });
-                            },
-                          ),
-                        ),
-                        visible: false),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'State',
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty)
-                            return 'Please enter your state';
-                          else
-                            return null;
-                        },
-                        onSaved: (value) {
-                          setState(() {
-                            _state = value;
-                          });
-                        },
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'District',
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty)
-                            return 'Please enter your district';
-                          else
-                            return null;
-                        },
-                        onSaved: (value) {
-                          setState(() {
-                            _state = value;
-                          });
-                        },
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Pincode',
-                        ),
-                        keyboardType: TextInputType.phone,
-                        validator: validatePincode,
-                        onSaved: (value) {
-                          setState(() {
-                            _pincode = value;
-                          });
-                        },
-                      ),
-                    ),
                     Container(
                       height: 50,
                       padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -313,16 +363,17 @@ class _RegisterState extends State<Register> {
                                     state: _state,
                                     district: _district,
                                     pincode: _pincode,
-                                    verificationStatus: 0,);
+                                    verificationStatus: 0,
+                                  );
                                   UserService.registerApiCall(newUser)
                                       .then((code) {
                                     if (code == 200) {
                                       final snackbar = SnackBar(
-                                        content: Text(
-                                            'Registration successful!'),
+                                        content:
+                                            Text('Registration successful!'),
                                       );
-                                      Scaffold.of(context).showSnackBar(
-                                          snackbar);
+                                      Scaffold.of(context)
+                                          .showSnackBar(snackbar);
                                       // Pop screen if successful
                                       Future.delayed(Duration(seconds: 2), () {
                                         Navigator.pop(context);
@@ -332,45 +383,44 @@ class _RegisterState extends State<Register> {
                                         content: Text(
                                             'This Email ID already exists'),
                                       );
-                                      Scaffold.of(context).showSnackBar(
-                                          snackbar);
+                                      Scaffold.of(context)
+                                          .showSnackBar(snackbar);
                                     } else {
                                       final snackbar = SnackBar(
                                         content: Text(
                                             'Registration not successful. Please try again!'),
                                       );
-                                      Scaffold.of(context).showSnackBar(
-                                          snackbar);
+                                      Scaffold.of(context)
+                                          .showSnackBar(snackbar);
                                     }
                                   });
-                                }
-                                else if (_selected == SignAs.shop) {
+                                } else if (_selected == SignAs.shop) {
                                   Shop newShop = new Shop(
-                                    id: 0,
-                                    name: _name,
-                                    email: _email,
-                                    contactNumber: _mobile,
-                                    password: _passKey.currentState.value,
-                                    shopType: 1,
-                                    address: _address,
-                                    landmark: _landmark,
-                                    state: _state,
-                                    district: _district,
-                                    pincode: _pincode,
-                                    verificationStatus: 0,
-                                    shopSize: _shopSize,
-                                    openTime: _openTime,
-                                    closeTime: _closeTime);
+                                      id: 0,
+                                      name: _name,
+                                      email: _email,
+                                      contactNumber: _mobile,
+                                      password: _passKey.currentState.value,
+                                      shopType: 1,
+                                      address: _address,
+                                      landmark: _landmark,
+                                      state: _state,
+                                      district: _district,
+                                      pincode: _pincode,
+                                      verificationStatus: 0,
+                                      shopSize: _shopType,
+                                      openTime: _openTime,
+                                      closeTime: _closeTime);
                                   ShopService.registerApiCall(newShop)
                                       .then((code) {
-                                        print ('Inside Api call');
+                                    print('Inside Api call');
                                     if (code == 200) {
                                       final snackbar = SnackBar(
-                                        content: Text(
-                                            'Registration successful!'),
+                                        content:
+                                            Text('Registration successful!'),
                                       );
-                                      Scaffold.of(context).showSnackBar(
-                                          snackbar);
+                                      Scaffold.of(context)
+                                          .showSnackBar(snackbar);
                                       // Pop screen if successful
                                       Future.delayed(Duration(seconds: 2), () {
                                         Navigator.pop(context);
@@ -380,19 +430,18 @@ class _RegisterState extends State<Register> {
                                         content: Text(
                                             'This Email ID already exists'),
                                       );
-                                      Scaffold.of(context).showSnackBar(
-                                          snackbar);
+                                      Scaffold.of(context)
+                                          .showSnackBar(snackbar);
                                     } else {
                                       final snackbar = SnackBar(
                                         content: Text(
                                             'Registration not successful. Please try again!'),
                                       );
-                                      Scaffold.of(context).showSnackBar(
-                                          snackbar);
+                                      Scaffold.of(context)
+                                          .showSnackBar(snackbar);
                                     }
                                   });
-                                }
-                                else {
+                                } else {
                                   Authority newAuth = new Authority(
                                     id: 0,
                                     name: _name,
@@ -403,16 +452,17 @@ class _RegisterState extends State<Register> {
                                     state: _state,
                                     district: _district,
                                     pincode: _pincode,
-                                    verificationStatus: 0,);
+                                    verificationStatus: 0,
+                                  );
                                   AuthorityService.registerApiCall(newAuth)
                                       .then((code) {
                                     if (code == 200) {
                                       final snackbar = SnackBar(
-                                        content: Text(
-                                            'Registration successful!'),
+                                        content:
+                                            Text('Registration successful!'),
                                       );
-                                      Scaffold.of(context).showSnackBar(
-                                          snackbar);
+                                      Scaffold.of(context)
+                                          .showSnackBar(snackbar);
                                       // Pop screen if successful
                                       Future.delayed(Duration(seconds: 2), () {
                                         Navigator.pop(context);
@@ -422,15 +472,15 @@ class _RegisterState extends State<Register> {
                                         content: Text(
                                             'This Email ID already exists'),
                                       );
-                                      Scaffold.of(context).showSnackBar(
-                                          snackbar);
+                                      Scaffold.of(context)
+                                          .showSnackBar(snackbar);
                                     } else {
                                       final snackbar = SnackBar(
                                         content: Text(
                                             'Registration not successful. Please try again!'),
                                       );
-                                      Scaffold.of(context).showSnackBar(
-                                          snackbar);
+                                      Scaffold.of(context)
+                                          .showSnackBar(snackbar);
                                     }
                                   });
                                 }
