@@ -9,16 +9,12 @@ let createLocalAuth = (data, callback) => {
 	async.auto({
 		localAuth: (cb) => {
 			var dataToSet = {
-				"id":data.id,
 				"name":data.name,
 				"email":data.email,
-				"contactNumber":data.contactNumber,
 				"password":data.password,
+				"mobileNumber":data.mobileNumber,
 				"aadharNumber":data.aadharNumber,
-				"state":data.state,
-				"district":data.district,
 				"pincode":data.pincode,
-				"verificationStatus":data.verificationStatus,
 			}
 			let criteria = {
 				"email":data.email
