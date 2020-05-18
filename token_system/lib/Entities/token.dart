@@ -32,7 +32,7 @@ class Token {
 
   factory Token.fromJson(Map<String, dynamic> json) {
     return Token(
-      tokenId: json['tokenId'] as int,
+      tokenId: json['id'] as int,
       shopId: json['shopId'] as int,
       verified: json['verified'] as int,
       date: json['date'] as String,
