@@ -32,7 +32,7 @@ let updateLocalAuth = (criteria,dataToSet,callback) => {
 	criteria.id ? setData += `id = ${criteria.id}` : true;
 	dataToSet.name ? setData += `, name = '${dataToSet.name}'` : true;
 	dataToSet.email ? setData += `, email = '${dataToSet.email}'` : true;
-	dataToSet.contactNumber ? setData += `, contactNumber = '${dataToSet.contactNumber}'` : true;
+	dataToSet.mobileNumber ? setData += `, mobileNumber = '${dataToSet.mobileNumber}'` : true;
 	dataToSet.password ? setData += `, password = '${dataToSet.password}'` : true;
 	dataToSet.aadharNumber ? setData += `, aadharNumber = '${dataToSet.aadharNumber}'` : true;
 	dataToSet.state ? setData += `, state = '${dataToSet.state}'` : true;

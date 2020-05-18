@@ -27,6 +27,17 @@ let getToken = (criteria, callback) => {
 	dbConfig.getDB().query(`select id, shopId, shopName, date, slotNumber, createdAt, verified, status from tokens where 1 ${conditions}`, callback);
 }
 
+let getNotCancelledToken = (criteria, callback) => {
+    let conditions = "";
+	criteria.userId ? conditions += ` and tokens.userId = ${criteria.userId}` : true;
+	criteria.date ? conditions += ` and tokens.date = '${criteria.date}'` : true;
+	criteria.shopId ? conditions += ` and tokens.shopId = ${criteria.shopId}` : true;
+	criteria.slotNumber ? conditions += ` and tokens.slotNumber = '${criteria.slotNumber}'` : true;
+	conditions += 'and status != 0'
+	console.log(`select id, shopId, shopName, date, slotNumber, createdAt, verified, status from tokens where 1 ${conditions}`);
+	dbConfig.getDB().query(`select id, shopId, shopName, date, slotNumber, createdAt, verified, status from tokens where 1 ${conditions}`, callback);
+}
+
 //service/token.js/getEncryptedToken
 let getEncryptedToken = (criteria, callback) => {
     let conditions = "";
@@ -134,5 +145,6 @@ module.exports = {
 	cancelAndUpdateNextToken : cancelAndUpdateNextToken,
 	verifyToken : verifyToken,
 	checkLive : checkLive,
-	getEncryptedToken : getEncryptedToken
+	getEncryptedToken : getEncryptedToken,
+	getNotCancelledToken : getNotCancelledToken
 }

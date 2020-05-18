@@ -30,7 +30,7 @@ let bookToken = (data, callback) => {
 				"date":data.date,
 				"slotNumber":data.slotNumber,
 			}
-			tokenDAO.getToken(criteria,(err, data) => {
+			tokenDAO.getNotCancelledToken(criteria,(err, data) => {
 				if (data.length === 0) {
 					shopBookingDAO.getShopBookings(criteria_booking,(err, data) => {
 						if (err) {

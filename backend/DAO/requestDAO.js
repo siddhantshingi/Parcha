@@ -9,7 +9,6 @@ let createRequest = (dataToSet, callback) => {
 	dataToSet.capacity ? setData += `, capacity = ${dataToSet.capacity}` : true;
 	dataToSet.openingTime ? setData += `, openingTime = '${dataToSet.openingTime}'` : true;
     dataToSet.closingTime ? setData += `, closingTime = '${dataToSet.closingTime}'` : true;
-    setData += `, createdAt = now()`;
 	console.log(`insert into request set ${setData}`);
 	dbConfig.getDB().query(`insert into request set ${setData}`, callback);
 }
@@ -38,7 +37,7 @@ let getRequestByPincode = (criteria, callback) => {
 let getRequest = (criteria, callback) => {
     let conditions = "";
 	criteria.shopId ? conditions += ` and request.shopId = '${criteria.shopId}'` : true;
-	criteria.createdAT ? conditions += ` and request.createdAT = '${criteria.createdAT}'` : true;
+	criteria.createdAt ? conditions += ` and request.createdAt = '${criteria.createdAt}'` : true;
 	console.log(`select * from request where 1 ${conditions}`);
 	dbConfig.getDB().query(`select * from request where 1 ${conditions}`, callback);
 }
