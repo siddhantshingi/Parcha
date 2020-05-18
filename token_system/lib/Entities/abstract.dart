@@ -2,6 +2,7 @@
 
 abstract class Entity {
   String name;
+  String ownerName;
   String contactNumber;
   String aadharNumber;
   String email;

@@ -5,6 +5,7 @@ class Shop extends Entity {
   String email;
   String contactNumber;
   String name;
+  String ownerName;
   int shopType;
   String address;
   String landmark;
@@ -35,6 +36,7 @@ class Shop extends Entity {
     this.email,
     this.contactNumber,
     this.name,
+    this.ownerName,
     this.shopType,
     this.address,
     this.landmark,

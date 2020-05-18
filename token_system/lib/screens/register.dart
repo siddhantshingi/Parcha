@@ -20,6 +20,7 @@ class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   var _passKey = GlobalKey<FormFieldState>();
   String _name = '';
+  String _ownerName = '';
   String _email = '';
   String _mobile = '----------';
   String _aadhar = '------------';
@@ -181,7 +182,7 @@ class _RegisterState extends State<Register> {
                           },
                           onSaved: (value) {
                             setState(() {
-                              _name = value;
+                              _ownerName = value;
                             });
                           },
                         ),
@@ -391,6 +392,7 @@ class _RegisterState extends State<Register> {
                                   Shop newShop = new Shop(
                                       id: 0,
                                       name: _name,
+                                      ownerName: _ownerName,
                                       email: _email,
                                       contactNumber: _mobile,
                                       password: _passKey.currentState.value,
