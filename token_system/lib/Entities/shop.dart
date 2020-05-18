@@ -23,6 +23,7 @@ class Shop extends Entity {
   int mobileVerification;
   int authVerification;
 
+<<<<<<< HEAD
   Shop(
       {this.id,
       this.shopName,

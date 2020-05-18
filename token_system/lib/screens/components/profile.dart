@@ -22,12 +22,12 @@ class ProfileScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.blueGrey,
                 borderRadius: BorderRadius.vertical(
-                  bottom: Radius.elliptical(600.0, 100.0),
+                  bottom: Radius.elliptical(600.0, 50.0),
                 ),
               ),
               alignment: Alignment.topCenter,
               child: SizedBox(
-                height: 200,
+                height: 180,
                 child: Container(
                   padding: EdgeInsets.all(20),
                   alignment: Alignment.topCenter,
@@ -144,7 +144,8 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           Expanded(
                             flex: 6,
-                            child: Text(user.address),
+                            child: Text(
+                                user.address == null ? 'NA' : user.address),
                           ),
                         ],
                       ),
@@ -164,7 +165,8 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           Expanded(
                             flex: 6,
-                            child: Text(user.landmark),
+                            child: Text(
+                                user.landmark == null ? 'NA' : user.landmark),
                           ),
                         ],
                       ),

@@ -21,6 +21,7 @@ class EditProfileScreen extends StatefulWidget {
 class _EditScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   String _name = '';
+  String _ownerName = '';
   String _mobile = '----------';
   String _aadhar = '------------';
   String _pincode = '';
@@ -64,12 +65,12 @@ class _EditScreenState extends State<EditProfileScreen> {
               decoration: BoxDecoration(
                 color: Colors.blueGrey,
                 borderRadius: BorderRadius.vertical(
-                  bottom: Radius.elliptical(600.0, 100.0),
+                  bottom: Radius.elliptical(600.0, 50.0),
                 ),
               ),
               alignment: Alignment.topCenter,
               child: SizedBox(
-                height: 200,
+                height: 180,
                 child: Container(
                   padding: EdgeInsets.all(20),
                   alignment: Alignment.topCenter,
@@ -84,8 +85,8 @@ class _EditScreenState extends State<EditProfileScreen> {
           ]),
           Container(
             padding: EdgeInsets.only(
-              top: 150,
-              bottom: 80,
+              top: 120,
+              bottom: 50,
             ),
             child: Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -103,6 +104,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                             labelText:
                                 widget.userType == 1 ? 'Shop Name' : 'Name',
                           ),
+                          initialValue: widget.user.name,
                           validator: (value) {
                             if (value.isEmpty)
                               return widget.userType == 1
@@ -126,6 +128,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                               border: OutlineInputBorder(),
                               labelText: 'Shop Owner Name',
                             ),
+                            initialValue: widget.user.ownerName,
                             validator: (value) {
                               if (value.isEmpty)
                                 return 'Please enter your name';
@@ -134,7 +137,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                             },
                             onSaved: (value) {
                               setState(() {
-                                _name = value;
+                                _ownerName = value;
                               });
                             },
                           ),
@@ -148,6 +151,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                             border: OutlineInputBorder(),
                             labelText: 'Contact number',
                           ),
+                          initialValue: widget.user.contactNumber,
                           keyboardType: TextInputType.phone,
                           validator: validateMobile,
                           onSaved: (value) {
@@ -164,6 +168,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                             border: OutlineInputBorder(),
                             labelText: 'Aadhar number',
                           ),
+                          initialValue: widget.user.aadharNumber,
                           keyboardType: TextInputType.phone,
                           validator: validateAadhar,
                           onSaved: (value) {
@@ -180,6 +185,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                             border: OutlineInputBorder(),
                             labelText: 'Pincode',
                           ),
+                          initialValue: widget.user.pincode,
                           keyboardType: TextInputType.phone,
                           validator: validatePincode,
                           onSaved: (value) {
@@ -197,6 +203,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                               border: OutlineInputBorder(),
                               labelText: 'Address',
                             ),
+                            initialValue: widget.user.address,
                             onSaved: (value) {
                               setState(() {
                                 _address = value;
@@ -214,6 +221,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                               border: OutlineInputBorder(),
                               labelText: 'Landmark',
                             ),
+                            initialValue: widget.user.landmark,
                             onSaved: (value) {
                               setState(() {
                                 _landmark = value;
