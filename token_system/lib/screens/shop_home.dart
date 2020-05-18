@@ -152,6 +152,7 @@ class _ShopHomeState extends State<ShopHome> {
         builder: (context) => VerifyScreen(
           shop: widget.shop,
           tn: _tabNavigatorKeys[3],
+          keyStorage: KeyStorage(),
         ),
       );
       return builder.builder;

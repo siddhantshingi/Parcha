@@ -127,8 +127,26 @@ let getShop = (data, callback) => {
 	})
 }
 
+/***API to get the public key */
+let getPublicKey = (data, callback) => {
+	async.auto({
+		pubKey: (cb) => {
+			let fs = require("fs"),
+			path = require("path");
+			var absolutePath = path.resolve("public.pem");
+    		var publicKey = fs.readFileSync(absolutePath, "utf8");
+			cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": publicKey });
+			return;
+		}
+	}, (err, response) => {
+		console.log("statement before calllback");
+		callback(response.pubKey);
+	})
+}
+
 module.exports = {
 	createShop : createShop,
 	updateShop : updateShop,
-	getShop : getShop
+	getShop : getShop,
+	getPublicKey: getPublicKey
 };

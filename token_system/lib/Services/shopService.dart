@@ -32,4 +32,10 @@ class ShopService {
     final responseJson = json.decode(response.body);
     return responseJson;
   }
+
+  static getPublicKey() async {
+    final response = await http.get(server + shopUrl + "/get-public-key");
+    final responseJson = json.decode(response.body);
+    return responseJson;
+  }
 }
