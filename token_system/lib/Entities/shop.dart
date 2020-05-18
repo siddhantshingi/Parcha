@@ -18,12 +18,10 @@ class Shop extends Entity {
   String state;
   String district;
   String pincode;
-
 //  int emailVerification;
   int mobileVerification;
   int authVerification;
 
-<<<<<<< HEAD
   Shop(
       {this.id,
       this.shopName,
