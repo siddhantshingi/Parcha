@@ -79,6 +79,7 @@ class _ShopHomeState extends State<ShopHome> {
         appBar: AppBar(
           title: const Text('TokenDown'),
           backgroundColor: Colors.blueGrey,
+          elevation: 0,
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.power_settings_new),
@@ -159,7 +160,10 @@ class _ShopHomeState extends State<ShopHome> {
       return builder.builder;
     }
     Builder builder = Builder(
-      builder: (context) => ProfileScreen(shop: widget.shop),
+      builder: (context) => ShopProfile(
+        shop: widget.shop,
+        tn: _tabNavigatorKeys[0],
+      ),
     );
     return builder.builder;
   }

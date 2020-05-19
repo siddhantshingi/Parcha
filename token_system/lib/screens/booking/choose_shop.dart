@@ -7,7 +7,6 @@ import 'package:token_system/Entities/shop.dart';
 import 'package:token_system/Services/shopService.dart';
 import 'package:token_system/components/tab_navigator.dart';
 import 'package:token_system/screens/booking/book_token.dart';
-//import '../shop_list.dart';
 
 class ChooseShop extends StatelessWidget {
   final User user;

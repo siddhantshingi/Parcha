@@ -1,90 +1,141 @@
-class Shop {
+import 'package:token_system/Entities/abstract.dart';
+
+class Shop extends Entity {
   int id;
+  String shopName;
+  String ownerName;
   String email;
-  String contactNumber;
-  String name;
-  int shopType;
+  String mobileNumber;
+  String aadhaarNumber;
   String address;
   String landmark;
-  String password;
+  String shopType;
+  String currOpeningTime;
+  String currClosingTime;
+  int capacityApp;
+  String openingTimeApp;
+  String closingTimeApp;
   String state;
   String district;
   String pincode;
-  int verificationStatus;
-  int shopSize=0;
-  String closeTime='08 PM';
-  String openTime='11 AM';
-  int verifierId=-1;
+//  int emailVerification;
+  int mobileVerification;
+  int authVerification;
 
-  // Ctor : For checking only
-  Shop.forUser({
-    this.id,
-    this.name,
-    this.openTime,
-    this.closeTime,
-    this.address,
-    this.landmark,
-    this.contactNumber,
-    this.pincode,
-  });
+  Shop(
+      {this.id,
+      this.shopName,
+      this.ownerName,
+      this.email,
+      this.mobileNumber,
+      this.aadhaarNumber,
+      this.address,
+      this.landmark,
+      this.shopType,
+      this.currOpeningTime,
+      this.currClosingTime,
+      this.capacityApp,
+      this.openingTimeApp,
+      this.closingTimeApp,
+      this.state,
+      this.district,
+      this.pincode,
+      this.mobileVerification,
+      this.authVerification});
 
-  Shop({
-    this.id,
-    this.email,
-    this.contactNumber,
-    this.name,
-    this.shopType,
-    this.address,
-    this.landmark,
-    this.password,
-    this.state,
-    this.district,
-    this.pincode,
-    this.verificationStatus,
-    this.shopSize,
-    this.closeTime,
-    this.openTime,
-    this.verifierId
-  });
-
-  Map<String, dynamic> toJson() =>
-      {
-        "id": this.id.toString(),
-        "name": this.name,
+  Map<String, dynamic> registerToJson(String password, int shopTypeId) => {
+        "shopName": this.shopName,
+        "ownerName": this.ownerName,
         "email": this.email,
-        "contactNumber": this.contactNumber,
-        "shopType": this.shopType.toString(),
+        "password": password,
+        "mobileNumber": this.mobileNumber,
+        "aadhaarNumber": this.aadhaarNumber,
         "address": this.address,
         "landmark": this.landmark,
-        "password": this.password,
-        "state": this.state,
-        "district": this.district,
-        "pincode": this.pincode,
-        "verificationStatus": this.verificationStatus.toString(),
-        "shopSize": this.shopSize.toString(),
-        "closeTime": this.closeTime,
-        "openTime": this.openTime,
-        "verifierId":this.verifierId.toString()
+        "shopTypeId": shopTypeId.toString(),
+        "shopType": this.shopType,
+        "pincode": this.pincode
       };
-  factory Shop.fromJson(Map<String, dynamic> json) {
+
+  Map<String, dynamic> updateToJson(
+          {String shopName,
+          String ownerName,
+          String mobileNumber,
+          String aadhaarNumber,
+          String address,
+          String landmark,
+          int shopTypeId,
+          String shopType,
+          String currOpeningTime,
+          String currClosingTime,
+          String pincode}) =>
+      {
+        "id": this.id.toString(),
+        "shopName": shopName ?? this.shopName,
+        "ownerName": ownerName ?? this.ownerName,
+        "mobileNumber": mobileNumber ?? this.mobileNumber,
+        "aadhaarNumber": aadhaarNumber ?? this.aadhaarNumber,
+        "address": address ?? this.address,
+        "landmark": landmark ?? this.landmark,
+        "shopTypeId": shopTypeId?.toString() ?? "0",
+        "shopType": shopType ?? this.shopType,
+        "currOpeningTime": currOpeningTime ?? this.currOpeningTime,
+        "currClosingTime": currClosingTime ?? this.currClosingTime,
+        "pincode": pincode ?? this.pincode
+      };
+
+  factory Shop.verifyFromJson(Map<String, dynamic> json, String email) {
     return Shop(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      email: json['email'] as String,
-      contactNumber: json['contactNumber'] as String,
-      shopType: json['shopType'] as int,
-      address: json['address'] as String,
-      landmark: json['landmark'] as String,
-      password: json['password'] as String,
-      state: json['state'] as String,
-      district: json['district'] as String,
-      pincode: json['pincode'] as String,
-      verificationStatus: json['verificationStatus'] as int,
-      shopSize: json['shopSize'] as int,
-      closeTime: json['closeTime'] as String,
-      openTime: json['openTime'] as String,
-      verifierId: json['verifierId'] as int
-    );
+        id: json['id'] as int,
+        shopName: json['shopName'] as String,
+        ownerName: json['ownerName'] as String,
+        email: json['email'] as String,
+        mobileNumber: json['mobileNumber'] as String,
+        aadhaarNumber: json['aadhaarNumber'] as String,
+        address: json['address'] as String,
+        landmark: json['landmark'] as String,
+        shopType: json['shopType'] as String,
+        currOpeningTime: json['currOpeningTime'] as String,
+        currClosingTime: json['currClosingTime'] as String,
+        capacityApp: json['capacityApp'] as int,
+        openingTimeApp: json['openingTimeApp'] as String,
+        closingTimeApp: json['closingTimeApp'] as String,
+        state: json['state'] as String,
+        district: json['district'] as String,
+        pincode: json['pincode'] as String,
+        mobileVerification: json['mobileVerification'] as int,
+        authVerification: json['authVerification'] as int);
   }
 
+  factory Shop.shopUserFromJson(Map<String, dynamic> json) {
+    return Shop(
+        id: json['id'] as int,
+        shopName: json['shopName'] as String,
+        ownerName: json['ownerName'] as String,
+        mobileNumber: json['mobileNumber'] as String,
+        address: json['address'] as String,
+        landmark: json['landmark'] as String,
+        shopType: json['shopType'] as String,
+        currOpeningTime: json['currOpeningTime'] as String,
+        currClosingTime: json['currClosingTime'] as String,
+        capacityApp: json['capacityApp'] as int);
+  }
+
+  factory Shop.shopAuthFromJson(Map<String, dynamic> json, String email) {
+    return Shop(
+        id: json['id'] as int,
+        shopName: json['shopName'] as String,
+        ownerName: json['ownerName'] as String,
+        mobileNumber: json['mobileNumber'] as String,
+        aadhaarNumber: json['aadhaarNumber'] as String,
+        address: json['address'] as String,
+        landmark: json['landmark'] as String,
+        shopType: json['shopType'] as String,
+        capacityApp: json['capacityApp'] as int,
+        openingTimeApp: json['openingTimeApp'] as String,
+        closingTimeApp: json['closingTimeApp'] as String,
+//        emailVerification: json['emailVerification'] as int,
+        mobileVerification: json['mobileVerification'] as int,
+        authVerification: json['authVerification'] as int);
+  }
 }

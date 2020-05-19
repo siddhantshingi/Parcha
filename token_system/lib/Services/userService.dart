@@ -1,32 +1,38 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:token_system/config/server_config.dart';
 import 'package:token_system/Entities/user.dart';
+import 'package:token_system/Entities/misc.dart';
 
 class UserService {
   static String userUrl = "user";
-  static String tokenUrl = "token";
 
-  static registerApiCall(User user) async {
+  static registerApi(User user, String password) async {
     final response =
-        await http.post(server + userUrl + "/create-user", body: user.toJson());
-    var responseJson = json.decode(response.body);
-    return responseJson['statusCode'];
+        await http.post(server + userUrl + "/create-user", body: user.registerToJson(password));
+    Misc.result(response, true);
   }
 
-  static verifyApiCall(String email) async {
+  static verifyApi(String email, String password) async {
     final response =
-        await http.get(server + userUrl + "/get-user-by-email?email=" + email);
-    final responseJson = json.decode(response.body);
-    return responseJson;
+        await http.get(server + userUrl + "/verify-user?email=" + email + '&password=' + password);
+    Misc.result(response, false);
   }
 
-  static getTokensApiCall(User user) async {
-    final response = await http
-        .get(server + tokenUrl + "/get-token?userId=" + user.id.toString());
-    final responseJson = json.decode(response.body);
-    return responseJson;
+  static updateProfileApi(User user,
+      {String name, String mobileNumber, String aadhaarNumber, String pincode}) async {
+    final response = await http.put(server + userUrl + "/update-user",
+        body: user.updateToJson(
+            name: name,
+            mobileNumber: mobileNumber,
+            aadhaarNumber: aadhaarNumber,
+            pincode: pincode));
+    Misc.result(response, true);
+  }
+
+  static updatePasswordApi(int id, String oldPassword, String newPassword) async {
+    final response = await http.put(server + userUrl + "/update-user-password",
+        body: Misc.passwordToJson(id, oldPassword, newPassword));
+    Misc.result(response, true);
   }
   static getSignedTokenApiCall(int tokenId) async {
     final response = await http

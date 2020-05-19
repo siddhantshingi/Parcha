@@ -1,55 +1,57 @@
-class User {
+import 'package:token_system/Entities/abstract.dart';
+
+class User extends Entity {
   int id;
   String name;
   String email;
-  String contactNumber = '----------';
-  String password;
-  String aadharNumber = '------------';
+  String mobileNumber;
+  String aadhaarNumber;
   String state;
   String district;
   String pincode;
-  int verificationStatus=0;
+  int mobileVerification;
 
   User({
     this.id,
     this.name,
     this.email,
-    this.contactNumber,
-    this.password,
-    this.aadharNumber,
+    this.mobileNumber,
+    this.aadhaarNumber,
     this.state,
     this.district,
     this.pincode,
-    this.verificationStatus,
+    this.mobileVerification,
   });
 
-  Map<String, dynamic> toJson() =>
-  {
-    "id": this.id.toString(),
-    "name": this.name,
-    "email": this.email,
-    "contactNumber": this.contactNumber,
-    "password": this.password,
-    "aadharNumber": this.aadharNumber,
-    "state": this.state,
-    "district": this.district,
-    "pincode": this.pincode,
-    "verificationStatus": this.verificationStatus.toString()
-  };
+  Map<String, dynamic> registerToJson(String password) => {
+        "name": this.name,
+        "email": this.email,
+        "mobileNumber": this.mobileNumber,
+        "password": password,
+        "aadhaarNumber": this.aadhaarNumber,
+        "pincode": this.pincode,
+      };
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  Map<String, dynamic> updateToJson(
+          {String name, String mobileNumber, String aadhaarNumber, String pincode}) =>
+      {
+        "id": this.id.toString(),
+        "name": name ?? this.name,
+        "mobileNumber": mobileNumber ?? this.mobileNumber,
+        "aadhaarNumber": aadhaarNumber ?? this.aadhaarNumber,
+        "pincode": pincode ?? this.pincode,
+      };
+
+  factory User.verifyFromJson(Map<String, dynamic> json, String email) {
     return User(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      email: json['email'] as String,
-      contactNumber: json['contactNumber'] as String,
-      password: json['password'] as String,
-      aadharNumber: json['aadharNumber'] as String,
-      state: json['state'] as String,
-      district: json['district'] as String,
-      pincode: json['pincode'] as String,
-      verificationStatus: json['verificationStatus'] as int,
-    );
+        id: json['id'] as int,
+        name: json['name'] as String,
+        email: email,
+        mobileNumber: json['mobileNumber'] as String,
+        aadhaarNumber: json['aadhaarNumber'] as String,
+        state: json['state'] as String,
+        district: json['district'] as String,
+        pincode: json['pincode'] as String,
+        mobileVerification: json['mobileVerification'] as int);
   }
-
 }
