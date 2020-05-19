@@ -23,8 +23,8 @@ let getToken = (criteria, callback) => {
 	criteria.date ? conditions += ` and tokens.date = '${criteria.date}'` : true;
 	criteria.shopId ? conditions += ` and tokens.shopId = ${criteria.shopId}` : true;
 	criteria.slotNumber ? conditions += ` and tokens.slotNumber = '${criteria.slotNumber}'` : true;
-	console.log(`select id, shopId, shopName, date, slotNumber, createdAt, verified, status from tokens where 1 ${conditions}`);
-	dbConfig.getDB().query(`select id, shopId, shopName, date, slotNumber, createdAt, verified, status from tokens where 1 ${conditions}`, callback);
+	console.log(`select id, shopId, shopName, date, slotNumber, createdAt, verified, status from tokens where 1 ${conditions} ORDER BY createdAt DESC`);
+	dbConfig.getDB().query(`select id, shopId, shopName, date, slotNumber, createdAt, verified, status from tokens where 1 ${conditions} ORDER BY createdAt DESC`, callback);
 }
 
 let getNotCancelledToken = (criteria, callback) => {
