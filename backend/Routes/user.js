@@ -17,6 +17,13 @@ router.post('/create-user', (req, res) => {
 	});
 });
 
+/**Api to create user */
+router.get('/verify-user', (req, res) => {
+	userService.verifyUser(req.body, (data) => {
+		res.send(data);
+	});
+});
+
 // /**Api to update user */
 router.put('/update-user', (req, res) => {
 	userService.updateUser(req.body, (data) => {
@@ -24,30 +31,16 @@ router.put('/update-user', (req, res) => {
 	});
 });
 
+// /**Api to update user password */
+router.put('/update-user-password', (req, res) => {
+	userService.updateUserPassword(req.body, (data) => {
+		res.send(data);
+	});
+});
+
 // /**Api to delete the user */
 router.delete('/delete-user', (req, res) => {
 	userService.deleteUser(req.query, (data) => {
-		res.send(data);
-	});
-});
-
-/**Api to get the list of user */
-router.get('/get-user', (req, res) => {
-	userService.getUser(req.query, (data) => {
-		res.send(data);
-	});
-});
-
-// /**API to get the user by id... */
-router.get('/get-user-by-id', (req, res) => {
-	userService.getUserById(req.query, (data) => {
-		res.send(data);
-	});
-});
-
-// /**API to get the user by email... */
-router.get('/get-user-by-email', (req, res) => {
-	userService.getUserByEmail(req.query, (data) => {
 		res.send(data);
 	});
 });

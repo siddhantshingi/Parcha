@@ -24,8 +24,8 @@ function generateKeys(modulusLength) {
     fs.writeFileSync('public.pem', publicKey)
 }
 let initialize = () => {
-	mysqlConfig.getDB().query("create table IF NOT EXISTS tokens (id INT auto_increment primary key, verified INT, date DATE, userId INT, shopId INT, startTime TIME, duration TIME, status INT, createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, encryptedId VARCHAR(684))");
-	console.log("table created if not EXISTS");
+	mysqlConfig.getDB().query("create table IF NOT EXISTS tokens (id INT auto_increment primary key, shopId INT, shopName VARCHAR(255), userId INT, userName VARCHAR(255), userEmail VARCHAR(255), date DATE, slotNumber INT, createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, verified INT DEFAULT 0, status INT)");
+	console.log("token created if not EXISTS");
 	if (!fs.existsSync("public.pem") || !fs.existsSync("private.pem")) {
 	    generateKeys(4096);
 	    console.log("Server private and public key generated");

@@ -31,4 +31,26 @@ router.get('/get-request-list', (req, res) => {
 	});
 });
 
+/**API to get pending requests by pincode... */
+router.get('/get-pending-requests', (req, res) => {
+	requestService.getPendingRequests(req.query, (data) => {
+		res.send(data);
+	});
+});
+
+/**API to get requests by shopId... */
+router.get('/get-requests-by-shopId', (req, res) => {
+	requestService.getRequestByShopId(req.query, (data) => {
+		res.send(data);
+	});
+});
+
+/**API to get requests by authId... */
+router.get('/get-requests-by-authId', (req, res) => {
+	requestService.getRequestByAuthId(req.query, (data) => {
+		res.send(data);
+	});
+});
+
+
 module.exports = router;
