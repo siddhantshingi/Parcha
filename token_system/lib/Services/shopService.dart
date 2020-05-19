@@ -75,4 +75,8 @@ class ShopService {
     Misc.result(response, true);
   }
 
+  static getPublicKey() async {
+    final response = await http.get(server + shopUrl + "/get-public-key");
+    Misc.result(response, false);
+  }
 }

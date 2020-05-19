@@ -35,7 +35,7 @@ class Token {
       };
 
   Map<String, dynamic> cancelToJson() => {"tokenId": this.id.toString()};
-
+  
   Map<String, dynamic> verifyToJson() => {
         "shopId": this.shopId.toString(),
         "shopName": this.shopName,

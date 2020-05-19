@@ -26,19 +26,20 @@ let statusMessage = {
 let crypto = require("crypto"),
 fs = require("fs"),
 path = require("path");
-let privateKey = fs.readFileSync(path.resolve("private.pem"), "utf8");
-let encryptStringWithRsaPrivateKey = function(toEncrypt) {
-    // var absolutePath = path.resolve("private.pem");
-    // var privateKey = fs.readFileSync(absolutePath, "utf8");
-    // console.log(privateKey.toString())
-    var buffer = new Buffer.from(toEncrypt);
-    // var encrypted = crypto.privateEncrypt(privateKey, buffer);
-    var encrypted = crypto.privateEncrypt({
-            key: privateKey.toString(),
-            passphrase: "mySecret",
-        }, buffer);
-
-    return encrypted.toString("base64");
+// let privateKey = fs.readFileSync(path.resolve("private.pem"), "utf8");
+let encryptStringWithRsaPrivateKey = function(toSign) {
+    var absolutePath = path.resolve("private.pem");
+    var privateKey = fs.readFileSync(absolutePath, "utf8");
+    var privateKeyWithPassphrase = crypto.createPrivateKey({
+    key: privateKey,
+    format: 'pem',
+    passphrase: "mySecret",
+  });
+    var signer = crypto.createSign('sha256');
+	signer.update(toSign);
+	var sign = signer.sign(privateKeyWithPassphrase,'base64');
+    var output = toSign +"\n"+sign;
+    return output;
 };
 
 module.exports = {

@@ -65,6 +65,7 @@ class UserHistory extends StatelessWidget {
                 pincode: tokens[index].pincode,
                 status: tokens[index].status,
                 bookAgain: bookAgain,
+                tokenId: tokens[index].tokenId
               );
             },
           );

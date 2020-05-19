@@ -1,5 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:token_system/Services/userService.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:token_system/screens/qr_code_display.dart';
 
 class TokenCard extends StatelessWidget {
   final String date;
@@ -8,6 +11,7 @@ class TokenCard extends StatelessWidget {
   final String pincode;
   final int status;
   final VoidCallback bookAgain;
+  final int tokenId;
 
   TokenCard(
       {Key key,
@@ -16,7 +20,8 @@ class TokenCard extends StatelessWidget {
       @required this.shopName,
       @required this.pincode,
       @required this.status,
-      @required this.bookAgain})
+      @required this.bookAgain,
+      @required this.tokenId})
       : super(key: key);
 
   @override
@@ -83,6 +88,23 @@ class TokenCard extends StatelessWidget {
                     backgroundColor: Colors.grey[400],
                     label: Text(statusText),
                     padding: EdgeInsets.all(5),
+                  ),
+                ),
+                ButtonTheme(
+                  padding: EdgeInsets.all(10),
+                  child: FlatButton(
+                    onPressed: () async {
+                      print("fetch token");
+                      print(this.tokenId);
+                      String signedToken = await UserService.getSignedTokenApiCall(this.tokenId).then((json){
+                        return json["result"];
+                      });
+                      print(signedToken);
+                      await Navigator.push(context, MaterialPageRoute(builder: (context) => QrCodeScreen(message: signedToken)));
+
+                    },
+                    textColor: Colors.blue,
+                    child: const Text('Download Token'),
                   ),
                 ),
                 ButtonTheme(
