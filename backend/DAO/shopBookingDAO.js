@@ -16,15 +16,12 @@ let addShopTimeSlot = (dataToSet, callback) => {
 	let setData = "";
 	dataToSet.shopId ? setData += `shopId = ${dataToSet.shopId}` : true;
 	dataToSet.date ? setData += `, date = '${dataToSet.date}'` : true;
-	dataToSet.startTime ? setData += `, startTime = '${dataToSet.startTime}'` : true;
-	dataToSet.duration ? setData += `, duration = '${dataToSet.duration}'` : true;
+	dataToSet.slotNumber ? setData += `, slotNumber = ${dataToSet.slotNumber}` : true;
 	if (typeof dataToSet.capacityLeft !== 'undefined' && dataToSet.capacityLeft !== null) 
 		setData += `, capacityLeft = ${dataToSet.capacityLeft}`;
-	if (typeof dataToSet.tokensVerified !== 'undefined' && dataToSet.tokensVerified !== null) 
-		setData += `, tokensVerified = ${dataToSet.tokensVerified}`;
-	if (typeof dataToSet.status !== 'undefined' && dataToSet.status !== null) 
-		setData += `, status = ${dataToSet.status}`;
-	// console.log(`insert into shopBookings set ${setData}`);
+	if (typeof dataToSet.maxCapacity !== 'undefined' && dataToSet.maxCapacity !== null) 
+		setData += `, maxCapacity = ${dataToSet.maxCapacity}`;
+	console.log(`insert into shopBookings set ${setData}`);
 	dbConfig.getDB().query(`insert into shopBookings set ${setData}`, callback);
 }
 

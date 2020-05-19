@@ -98,12 +98,18 @@ let getShopByEmail = (criteria, callback) => {
 	dbConfig.getDB().query(`select * from shops where 1 ${conditions}`, callback);
 }
 
-let getShopWithShopSize = (criteria, callback) => {
-    let conditions = "";
-	if (typeof criteria.verificationStatus !== 'undefined' && criteria.verificationStatus !== null) 
-		conditions += `and verificationStatus = ${criteria.verificationStatus}`;
-	console.log(`select shops.id, shops.shopSize, shops.openTime, shops.closeTime, shopSizes.capacity, shopSizes.slotDuration, shopSizes.bufferDuration from shops left join shopSizes on shops.shopSize = shopSizes.id where 1 ${conditions}`);
-	dbConfig.getDB().query(`select shops.id, shops.shopSize, shops.openTime, shops.closeTime, shopSizes.capacity, shopSizes.slotDuration, shopSizes.bufferDuration from shops left join shopSizes on shops.shopSize = shopSizes.id where 1 ${conditions}`, callback);
+//models/Periodic.js
+let getShopWithPrevBookings = (criteria, callback) => {
+	let conditions = "";
+	console.log(`select shops.id, shops.openingTimeApp, shops.closingTimeApp, shops.capacityApp from shops where id in (select shopId from shopBookings where date = curDate() or date = curdate() + interval 1 day) and authVerification = 1`);
+	dbConfig.getDB().query(`select shops.id, shops.openingTimeApp, shops.closingTimeApp, shops.capacityApp from shops where id in (select shopId from shopBookings where date = curDate() or date = curdate() + interval 1 day) and authVerification = 1`,callback);
+}
+
+//models/Periodic.js
+let getShopWithoutBookings = (criteria, callback) => {
+	let conditions = "";
+	console.log(`select shops.id, shops.openingTimeApp, shops.closingTimeApp, shops.capacityApp from shops where id not in (select shopId from shopBookings where date = curDate() or date = curdate() + interval 1 day) and authVerification = 1`);
+	dbConfig.getDB().query(`select shops.id, shops.openingTimeApp, shops.closingTimeApp, shops.capacityApp from shops where id not in (select shopId from shopBookings where date = curDate() or date = curdate() + interval 1 day) and authVerification = 1`,callback);
 }
 
 module.exports = {
@@ -114,5 +120,6 @@ module.exports = {
 	getShopById : getShopById,
 	getShopForUser : getShopForUser,
 	getShopForAuth : getShopForAuth,
-	getShopWithShopSize : getShopWithShopSize
+	getShopWithPrevBookings : getShopWithPrevBookings,
+	getShopWithoutBookings : getShopWithoutBookings
 }
