@@ -30,4 +30,11 @@ class TokenService {
         body: Misc.verifyTokenToJson(email, date, slotNumber, shopId: _shopId));
     Misc.result(response, true);
   }
+
+  static getSignedTokenApiCall(int tokenId) async {
+    final response = await http
+        .get(server + tokenUrl + "/get-encrypted-token?tokenId=" + tokenId.toString());
+    Misc.result(response, false);
+  }
+
 }

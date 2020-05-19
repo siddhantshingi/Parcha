@@ -34,10 +34,4 @@ class UserService {
         body: Misc.passwordToJson(id, oldPassword, newPassword));
     Misc.result(response, true);
   }
-  static getSignedTokenApiCall(int tokenId) async {
-    final response = await http
-        .get(server + tokenUrl + "/get-encrypted-token?tokenId=" + tokenId.toString());
-    final responseJson = json.decode(response.body);
-    return responseJson;
-  }
 }
