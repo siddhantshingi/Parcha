@@ -10,16 +10,37 @@ router.post('/create-shop', (req, res) => {
 	});
 });
 
-// /**Api to update shop */
+// /**Api to update shop profile*/
 router.put('/update-shop', (req, res) => {
 	shopService.updateShop(req.body, (data) => {
 		res.send(data);
 	});
 });
 
-/**Api to get the list of user */
-router.get('/get-shop', (req, res) => {
-	shopService.getShop(req.query, (data) => {
+// /**Api to update shop password*/
+router.put('/update-shop-password', (req, res) => {
+	shopService.updateShopPassword(req.body, (data) => {
+		res.send(data);
+	});
+});
+
+/**Api to verify a shop */
+router.get('/verify-shop', (req, res) => {
+	shopService.verifyShop(req.query, (data) => {
+		res.send(data);
+	});
+});
+
+/**Api to get the list of shops for user */
+router.get('/get-shop-for-user', (req, res) => {
+	shopService.getShopForUser(req.query, (data) => {
+		res.send(data);
+	});
+});
+
+/**Api to get the list of shops for user */
+router.get('/get-shop-for-auth', (req, res) => {
+	shopService.getShopForAuth(req.query, (data) => {
 		res.send(data);
 	});
 });
