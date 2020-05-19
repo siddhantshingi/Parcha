@@ -70,7 +70,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         Expanded(
                           flex: 6,
-                          child: Text(user.contactNumber),
+                          child: Text(user.mobileNumber),
                         ),
                       ],
                     ),
@@ -122,14 +122,14 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           Expanded(
                             flex: 6,
-                            child: Text(user.aadharNumber == null
+                            child: Text(user.aadhaarNumber == null
                                 ? 'NA'
-                                : user.aadharNumber),
+                                : user.aadhaarNumber),
                           ),
                         ],
                       ),
                     ),
-                    visible: user.aadharNumber == null,
+                    visible: user.aadhaarNumber == null,
                   ),
                   Visibility(
                     child: Padding(

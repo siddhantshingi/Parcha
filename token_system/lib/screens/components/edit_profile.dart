@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:token_system/Entities/abstract.dart';
-import 'package:token_system/Entities/authority.dart';
-import 'package:token_system/Entities/shop.dart';
-import 'package:token_system/Entities/user.dart';
 import 'package:token_system/Services/authorityService.dart';
 import 'package:token_system/Services/shopService.dart';
 import 'package:token_system/Services/userService.dart';
@@ -11,8 +8,7 @@ class EditProfileScreen extends StatefulWidget {
   final Entity user;
   final int userType;
 
-  EditProfileScreen({Key key, @required this.user, this.userType: 0})
-      : super(key: key);
+  EditProfileScreen({Key key, @required this.user, this.userType: 0}) : super(key: key);
 
   @override
   _EditScreenState createState() => _EditScreenState();
@@ -23,12 +19,21 @@ class _EditScreenState extends State<EditProfileScreen> {
   String _name = '';
   String _ownerName = '';
   String _mobile = '----------';
-  String _aadhar = '------------';
+  String _aadhaar = '------------';
   String _pincode = '';
 
   // Required for Shops
   String _address = 'XXX';
   String _landmark = 'XXX';
+
+  String successMessage(int statusCode) {
+    if (statusCode == 200)
+      return 'Profile updated.';
+    else if (statusCode == 412)
+      return 'Bad pincode!';
+    else
+      return 'Update failed!';
+  }
 
   String validateMobile(String value) {
     // Indian Mobile number are of 10 digit only
@@ -38,7 +43,7 @@ class _EditScreenState extends State<EditProfileScreen> {
       return null;
   }
 
-  String validateAadhar(String value) {
+  String validateAadhaar(String value) {
     // Indian Mobile number are of 10 digit only
     if (value == null) return null;
     if (value.length != 12)
@@ -101,8 +106,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                         child: TextFormField(
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText:
-                                widget.userType == 1 ? 'Shop Name' : 'Name',
+                            labelText: widget.userType == 1 ? 'Shop Name' : 'Name',
                           ),
                           initialValue: widget.user.name,
                           validator: (value) {
@@ -151,7 +155,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                             border: OutlineInputBorder(),
                             labelText: 'Contact number',
                           ),
-                          initialValue: widget.user.contactNumber,
+                          initialValue: widget.user.mobileNumber,
                           keyboardType: TextInputType.phone,
                           validator: validateMobile,
                           onSaved: (value) {
@@ -168,12 +172,12 @@ class _EditScreenState extends State<EditProfileScreen> {
                             border: OutlineInputBorder(),
                             labelText: 'Aadhar number',
                           ),
-                          initialValue: widget.user.aadharNumber,
+                          initialValue: widget.user.aadhaarNumber,
                           keyboardType: TextInputType.phone,
-                          validator: validateAadhar,
+                          validator: validateAadhaar,
                           onSaved: (value) {
                             setState(() {
-                              _aadhar = value;
+                              _aadhaar = value;
                             });
                           },
                         ),
@@ -245,98 +249,61 @@ class _EditScreenState extends State<EditProfileScreen> {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
             if (widget.userType == 0) {
-              User newUser = new User(
-                id: 0,
-                name: _name,
-                contactNumber: _mobile,
-                aadharNumber: _aadhar,
-                pincode: _pincode,
-              );
-              UserService.registerApiCall(newUser).then((code) {
+              UserService.updateProfileApi(widget.user,
+                      name: _name,
+                      mobileNumber: _mobile,
+                      aadhaarNumber: _aadhaar,
+                      pincode: _pincode)
+                  .then((code) {
+                final snackbar = SnackBar(
+                  content: Text(successMessage(code)),
+                );
+                Scaffold.of(context).showSnackBar(snackbar);
+                // Pop screen if successful
                 if (code == 200) {
-                  final snackbar = SnackBar(
-                    content: Text('Registration successful!'),
-                  );
-                  Scaffold.of(context).showSnackBar(snackbar);
-                  // Pop screen if successful
                   Future.delayed(Duration(seconds: 2), () {
                     Navigator.pop(context);
                   });
-                } else if (code == 409) {
-                  final snackbar = SnackBar(
-                    content: Text('This Email ID already exists'),
-                  );
-                  Scaffold.of(context).showSnackBar(snackbar);
-                } else {
-                  final snackbar = SnackBar(
-                    content:
-                        Text('Registration not successful. Please try again!'),
-                  );
-                  Scaffold.of(context).showSnackBar(snackbar);
                 }
               });
             } else if (widget.userType == 1) {
-              Shop newShop = new Shop(
-                  id: 0,
-                  name: _name,
-                  contactNumber: _mobile,
-                  shopType: 1,
-                  address: _address,
-                  landmark: _landmark,
-                  pincode: _pincode);
-              ShopService.registerApiCall(newShop).then((code) {
+              ShopService.updateProfileApi(widget.user,
+                      shopName: _name,
+                      ownerName: _ownerName,
+                      mobileNumber: _mobile,
+                      aadhaarNumber: _aadhaar,
+                      address: _address,
+                      landmark: _landmark,
+                      pincode: _pincode)
+                  .then((code) {
                 print('Inside Api call');
+                final snackbar = SnackBar(
+                  content: Text(successMessage(code)),
+                );
+                Scaffold.of(context).showSnackBar(snackbar);
+                // Pop screen if successful
                 if (code == 200) {
-                  final snackbar = SnackBar(
-                    content: Text('Registration successful!'),
-                  );
-                  Scaffold.of(context).showSnackBar(snackbar);
-                  // Pop screen if successful
                   Future.delayed(Duration(seconds: 2), () {
                     Navigator.pop(context);
                   });
-                } else if (code == 409) {
-                  final snackbar = SnackBar(
-                    content: Text('This Email ID already exists'),
-                  );
-                  Scaffold.of(context).showSnackBar(snackbar);
-                } else {
-                  final snackbar = SnackBar(
-                    content:
-                        Text('Registration not successful. Please try again!'),
-                  );
-                  Scaffold.of(context).showSnackBar(snackbar);
                 }
               });
             } else {
-              Authority newAuth = new Authority(
-                id: 0,
-                name: _name,
-                contactNumber: _mobile,
-                aadharNumber: _aadhar,
-                pincode: _pincode,
-              );
-              AuthorityService.registerApiCall(newAuth).then((code) {
+              AuthorityService.updateProfileApi(widget.user,
+                      name: _name,
+                      mobileNumber: _mobile,
+                      aadhaarNumber: _aadhaar,
+                      pincode: _pincode)
+                  .then((code) {
+                final snackbar = SnackBar(
+                  content: Text(successMessage(code)),
+                );
+                Scaffold.of(context).showSnackBar(snackbar);
+                // Pop screen if successful
                 if (code == 200) {
-                  final snackbar = SnackBar(
-                    content: Text('Registration successful!'),
-                  );
-                  Scaffold.of(context).showSnackBar(snackbar);
-                  // Pop screen if successful
                   Future.delayed(Duration(seconds: 2), () {
                     Navigator.pop(context);
                   });
-                } else if (code == 409) {
-                  final snackbar = SnackBar(
-                    content: Text('This Email ID already exists'),
-                  );
-                  Scaffold.of(context).showSnackBar(snackbar);
-                } else {
-                  final snackbar = SnackBar(
-                    content:
-                        Text('Registration not successful. Please try again!'),
-                  );
-                  Scaffold.of(context).showSnackBar(snackbar);
                 }
               });
             }

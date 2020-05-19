@@ -3,8 +3,8 @@
 abstract class Entity {
   String name;
   String ownerName;
-  String contactNumber;
-  String aadharNumber;
+  String mobileNumber;
+  String aadhaarNumber;
   String email;
   String pincode;
   String address;
