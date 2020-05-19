@@ -34,8 +34,20 @@ class Token {
         "slotNumber": this.slotNumber.toString(),
       };
 
-  Map<String, dynamic> cancelToJson() => {"tokenId": this.id.toString()};
-  
+  static Map<String, dynamic> cancelToJson(id) => {"tokenId": id.toString()};
+
+  factory Token.getFromJson(Map<String, dynamic> json) {
+    return Token(
+        id: json['id'] as int,
+        shopId: json['shopId'] as int,
+        shopName: json['shopName'] as String,
+        date: json['date'] as String,
+        slotNumber: json['slotNumber'] as int,
+        createdAt: json['createdAt'] as String,
+        verified: json['verified'] as int,
+        status: json['status'] as int);
+  }
+
   Map<String, dynamic> verifyToJson() => {
         "shopId": this.shopId.toString(),
         "shopName": this.shopName,

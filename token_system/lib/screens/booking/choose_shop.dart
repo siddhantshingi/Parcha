@@ -27,21 +27,13 @@ class ChooseShop extends StatelessWidget {
       // Construct List of Shops
       List<Shop> shops = [];
       for (var item in snapshot.data['result']) {
-        shops.add(Shop.forUser(
-            id: item['id'],
-            name: item['name'],
-            openTime: item['openTime'],
-            closeTime: item['closeTime'],
-            address: item['address'],
-            landmark: item['landmark'],
-            contactNumber: item['contactNumber'],
-            pincode: item['pincode']));
+        shops.add(Shop.shopUserFromJson(item));
       }
       return shops;
     };
 
     return AsyncBuilder(
-      future: ShopService.getShopListApiCall(user, category),
+      future: ShopService.getShopUserApi(user, shopType: category),
       builder: (shops) {
         return Column(children: <Widget>[
           SectionTitle(heading: 'Choose Shop'),

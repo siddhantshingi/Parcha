@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuple/tuple.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/Entities/shop.dart';
@@ -32,11 +33,7 @@ class _RegisterState extends State<Register> {
   String _ownerName = '';
   String _address = '';
   String _landmark = 'Not provided';
-  int _shopTypeId;
-  String _shopType;
-
-  List<String> _shopTypes = [];
-  List<int> _shopTypeIds = [];
+  Tuple2<int, String> _shopType;
   SignAs _selected = SignAs.user;
 
   String successMessage(int statusCode) {
@@ -98,11 +95,12 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     // Call the Shop Categories API
     var onReceiveJson = (snapshot) {
+      List<Tuple2<int, String>> shopTypes = [];
       // Construct List of Categories
       for (var item in snapshot.data['result']) {
-        _shopTypes.add(item['shopType']);
-        _shopTypeIds.add(item['id']);
+        shopTypes.add(Tuple2(item['id'], item['shopType']));
       }
+      return shopTypes;
     };
 
     return Scaffold(
@@ -223,14 +221,14 @@ class _RegisterState extends State<Register> {
                           ),
                           child: AsyncBuilder(
                             future: MiscService.getShopTypesApi(),
-                            builder: () {
+                            builder: (shopTypes) {
                               List<DropdownMenuItem> items = [];
                               for (var index = 0;
-                                  index < _shopTypes.length;
+                                  index < shopTypes.length;
                                   index++) {
                                 items.add(DropdownMenuItem(
-                                  child: Text(_shopTypes[index]),
-                                  value: _shopTypeIds[index],
+                                  child: Text(shopTypes[index].item2),
+                                  value: shopTypes[index],
                                 ));
 //                                items.add(DropdownMenuItem(
 //                                  child: Text(shopTypes[index]),
@@ -246,11 +244,11 @@ class _RegisterState extends State<Register> {
                                 underline: Container(height: 0),
                                 isExpanded: true,
                                 items: items,
-                                value: _shopTypeId,
+                                value: _shopType,
                                 onChanged: (value) {
                                   setState(() {
-                                    _shopTypeId = value;
-                                    print(_shopTypeId);
+                                    _shopType = value;
+//                                    print(_shopType);
                                   });
                                 },
                               );
@@ -439,9 +437,9 @@ class _RegisterState extends State<Register> {
                                       aadhaarNumber: _aadhaar,
                                       address: _address,
                                       landmark: _landmark,
-                                      shopType: _shopType[_shopTypeIds.indexOf(_shopTypeId)],
+                                      shopType: _shopType.item2,
                                       pincode: _pincode);
-                                  ShopService.registerApi(newShop, _password, _shopTypeId)
+                                  ShopService.registerApi(newShop, _password, _shopType.item1)
                                       .then((code) {
                                     print('Inside Api call');
                                     final snackbar = SnackBar(

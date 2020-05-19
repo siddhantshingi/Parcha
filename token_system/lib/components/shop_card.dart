@@ -62,7 +62,7 @@ class ShopCard extends StatelessWidget {
                           Icon(Icons.phone, size: 14),
                           const Padding(padding: EdgeInsets.only(right: 2.0)),
                           Text(
-                            this.shop.contactNumber,
+                            this.shop.mobileNumber,
                             style: const TextStyle(
                               fontSize: 12.0,
                               color: Colors.black87,
@@ -73,7 +73,7 @@ class ShopCard extends StatelessWidget {
                           Icon(Icons.timelapse, size: 14),
                           const Padding(padding: EdgeInsets.only(right: 2.0)),
                           Text(
-                            '${this.shop.openTime} - ${this.shop.closeTime}',
+                            '${this.shop.currOpeningTime} - ${this.shop.currClosingTime}',
                             style: const TextStyle(
                               fontSize: 12.0,
                               color: Colors.black54,

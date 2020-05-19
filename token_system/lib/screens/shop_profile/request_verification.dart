@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:token_system/utils.dart';
 import 'package:token_system/Entities/shop.dart';
 import 'package:token_system/Entities/request.dart';
 import 'package:token_system/Services/requestService.dart';
 import 'package:token_system/components/section_title.dart';
 import 'package:token_system/components/tab_navigator.dart';
+import 'package:token_system/components/async_builder.dart';
 import 'package:token_system/components/request_card.dart';
-import 'package:token_system/screens/request_list.dart';
 
 enum RequestOptions { small, medium, large }
 const Map<RequestOptions, int> mapRequestOptions = {
-  RequestOptions.small: 1,
-  RequestOptions.medium: 2,
-  RequestOptions.large: 3
+  RequestOptions.small: 5,
+  RequestOptions.medium: 10,
+  RequestOptions.large: 15
 };
 
 class RequestScreen extends StatefulWidget {
@@ -53,6 +54,15 @@ class _RequestState extends State<RequestScreen> {
         return hours.toString() + ":" + minutes + ":00";
       }
     }
+
+    var onReceiveJson = (snapshot) {
+      // Construct List of Categories
+      List<Request> requests = [];
+      for (var item in snapshot.data['result']) {
+        requests.add(Request.shopRequestFromJson(item, widget.shop.id));
+      }
+      return requests;
+    };
 
     return ListView(shrinkWrap: true, children: <Widget>[
       Container(
@@ -243,15 +253,15 @@ class _RequestState extends State<RequestScreen> {
                           } else {
                             Request newRequest = new Request(
                                 shopId: widget.shop.id,
+                                shopName: widget.shop.name,
+                                address: widget.shop.address,
                                 pincode: widget.shop.pincode,
-                                openTime: convertFormat(
+                                openingTime: convertFormat(
                                     _startHour, _startMinutes, _startMeridian),
-                                closeTime: convertFormat(
+                                closingTime: convertFormat(
                                     _endHour, _endMinutes, _endMeridian),
-                                shopSize: mapRequestOptions[_category],
-                                status: 0,
-                                time: "");
-                            RequestService.registerRequestApiCall(newRequest)
+                                capacity: mapRequestOptions[_category]);
+                            RequestService.createRequestApi(newRequest)
                                 .then((code) {
                               if (code == 200) {
                                 final snackbar = SnackBar(
@@ -263,6 +273,12 @@ class _RequestState extends State<RequestScreen> {
 //                                Future.delayed(Duration(seconds: 2), () {
 //                                  Navigator.pop(context);
 //                                });
+                              } else if (code == 409) {
+                                final snackbar = SnackBar(
+                                  content: Text(
+                                      'You already have this approved'),
+                                );
+                                Scaffold.of(context).showSnackBar(snackbar);
                               } else {
                                 final snackbar = SnackBar(
                                   content: Text(
@@ -289,22 +305,27 @@ class _RequestState extends State<RequestScreen> {
       Container(
         child: Column(children: <Widget>[
           SectionTitle(heading: 'Submitted Requests'),
-          ListView.builder(
-            shrinkWrap: true,
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
-            physics: ClampingScrollPhysics(),
-            itemCount: requests.length,
-            itemBuilder: (BuildContext context, int index) {
-              return RequestCard(
-                  openTime: '${requests[index].openTime}',
-                  closeTime: '${requests[index].closeTime}',
-                  maxCapacity: requests[index].capacity,
-                  duration: '${requests[index].slotDuration}',
-                  bufferTime: '${requests[index].bufferDuration}',
-                  status: requests[index].status,
-                  timestamp: '${requests[index].time}');
-            },
-          )
+          AsyncBuilder(
+            future: RequestService.getShopRequestApi(widget.shop),
+            builder:  (requests) {
+              return ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+                physics: ClampingScrollPhysics(),
+                itemCount: requests.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return RequestCard(
+                      openingTime: '${stripSeconds(requests[index].openingTime)}',
+                      closingTime: '${stripSeconds(requests[index].closingTime)}',
+                      maxCapacity: requests[index].capacity,
+                      timestamp: '${readableTimestamp(requests[index].createdAt)}',
+                      status: requests[index].status,
+                      authMobile: requests[index].authMobile);
+                }
+            );
+          },
+          onReceiveJson: onReceiveJson,
+          ),
         ]),
       )
     ]);

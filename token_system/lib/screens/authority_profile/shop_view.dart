@@ -48,7 +48,7 @@ class ShopProfile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Icon(Icons.phone),
-                    Text(shop.contactNumber),
+                    Text(shop.mobileNumber),
                   ]),
             ),
             Expanded(

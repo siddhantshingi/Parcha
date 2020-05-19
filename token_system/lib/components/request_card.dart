@@ -2,28 +2,22 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 class RequestCard extends StatelessWidget {
-  final String openTime;
-  final String closeTime;
+  final String openingTime;
+  final String closingTime;
   final int maxCapacity;
-  final String duration;
-  final String bufferTime;
-  final int status;
   final String timestamp;
+  final int status;
+  final String authMobile;
 
   RequestCard(
       {Key key,
-        @required this.openTime,
-        @required this.closeTime,
+        @required this.openingTime,
+        @required this.closingTime,
         @required this.maxCapacity,
-        @required this.duration,
-        @required this.bufferTime,
+        @required this.timestamp,
         @required this.status,
-        @required this.timestamp,})
+        @required this.authMobile,})
       : super(key: key);
-
-  void setStatus (String date) {
-    //TODO: Compare with current date to set status
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +61,7 @@ class RequestCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Text(
-                      'Timings:  ' + openTime + ' - ' + closeTime,
+                      'Timings:  ' + openingTime + ' - ' + closingTime,
                       style: TextStyle(fontSize: 16),
                     ),
 //                    Text(
@@ -80,10 +74,10 @@ class RequestCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Column(
-                      children: <Widget>[Text('Duration: '), Text('Buffer: ')],
+                      children: <Widget>[Text('Capacity: '),],
                     ),
                     Column(
-                        children: <Widget>[Text(this.duration), Text(this.bufferTime)],
+                        children: <Widget>[Text(this.maxCapacity.toString()),],
                     ),
                   ],
                 )),

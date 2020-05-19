@@ -3,7 +3,6 @@ import 'package:token_system/Entities/authority.dart';
 import 'package:token_system/components/tab_navigator.dart';
 import 'package:token_system/screens/authority_profile/approve.dart';
 import 'package:token_system/screens/authority_profile/monitor.dart';
-import 'package:token_system/screens/authority_profile/profile.dart';
 import 'package:token_system/screens/components/profile.dart';
 
 class AuthorityHome extends StatefulWidget {

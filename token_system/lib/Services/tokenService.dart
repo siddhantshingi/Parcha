@@ -14,8 +14,8 @@ class TokenService {
     Misc.result(response, true);
   }
 
-  static cancelTokenApi(Token token) async {
-    final response = await http.put(server + tokenUrl + "/cancel-token", body: token.cancelToJson());
+  static cancelTokenApi(int tokenId) async {
+    final response = await http.put(server + tokenUrl + "/cancel-token", body: Token.cancelToJson(tokenId));
     Misc.result(response, true);
   }
 

@@ -29,6 +29,7 @@ dependencies:
   path_provider: ^1.6.8
   encrypt: ^4.0.1
   qr_flutter: ^3.1.0
+  tuple: ^1.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

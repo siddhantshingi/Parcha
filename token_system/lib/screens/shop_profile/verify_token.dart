@@ -1,14 +1,9 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:token_system/Entities/shop.dart';
-import 'package:token_system/Services/shopService.dart';
 import 'package:token_system/components/tab_navigator.dart';
-import 'package:path_provider/path_provider.dart';
-//import 'package:rsa_pkcs/rsa_pkcs.dart' as parserLib;
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:token_system/screens/shop_profile/key_storage.dart';
 

@@ -121,7 +121,7 @@ class Shop extends Entity {
         capacityApp: json['capacityApp'] as int);
   }
 
-  factory Shop.shopAuthFromJson(Map<String, dynamic> json, String email) {
+  factory Shop.shopAuthFromJson(Map<String, dynamic> json) {
     return Shop(
         id: json['id'] as int,
         shopName: json['shopName'] as String,

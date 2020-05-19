@@ -15,7 +15,7 @@ class ShopBooking{
     this.maxCapacity
   });
 
-  ShopBooking fromJson(Map<String, dynamic> json, int shopId) {
+  factory ShopBooking.fromJson(Map<String, dynamic> json, int shopId) {
     return ShopBooking(
       shopId: shopId,
       date: json['date'] as String,

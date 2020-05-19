@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:tuple/tuple.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/Services/miscServices.dart';
 import 'package:token_system/components/async_builder.dart';
@@ -21,11 +22,11 @@ class ChooseCategory extends StatelessWidget {
     // FIXED: Call the Shop Categories API
     var onReceiveJson = (snapshot) {
       // Construct List of Categories
-      List<String> shopCategories = [];
+      List<Tuple2<int, String>> shopTypes = [];
       for (var item in snapshot.data['result']) {
-        shopCategories.add(item['typeName']);
+        shopTypes.add(Tuple2(item['id'], item['shopType']));
       }
-      return shopCategories;
+      return shopTypes;
     };
 
     // Call FutureBuilder to get category list
@@ -33,12 +34,12 @@ class ChooseCategory extends StatelessWidget {
       SectionTitle(heading: 'Choose Category'),
       Expanded(
         child: AsyncBuilder(
-          future: MiscService.getShopTypesApiCall(),
-          builder: (shopCategories) {
+          future: MiscService.getShopTypesApi(),
+          builder: (shopTypes) {
             return GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, childAspectRatio: 2.75),
-              itemCount: shopCategories.length,
+              itemCount: shopTypes.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   padding: EdgeInsets.all(2),
@@ -53,14 +54,14 @@ class ChooseCategory extends StatelessWidget {
                           payload: ChooseShop(
                             user: user,
                             tn: tn,
-                            category: shopCategories[index],
+                            category: shopTypes[index].item2,
                           ),
                         );
                       },
                       child: Container(
                         alignment: Alignment.center,
                         child: Text(
-                          shopCategories[index],
+                          shopTypes[index].item2,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 16, color: Colors.blueGrey[800]),
