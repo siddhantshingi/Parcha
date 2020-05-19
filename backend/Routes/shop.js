@@ -45,4 +45,12 @@ router.get('/get-shop-for-auth', (req, res) => {
 	});
 });
 
+/**Api to get the list of user */
+router.get('/get-public-key', (req, res) => {
+	console.log("getpubkey");
+	shopService.getPublicKey(req.query, (data) => {
+		res.send(data);
+	});
+});
+
 module.exports = router;

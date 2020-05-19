@@ -19,22 +19,36 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   var _passKey = GlobalKey<FormFieldState>();
+  String _password = '';
   String _name = '';
   String _email = '';
-  String _mobile = '----------';
-  String _aadhar = '------------';
+  String _mobile = '';
+  String _aadhaar = '------------';
   String _pincode = '';
-  String _address = 'XXX';
-  String _landmark = 'XXX';
-  int _shopType;
-  String _openTime = '11:00:00';
-  String _closeTime = '20:00:00';
-  int verifierId = 0;
-  SignAs _selected = SignAs.user;
 
   // FIXED: State and district dropdown menu. To be handled on backend.
-  String _state = '';
-  String _district = '';
+
+  // Required for Shops
+  String _ownerName = '';
+  String _address = '';
+  String _landmark = 'Not provided';
+  int _shopTypeId;
+  String _shopType;
+
+  List<String> _shopTypes = [];
+  List<int> _shopTypeIds = [];
+  SignAs _selected = SignAs.user;
+
+  String successMessage(int statusCode) {
+    if (statusCode == 201)
+      return 'Registration successful.';
+    else if (statusCode == 409)
+      return 'This E-mail address already exists!';
+    else if (statusCode == 412)
+      return 'Bad pincode!';
+    else
+      return 'Registration failed!';
+  }
 
   String validateMobile(String value) {
     // Indian Mobile number are of 10 digit only
@@ -44,11 +58,11 @@ class _RegisterState extends State<Register> {
       return null;
   }
 
-  String validateAadhar(String value) {
+  String validateAadhaar(String value) {
     // Indian Mobile number are of 10 digit only
     if (value == null) return null;
     if (value.length != 12)
-      return 'Aadhar must be of 12 digits only';
+      return 'Aadhaar must be of 12 digits only';
     else
       return null;
   }
@@ -85,11 +99,10 @@ class _RegisterState extends State<Register> {
     // Call the Shop Categories API
     var onReceiveJson = (snapshot) {
       // Construct List of Categories
-      List<String> shopCategories = [];
       for (var item in snapshot.data['result']) {
-        shopCategories.add(item['typeName']);
+        _shopTypes.add(item['shopType']);
+        _shopTypeIds.add(item['id']);
       }
-      return shopCategories;
     };
 
     return Scaffold(
@@ -186,7 +199,7 @@ class _RegisterState extends State<Register> {
                           },
                           onSaved: (value) {
                             setState(() {
-                              _name = value;
+                              _ownerName = value;
                             });
                           },
                         ),
@@ -209,20 +222,20 @@ class _RegisterState extends State<Register> {
                             ),
                           ),
                           child: AsyncBuilder(
-                            future: MiscService.getShopTypesApiCall(),
-                            builder: (shopCategories) {
+                            future: MiscService.getShopTypesApi(),
+                            builder: () {
                               List<DropdownMenuItem> items = [];
                               for (var index = 0;
-                                  index < shopCategories.length;
+                                  index < _shopTypes.length;
                                   index++) {
                                 items.add(DropdownMenuItem(
-                                  child: Text(shopCategories[index]),
-                                  value: 2*index,
+                                  child: Text(_shopTypes[index]),
+                                  value: _shopTypeIds[index],
                                 ));
-                                items.add(DropdownMenuItem(
-                                  child: Text(shopCategories[index]),
-                                  value: 2*index + 1,
-                                ));
+//                                items.add(DropdownMenuItem(
+//                                  child: Text(shopTypes[index]),
+//                                  value: 2*index + 1,
+//                                ));
                               }
                               return DropdownButton(
                                 iconDisabledColor: Colors.blueGrey,
@@ -233,11 +246,11 @@ class _RegisterState extends State<Register> {
                                 underline: Container(height: 0),
                                 isExpanded: true,
                                 items: items,
-                                value: _shopType,
+                                value: _shopTypeId,
                                 onChanged: (value) {
                                   setState(() {
-                                    _shopType = value;
-                                    print(_shopType);
+                                    _shopTypeId = value;
+                                    print(_shopTypeId);
                                   });
                                 },
                               );
@@ -269,7 +282,7 @@ class _RegisterState extends State<Register> {
                       child: TextFormField(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Contact number',
+                          labelText: 'Mobile number',
                         ),
                         keyboardType: TextInputType.phone,
                         validator: validateMobile,
@@ -285,13 +298,13 @@ class _RegisterState extends State<Register> {
                       child: TextFormField(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Aadhar number',
+                          labelText: 'Aadhaar number',
                         ),
                         keyboardType: TextInputType.phone,
-                        validator: validateAadhar,
+                        validator: validateAadhaar,
                         onSaved: (value) {
                           setState(() {
-                            _aadhar = value;
+                            _aadhaar = value;
                           });
                         },
                       ),
@@ -311,6 +324,47 @@ class _RegisterState extends State<Register> {
                           });
                         },
                       ),
+                    ),
+                    Visibility(
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Address',
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty)
+                              return 'Please enter your address';
+                            else
+                              return null;
+                          },
+                          onSaved: (value) {
+                            setState(() {
+                              _address = value;
+                            });
+                          },
+                        ),
+                      ),
+                      visible: isShop(),
+                    ),
+                    Visibility(
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Landmark',
+                          ),
+                          validator: null,
+                          onSaved: (value) {
+                            setState(() {
+                              _landmark = value;
+                            });
+                          },
+                        ),
+                      ),
+                      visible: isShop(),
                     ),
                     Container(
                       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -352,135 +406,78 @@ class _RegisterState extends State<Register> {
                               // FIXED: add validation function
                               if (_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
+                                _password = _passKey.currentState.value;
                                 if (_selected == SignAs.user) {
                                   User newUser = new User(
-                                    id: 0,
                                     name: _name,
                                     email: _email,
-                                    contactNumber: _mobile,
-                                    password: _passKey.currentState.value,
-                                    aadharNumber: _aadhar,
-                                    state: _state,
-                                    district: _district,
+                                    mobileNumber: _mobile,
+                                    aadhaarNumber: _aadhaar,
                                     pincode: _pincode,
-                                    verificationStatus: 0,
                                   );
-                                  UserService.registerApiCall(newUser)
+                                  UserService.registerApi(newUser, _password)
                                       .then((code) {
-                                    if (code == 200) {
-                                      final snackbar = SnackBar(
-                                        content:
-                                            Text('Registration successful!'),
-                                      );
-                                      Scaffold.of(context)
-                                          .showSnackBar(snackbar);
-                                      // Pop screen if successful
-                                      Future.delayed(Duration(seconds: 2), () {
+                                    final snackbar = SnackBar(
+                                      content:
+                                      Text(successMessage(code)),
+                                    );
+                                    Scaffold.of(context)
+                                        .showSnackBar(snackbar);
+                                    // Pop screen if successful
+                                    if (code == 201) {
+                                      Future.delayed(Duration(seconds: 1), () {
                                         Navigator.pop(context);
                                       });
-                                    } else if (code == 409) {
-                                      final snackbar = SnackBar(
-                                        content: Text(
-                                            'This Email ID already exists'),
-                                      );
-                                      Scaffold.of(context)
-                                          .showSnackBar(snackbar);
-                                    } else {
-                                      final snackbar = SnackBar(
-                                        content: Text(
-                                            'Registration not successful. Please try again!'),
-                                      );
-                                      Scaffold.of(context)
-                                          .showSnackBar(snackbar);
                                     }
                                   });
                                 } else if (_selected == SignAs.shop) {
                                   Shop newShop = new Shop(
-                                      id: 0,
-                                      name: _name,
+                                      shopName: _name,
+                                      ownerName: _ownerName,
                                       email: _email,
-                                      contactNumber: _mobile,
-                                      password: _passKey.currentState.value,
-                                      shopType: 1,
+                                      mobileNumber: _mobile,
+                                      aadhaarNumber: _aadhaar,
                                       address: _address,
                                       landmark: _landmark,
-                                      state: _state,
-                                      district: _district,
-                                      pincode: _pincode,
-                                      verificationStatus: 0,
-                                      shopSize: _shopType,
-                                      openTime: _openTime,
-                                      closeTime: _closeTime);
-                                  ShopService.registerApiCall(newShop)
+                                      shopType: _shopType[_shopTypeIds.indexOf(_shopTypeId)],
+                                      pincode: _pincode);
+                                  ShopService.registerApi(newShop, _password, _shopTypeId)
                                       .then((code) {
                                     print('Inside Api call');
-                                    if (code == 200) {
-                                      final snackbar = SnackBar(
-                                        content:
-                                            Text('Registration successful!'),
-                                      );
-                                      Scaffold.of(context)
-                                          .showSnackBar(snackbar);
-                                      // Pop screen if successful
-                                      Future.delayed(Duration(seconds: 2), () {
+                                    final snackbar = SnackBar(
+                                      content:
+                                      Text(successMessage(code)),
+                                    );
+                                    Scaffold.of(context)
+                                        .showSnackBar(snackbar);
+                                    // Pop screen if successful
+                                    if (code == 201) {
+                                      Future.delayed(Duration(seconds: 1), () {
                                         Navigator.pop(context);
                                       });
-                                    } else if (code == 409) {
-                                      final snackbar = SnackBar(
-                                        content: Text(
-                                            'This Email ID already exists'),
-                                      );
-                                      Scaffold.of(context)
-                                          .showSnackBar(snackbar);
-                                    } else {
-                                      final snackbar = SnackBar(
-                                        content: Text(
-                                            'Registration not successful. Please try again!'),
-                                      );
-                                      Scaffold.of(context)
-                                          .showSnackBar(snackbar);
                                     }
                                   });
                                 } else {
                                   Authority newAuth = new Authority(
-                                    id: 0,
                                     name: _name,
                                     email: _email,
-                                    contactNumber: _mobile,
-                                    password: _passKey.currentState.value,
-                                    aadharNumber: _aadhar,
-                                    state: _state,
-                                    district: _district,
+                                    mobileNumber: _mobile,
+                                    aadhaarNumber: _aadhaar,
                                     pincode: _pincode,
-                                    verificationStatus: 0,
                                   );
-                                  AuthorityService.registerApiCall(newAuth)
+                                  AuthorityService.registerApi(newAuth, _password)
                                       .then((code) {
-                                    if (code == 200) {
-                                      final snackbar = SnackBar(
-                                        content:
-                                            Text('Registration successful!'),
-                                      );
-                                      Scaffold.of(context)
-                                          .showSnackBar(snackbar);
-                                      // Pop screen if successful
-                                      Future.delayed(Duration(seconds: 2), () {
+                                    final snackbar = SnackBar(
+                                      content:
+                                      Text(successMessage(code)),
+                                    );
+                                    Scaffold.of(context)
+                                        .showSnackBar(snackbar);
+                                    // Pop screen if successful
+                                    if (code == 201) {
+                                      Future.delayed(Duration(seconds: 1), () {
                                         Navigator.pop(context);
                                       });
-                                    } else if (code == 409) {
-                                      final snackbar = SnackBar(
-                                        content: Text(
-                                            'This Email ID already exists'),
-                                      );
-                                      Scaffold.of(context)
-                                          .showSnackBar(snackbar);
-                                    } else {
-                                      final snackbar = SnackBar(
-                                        content: Text(
-                                            'Registration not successful. Please try again!'),
-                                      );
-                                      Scaffold.of(context)
-                                          .showSnackBar(snackbar);
                                     }
                                   });
                                 }
@@ -501,7 +498,7 @@ class _RegisterState extends State<Register> {
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () {
-                        //signin screen
+                        //Login screen
                         Navigator.pop(context);
                       },
                     )

@@ -23,8 +23,18 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   String _email = '';
+  String _password = '';
   var _passkey = GlobalKey<FormFieldState>();
   SignAs _selected = SignAs.user;
+
+  String errorMessage(int statusCode) {
+    if (statusCode == 401)
+      return 'Wrong password!';
+    else if (statusCode == 404)
+      return 'Email address not registered!';
+    else
+      return 'Login failed!';
+  }
 
   String validateMobile(String value) {
     // Indian Mobile number are of 10 digit only
@@ -155,89 +165,60 @@ class _LoginState extends State<Login> {
                       // TODO: don't handle passwords in raw text
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
+                        _password = _passkey.currentState.value;
                         if (_selected == SignAs.user) {
-                          UserService.verifyApiCall(_email).then((json) {
+                          UserService.verifyApi(_email, _password).then((json) {
                             if (json['statusCode'] == 200) {
-                              User u = User.fromJson(json['result']);
-                              if (u.password == _passkey.currentState.value) {
-                                // Login successful
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => UserHome(user: u)),
-                                );
-                              } else {
-                                // Wrong password
-                                final snackbar = SnackBar(
-                                  content:
-                                      Text('Wrong password. Please try again!'),
-                                );
-                                Scaffold.of(context).showSnackBar(snackbar);
-                              }
+                              User u = User.verifyFromJson(json['result'], _email);
+                              // Login successful
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UserHome(user: u)),
+                              );
+
                             } else {
-                              // E-mail not registered
+                              // Login failed
                               final snackbar = SnackBar(
-                                content: Text(
-                                    'E-mail not registered. Please try again!'),
+                                content: Text(errorMessage(json['statusCode'])),
                               );
                               Scaffold.of(context).showSnackBar(snackbar);
                             }
                           });
                         } else if (_selected == SignAs.shop) {
-                          ShopService.verifyApiCall(_email).then((json) {
+                          ShopService.verifyApi(_email, _password).then((json) {
                             if (json['statusCode'] == 200) {
-                              Shop s = Shop.fromJson(json['result'][0]);
-                              if (s.password == _passkey.currentState.value) {
-                                // Login successful
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ShopHome(shop: s)),
-                                );
-                              } else {
-                                // Wrong password
-                                final snackbar = SnackBar(
-                                  content:
-                                      Text('Wrong password. Please try again!'),
-                                );
-                                Scaffold.of(context).showSnackBar(snackbar);
-                              }
+                              Shop s = Shop.verifyFromJson(json['result'], _email);
+                              // Login successful
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ShopHome(shop: s)),
+                              );
+
                             } else {
-                              // E-mail not registered
+                              // Login failed
                               final snackbar = SnackBar(
-                                content: Text(
-                                    'E-mail not registered. Please try again!'),
+                                content: Text(errorMessage(json['statusCode'])),
                               );
                               Scaffold.of(context).showSnackBar(snackbar);
                             }
                           });
                         } else {
-                          AuthorityService.verifyApiCall(_email).then((json) {
+                          AuthorityService.verifyApi(_email, _password).then((json) {
                             if (json['statusCode'] == 200) {
-                              Authority auth =
-                                  Authority.fromJson(json['result'][0]);
-                              if (auth.password ==
-                                  _passkey.currentState.value) {
-                                // Login successful
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          AuthorityHome(user: auth)),
-                                );
-                              } else {
-                                // Wrong password
-                                final snackbar = SnackBar(
-                                  content:
-                                      Text('Wrong password. Please try again!'),
-                                );
-                                Scaffold.of(context).showSnackBar(snackbar);
-                              }
+                              Authority a = Authority.verifyFromJson(json['result'], _email);
+                              // Login successful
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AuthorityHome(user: a)),
+                              );
+
                             } else {
-                              // E-mail not registered
+                              // Login failed
                               final snackbar = SnackBar(
-                                content: Text(
-                                    'E-mail not registered. Please try again!'),
+                                content: Text(errorMessage(json['statusCode'])),
                               );
                               Scaffold.of(context).showSnackBar(snackbar);
                             }

@@ -1,46 +1,48 @@
 class Token {
-  int tokenId;
-  int verified;
+  int id;
   int shopId;
-  String date;
   String shopName;
-  String pincode;
-  String startTime;
-  String duration;
+  int userId;
+  String userName;
+  String userEmail;
+  String date;
+  int slotNumber;
+  String createdAt;
   int status;
+  int verified;
 
-  // Ctor : For checking only
-  Token.basic({
-    this.tokenId,
-    this.date,
-    this.startTime,
-    this.status,
-    this.shopName,
-  });
+  Token(
+      {this.id,
+      this.shopId,
+      this.shopName,
+      this.userId,
+      this.userName,
+      this.userEmail,
+      this.date,
+      this.slotNumber,
+      this.createdAt,
+      this.status,
+      this.verified});
 
-  Token({
-    this.tokenId,
-    this.shopId,
-    this.verified,
-    this.date,
-    this.shopName,
-    this.pincode,
-    this.startTime,
-    this.duration,
-    this.status,
-  });
+  Map<String, dynamic> bookToJson() => {
+        "shopId": this.shopId.toString(),
+        "shopName": this.shopName,
+        "userId": this.userId.toString(),
+        "userName": this.userName,
+        "userEmail": this.userEmail,
+        "date": this.date,
+        "slotNumber": this.slotNumber.toString(),
+      };
 
-  factory Token.fromJson(Map<String, dynamic> json) {
-    return Token(
-      tokenId: json['tokenId'] as int,
-      shopId: json['shopId'] as int,
-      verified: json['verified'] as int,
-      date: json['date'] as String,
-      shopName: json['shopName'] as String,
-      pincode: json['pincode'] as String,
-      startTime: json['startTime'] as String,
-      duration: json['duration'] as String,
-      status: json['status'] as int,
-    );
-  }
+  Map<String, dynamic> cancelToJson() => {"tokenId": this.id.toString()};
+  
+  Map<String, dynamic> verifyToJson() => {
+        "shopId": this.shopId.toString(),
+        "shopName": this.shopName,
+        "userId": this.userId.toString(),
+        "userName": this.userName,
+        "userEmail": this.userEmail,
+        "date": this.date,
+        "slotNumber": this.slotNumber.toString(),
+      };
 }

@@ -5,6 +5,7 @@ import 'package:token_system/Entities/user.dart';
 import 'package:token_system/Services/shopService.dart';
 import 'package:token_system/Services/userService.dart';
 import 'package:token_system/components/async_builder.dart';
+import 'package:token_system/components/section_title.dart';
 import 'package:token_system/components/tab_navigator.dart';
 import 'package:token_system/components/token_card.dart';
 import 'package:token_system/screens/booking/book_token.dart';
@@ -31,10 +32,13 @@ class UserHistory extends StatelessWidget {
       return tokens;
     };
 
-    return AsyncBuilder(
-      future: UserService.getTokensApiCall(user),
-      builder: (tokens) {
-        return ListView.builder(
+    return Column(children: <Widget>[
+      SectionTitle(heading: 'Token History'),
+      Expanded(
+          child: AsyncBuilder(
+        future: UserService.getTokensApiCall(user),
+        builder: (tokens) {
+          return ListView.builder(
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
             itemCount: tokens.length,
             itemBuilder: (BuildContext context, int index) {
@@ -61,10 +65,13 @@ class UserHistory extends StatelessWidget {
                 pincode: tokens[index].pincode,
                 status: tokens[index].status,
                 bookAgain: bookAgain,
+                tokenId: tokens[index].tokenId
               );
-            });
-      },
-      onReceiveJson: onReceiveJson,
-    );
+            },
+          );
+        },
+        onReceiveJson: onReceiveJson,
+      ))
+    ]);
   }
 }

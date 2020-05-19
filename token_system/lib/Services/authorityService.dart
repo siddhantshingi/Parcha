@@ -1,21 +1,37 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:token_system/config/server_config.dart';
 import 'package:token_system/Entities/authority.dart';
+import 'package:token_system/Entities/misc.dart';
 
 class AuthorityService {
   static String authUrl = "localAuth";
 
-  static registerApiCall(Authority auth) async {
-    final response = await http.post(server + authUrl + "/create-localAuth", body: auth.toJson());
-    var responseJson = json.decode(response.body);
-    return responseJson['statusCode'];
+  static registerApi(Authority auth, String password) async {
+    final response =
+    await http.post(server + authUrl + "/create-localAuth", body: auth.registerToJson(password));
+    Misc.result(response, true);
   }
 
-  static verifyApiCall(String email) async {
-    final response = await http.get(server + authUrl + "/get-localAuth?email=" + email);
-    final responseJson = json.decode(response.body);
-    return responseJson;
+  static verifyApi(String email, String password) async {
+    final response =
+    await http.get(server + authUrl + "/verify-localAuth?email=" + email + '&password=' + password);
+    Misc.result(response, false);
+  }
+
+  static updateProfileApi(Authority auth,
+      {String name, String mobileNumber, String aadhaarNumber, String pincode}) async {
+    final response = await http.put(server + authUrl + "/update-localAuth",
+        body: auth.updateToJson(
+            name: name,
+            mobileNumber: mobileNumber,
+            aadhaarNumber: aadhaarNumber,
+            pincode: pincode));
+    Misc.result(response, true);
+  }
+
+  static updatePasswordApi(int id, String oldPassword, String newPassword) async {
+    final response = await http.put(server + authUrl + "/update-localAuth-password",
+        body: Misc.passwordToJson(id, oldPassword, newPassword));
+    Misc.result(response, true);
   }
 }

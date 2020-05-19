@@ -4,6 +4,7 @@ import 'package:token_system/components/tab_navigator.dart';
 import 'package:token_system/screens/authority_profile/approve.dart';
 import 'package:token_system/screens/authority_profile/monitor.dart';
 import 'package:token_system/screens/authority_profile/profile.dart';
+import 'package:token_system/screens/components/profile.dart';
 
 class AuthorityHome extends StatefulWidget {
   final Authority user;
@@ -75,6 +76,7 @@ class _AuthorityHomeState extends State<AuthorityHome> {
         appBar: AppBar(
           title: const Text('TokenDown'),
           backgroundColor: Colors.blueGrey,
+          elevation: 0,
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.power_settings_new),
@@ -141,7 +143,10 @@ class _AuthorityHomeState extends State<AuthorityHome> {
       return builder.builder;
     }
     Builder builder = Builder(
-      builder: (context) => ProfileScreen(user: widget.user),
+      builder: (context) => ProfileScreen(
+        user: widget.user,
+        tn: _tabNavigatorKeys[0],
+      ),
     );
     return builder.builder;
   }
