@@ -9,7 +9,7 @@ class RequestService {
   static String requestUrl = "request";
 
   static createRequestApi(Request request) async {
-    final response = await http.post(server + requestUrl + "/book-token", body: request.createToJson());
+    final response = await http.post(server + requestUrl + "/create-request", body: request.createToJson());
     return Misc.result(response, true);
   }
 

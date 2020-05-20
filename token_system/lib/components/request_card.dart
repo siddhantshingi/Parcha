@@ -9,15 +9,15 @@ class RequestCard extends StatelessWidget {
   final int status;
   final String authMobile;
 
-  RequestCard(
-      {Key key,
-        @required this.openingTime,
-        @required this.closingTime,
-        @required this.maxCapacity,
-        @required this.timestamp,
-        @required this.status,
-        @required this.authMobile,})
-      : super(key: key);
+  RequestCard({
+    Key key,
+    @required this.openingTime,
+    @required this.closingTime,
+    @required this.maxCapacity,
+    @required this.timestamp,
+    @required this.status,
+    @required this.authMobile,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +27,14 @@ class RequestCard extends StatelessWidget {
     var icon;
     switch (this.status) {
       case 0:
-        borderColor = Colors.greenAccent;
-        statusText = 'Accepted';
-        icon = Icons.done_all;
-        break;
-      case 1:
         borderColor = Colors.lightBlue[100];
         statusText = 'Rejected';
         icon = Icons.do_not_disturb_alt;
+        break;
+      case 1:
+        borderColor = Colors.greenAccent;
+        statusText = 'Accepted';
+        icon = Icons.done_all;
         break;
       case 2:
         borderColor = Colors.amber[300];
@@ -61,7 +61,9 @@ class RequestCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Text(
-                      'Timings:  ' + openingTime + ' - ' + closingTime,
+                      maxCapacity == 0
+                          ? 'Timings:  ' + openingTime + ' - ' + closingTime
+                          : 'Capacity: ' + maxCapacity.toString(),
                       style: TextStyle(fontSize: 16),
                     ),
 //                    Text(
@@ -70,40 +72,45 @@ class RequestCard extends StatelessWidget {
 //                    ),
                   ],
                 ),
-                subtitle: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[Text('Capacity: '),],
-                    ),
-                    Column(
-                        children: <Widget>[Text(this.maxCapacity.toString()),],
-                    ),
-                  ],
-                )),
+                subtitle: Visibility(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Icon(Icons.phone, size:20),
+                          Text(' Authority')
+                        ]
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Text(authMobile),
+                        ],
+                      ),
+                    ],
+                  ),
+                  visible: status != 2,)
+            ),
             color: borderColor,
           ),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                  child: Chip(
-                    backgroundColor: Colors.grey[400],
-                    label: Text(statusText),
-                    padding: EdgeInsets.all(5),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                  child: Chip(
-                    backgroundColor: Colors.grey[400],
-                    label: Text(timestamp),
-                    padding: EdgeInsets.all(5),
-                  ),
-                ),
-              ]
-          ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+            Container(
+              padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+              child: Chip(
+                backgroundColor: Colors.grey[400],
+                label: Text(statusText),
+                padding: EdgeInsets.all(5),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+              child: Chip(
+                backgroundColor: Colors.grey[400],
+                label: Text(timestamp),
+                padding: EdgeInsets.all(5),
+              ),
+            ),
+          ]),
         ]),
       ),
     );
