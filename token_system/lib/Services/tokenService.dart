@@ -33,7 +33,7 @@ class TokenService {
 
   static getSignedTokenApiCall(int tokenId) async {
     final response = await http
-        .get(server + tokenUrl + "/get-encrypted-token?tokenId=" + tokenId.toString());
+        .get(server + tokenUrl + "/get-encrypted-token?id=" + tokenId.toString());
     return Misc.result(response, false);
   }
 

@@ -50,7 +50,7 @@ class BookScreen extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 leading: Icon(Icons.confirmation_number),
-                title: Text(slotNumStartTime(bookings[index].slotNumber)),
+                title: Text(slotNumStartTime(bookings[index].slotNumber) + "  " + bookings[index].date.toString()),
                 subtitle: Text('Capacity \u{2192}   Left: ' +
                     bookings[index].capacityLeft.toString() +
                     '   Max: ' +

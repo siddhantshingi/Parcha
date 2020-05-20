@@ -50,5 +50,5 @@ let encryptStringWithRsaPrivateKey = function(toSign) {
 module.exports = {
 	statusCode: statusCode,
 	statusMessage: statusMessage,
-	// encryptStringWithRsaPrivateKey: encryptStringWithRsaPrivateKey
+	encryptStringWithRsaPrivateKey: encryptStringWithRsaPrivateKey
 }
