@@ -34,7 +34,7 @@ String slotNumStartTime(int slotNumber) {
   String _meridian = 'AM';
   String pref = '';
   if (slotNumber % 2 == 0) _minutes = '30';
-  slotNumber ~/= 2;
+  slotNumber = (slotNumber - 1)~/2;
   _hour += slotNumber;
   if (_hour >= 12) _meridian = 'PM';
   if (_hour >= 13) _hour -= 12;
