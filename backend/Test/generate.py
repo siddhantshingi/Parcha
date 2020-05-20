@@ -62,6 +62,9 @@ users = []
 shops = []
 shop_slots = []
 
+shop_opening_time = '11:00:00';
+shop_closing_time = '13:00:00';
+
 
 def generate_mobile():
     return '9987' + ''.join(
@@ -123,17 +126,17 @@ for pincode in range(num_pincodes):
         shop_dict['pincode'] = str(start_pincode + pincode)
         # Give some shops verificationStatus 0 others 1
         p = random.random()
-        if p < 0.25:
+        if p < 0.025:
             shop_dict['authVerification'] = 0
         else:
             shop_dict['authVerification'] = 1
         new_capacityIdApp = random.randint(1, num_capacity)
         shop_dict['capacityIdApp'] = new_capacityIdApp
         shop_dict['capacityApp'] = capacity_mapping[new_capacityIdApp]
-        shop_dict['openingTimeApp'] = '10:00:00'
-        shop_dict['closingTimeApp'] = '17:00:00'
-        shop_dict['currOpeningTime'] = '10:00:00'
-        shop_dict['currClosingTime'] = '17:00:00'
+        shop_dict['openingTimeApp'] = shop_opening_time
+        shop_dict['closingTimeApp'] = shop_closing_time
+        shop_dict['currOpeningTime'] = shop_opening_time
+        shop_dict['currClosingTime'] = shop_closing_time
         r = requests.post(url=(SERVER_URL + makeShop), json=shop_dict)
 
         num_shops += 1
@@ -152,6 +155,10 @@ for pincode in range(num_pincodes):
     users.append(temp_users)
     shops.append(temp_shops)
 
+print ("users, shops, localAuths table filled up!");
+
+r = requests.post(url=(SERVER_URL + makeBooking), json=auth_dict)
+print ("shopBookngs table filled up!");
 # Generate functionality objects
 # Generate shop bookings first
 # for pincode in range(num_pincodes):
@@ -213,16 +220,17 @@ for pincode in range(num_pincodes):
 #             temp_shop_slots.append(shop_booking_dict)
 #     shop_slots.append(temp_shop_slots)
 
-# # Generate tokens
+# Generate tokens
 # for pincode in range(num_pincodes):
-#     len_slot = len(shop_slots[pincode])
+#     # len_slot = len(shop_slots[pincode])
 #     for user_id in users[pincode]:
 #         for _ in range(tokens_per_user):
 #             choose_slot = shop_slots[pincode][random.randint(0, len_slot - 1)]
 #             token_dict = {}
-#             token_dict['userId'] = user_id
+#             token_dict['shopId'] = 
+#             token_dict['shopName'] = 
+#             token_dict['userId'] = 
+#             token_dict['userName'] = 
 #             token_dict['date'] = choose_slot['date']
-#             token_dict['shopId'] = choose_slot['shopId']
-#             token_dict['startTime'] = choose_slot['startTime']
-#             token_dict['duration'] = choose_slot['duration']
+#             token_dict['slotNumber'] = choose_slot['slotNumber']
 #             r = requests.post(url=(SERVER_URL + bookToken), json=token_dict)
