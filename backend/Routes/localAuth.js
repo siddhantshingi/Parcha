@@ -12,7 +12,7 @@ router.post('/create-localAuth', (req, res) => {
 
 /**Api to verify local authority */
 router.get('/verify-localAuth', (req, res) => {
-	localAuthService.verifyLocalAuth(req.body, (data) => {
+	localAuthService.verifyLocalAuth(req.query, (data) => {
 		res.send(data);
 	});
 });
