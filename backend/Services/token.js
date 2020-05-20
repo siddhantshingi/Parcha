@@ -211,17 +211,13 @@ let getEncryptedToken = (data, callback) => {
 	async.auto({
 		token: (cb) => {
 			let criteria = {
-				"tokenId" : data.tokenId,
+				"id" : data.id,
 				"userId" : data.userId,
-				"date" : data.date,
 				"shopId" : data.shopId,
-				"startTime" : data.startTime,
-				"duration" : data.duration,
-				"dateLowerLim" : data.dateLowerLim,
-				"dateUpperLim" : data.dateUpperLim,
-				"status" : data.status,
-				"verified" : data.verified,
+				"date" : data.date,
+				"slotNumber" : data.slotNumber,
 			}
+			console.log(criteria);
 			tokenDAO.getEncryptedToken(criteria,(err, data) => {
 				if (err) {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
@@ -232,8 +228,7 @@ let getEncryptedToken = (data, callback) => {
 					var jsonData = {
 						shopId: data[0].shopId,
 						userId: data[0].userId,
-						startTime: data[0].startTime,
-						duration: data[0].duration,
+						slotNumber: data[0].slotNumber,
 						status: data[0].status,
 						date: data[0].date,
 						userName: data[0].userName

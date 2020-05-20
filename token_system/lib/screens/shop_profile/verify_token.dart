@@ -74,6 +74,7 @@ class _VerifyState extends State<VerifyScreen> {
                     shopIdVerified = false;
                   }
                   //TODO: compare time
+
                   setState(() {
                     scanStatus = true;
                     verificationStatusSignature = serverSigned;

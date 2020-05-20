@@ -89,6 +89,7 @@ class TokenCard extends StatelessWidget {
                   print(this.tokenId);
                   String signedToken =
                   await TokenService.getSignedTokenApiCall(this.tokenId).then((json) {
+                    print (json);
                     return json['result'];
                   });
                   print(signedToken);
