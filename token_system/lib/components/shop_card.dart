@@ -74,7 +74,7 @@ class ShopCard extends StatelessWidget {
                           Icon(Icons.timelapse, size: 14),
                           const Padding(padding: EdgeInsets.only(right: 2.0)),
                           Text(
-                            '${stripSeconds(shop.currOpeningTime)} - ${stripSeconds(shop.currClosingTime)}',
+                            '${stripSeconds(shop.currOpeningTime ?? shop.openingTimeApp)} - ${stripSeconds(shop.currClosingTime ?? shop.closingTimeApp)}',
                             style: const TextStyle(
                               fontSize: 12.0,
                               color: Colors.black54,
