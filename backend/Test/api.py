@@ -1,5 +1,5 @@
 makeUser = '/user/create-user'
-makeShop = '/shop/create-shop'
+makeShop = '/shop/create-shop-testing'
 makeAuth = '/localAuth/create-localAuth'
 bookToken = '/token/book-token'
 createRequest = '/request/create-request'

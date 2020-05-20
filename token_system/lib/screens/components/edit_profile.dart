@@ -27,6 +27,7 @@ class _EditScreenState extends State<EditProfileScreen> {
   String _landmark = 'XXX';
 
   String successMessage(int statusCode) {
+    //TODO: UI popup to show this message
     if (statusCode == 200)
       return 'Profile updated.';
     else if (statusCode == 412)

@@ -6,6 +6,79 @@ pincodeDAO = require('../DAO/pincodeDAO'),
 shopDAO = require('../DAO/shopDAO');
 
 /**API to create a shop */
+let createShopTesting = (data, callback) => {
+	async.auto({
+		shop: (cb) => {
+			var dataToSet = {
+				"shopName": data.shopName,
+				"ownerName": data.ownerName,
+				"email":data.email,
+				"password":data.password,
+				"mobileNumber":data.mobileNumber,
+				"aadharNumber":data.aadharNumber,
+				"address":data.address,
+				"landmark":data.landmark,
+				"shopTypeId":data.shopTypeId,
+				"shopType":data.shopType,
+				"pincode":data.pincode,
+				"currOpeningTime":data.currOpeningTime,
+				"currClosingTime":data.currClosingTime,
+				"capacityIdApp":data.capacityIdApp,
+				"capacityApp":data.capacityApp,
+				"openingTimeApp":data.openingTimeApp,
+				"closingTimeApp":data.closingTimeApp,
+				"emailVerification":data.emailVerification,
+				"mobileVerification":data.mobileVerification,
+				"authVerification":data.authVerification,
+			}
+			let criteria = {
+				"email": data.email
+			}
+			let pincodeCriteria = {
+				"pincode":data.pincode
+			}
+			shopDAO.getShopByEmail(criteria,(err, data) => {
+				if (data.length === 0) {
+					pincodeDAO.getPincode(pincodeCriteria, (err,data) => {
+						if(data.length === 1)
+						{
+							shopDAO.createShopTesting(dataToSet, (err, dbData) => {
+								if (err) {
+									cb(null, { "statusCode": util.statusCode.FOUR_ZERO_ZERO, "statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
+									return;
+								}
+
+								cb(null, { "statusCode": util.statusCode.TWO_ZERO_ONE, "statusMessage": util.statusMessage.CREATED + " New Shop Created", "result": dataToSet });
+								return;
+							});
+						}
+						else
+						{
+							cb(null, { "statusCode": util.statusCode.FOUR_ONE_TWO, "statusMessage": util.statusMessage.PRECONDITION_FAILED + " NO OR MULTIPLE PINCODE MATCHED", "result": {} });
+							return;
+						}
+						if (err) {
+							cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
+							return;
+						}
+					});
+				} else {
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_NINE,"statusMessage": util.statusMessage.DUPLICATE_ENTRY, "result": {} });
+					return;	
+				}
+				if (err) {
+					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
+					return;
+				}
+			});
+			
+		}
+	}, (err, response) => {
+		callback(response.shop);
+	});
+}
+
+/**API to create a shop */
 let createShop = (data, callback) => {
 	async.auto({
 		shop: (cb) => {
@@ -302,6 +375,7 @@ let getPublicKey = (data, callback) => {
 }
 
 module.exports = {
+	createShopTesting : createShopTesting,
 	createShop : createShop,
 	updateShop : updateShop,
 	updateShopPassword : updateShopPassword,

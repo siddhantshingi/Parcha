@@ -10,6 +10,13 @@ router.post('/create-shop', (req, res) => {
 	});
 });
 
+/**Api to create shop */
+router.post('/create-shop-testing', (req, res) => {
+	shopService.createShopTesting(req.body, (data) => {
+		res.send(data);
+	});
+});
+
 // /**Api to update shop profile*/
 router.put('/update-shop', (req, res) => {
 	shopService.updateShop(req.body, (data) => {

@@ -1,5 +1,39 @@
 let dbConfig = require("../Utilities/mysqlConfig");
 
+//service/shop.js/createShopTesting
+let createShopTesting = (dataToSet, callback) => {
+	let setData = "";
+	dataToSet.shopName ? setData += `shopName = '${dataToSet.shopName}'` : true;
+	dataToSet.ownerName ? setData += `, ownerName = '${dataToSet.ownerName}'` : true;
+	dataToSet.email ? setData += `, email = '${dataToSet.email}'` : true;
+	dataToSet.password ? setData += `, password = '${dataToSet.password}'` : true;
+	dataToSet.mobileNumber ? setData += `, mobileNumber = '${dataToSet.mobileNumber}'` : true;
+	dataToSet.aadhaarNumber ? setData += `, aadhaarNumber = '${dataToSet.aadhaarNumber}'` : true;
+	dataToSet.address ? setData += `, address = '${dataToSet.address}'` : true;
+	dataToSet.landmark ? setData += `, landmark = '${dataToSet.landmark}'` : true;
+	if (typeof dataToSet.shopTypeId !== 'undefined' && dataToSet.shopTypeId !== null) 
+		setData += `, shopTypeId = ${dataToSet.shopTypeId}`;
+	dataToSet.shopType ? setData += `, shopType = '${dataToSet.shopType}'` : true;
+	dataToSet.pincode ? setData += `, pincode = '${dataToSet.pincode}'` : true;
+	dataToSet.currOpeningTime ? setData += `, currOpeningTime = '${dataToSet.currOpeningTime}'` : true;
+	dataToSet.currClosingTime ? setData += `, currClosingTime = '${dataToSet.currClosingTime}'` : true;
+	if (typeof dataToSet.capacityIdApp !== 'undefined' && dataToSet.capacityIdApp !== null) 
+		setData += `, capacityIdApp = ${dataToSet.capacityIdApp}`;
+	dataToSet.capacityApp ? setData += `, capacityApp = ${dataToSet.capacityApp}` : true;
+	dataToSet.openingTimeApp ? setData += `, openingTimeApp = '${dataToSet.openingTimeApp}'` : true;
+	dataToSet.closingTimeApp ? setData += `, closingTimeApp = '${dataToSet.closingTimeApp}'` : true;
+	if (typeof dataToSet.emailVerification !== 'undefined' && dataToSet.emailVerification !== null) 
+		setData += `, emailVerification = ${dataToSet.emailVerification}`;
+	if (typeof dataToSet.mobileVerification !== 'undefined' && dataToSet.mobileVerification !== null) 
+		setData += `, mobileVerification = ${dataToSet.mobileVerification}`;
+	if (typeof dataToSet.authVerification !== 'undefined' && dataToSet.authVerification !== null) 
+		setData += `, authVerification = ${dataToSet.authVerification}`;
+	console.log(`insert into shops set ${setData}`);
+	dbConfig.getDB().query(`insert into shops set ${setData}`);
+	console.log(`update shops, pincode set shops.state = pincode.state, shops.district = pincode.district where shops.pincode = pincode.pincode and shops.email = '${dataToSet.email}'`);
+	dbConfig.getDB().query(`update shops, pincode set shops.state = pincode.state, shops.district = pincode.district where shops.pincode = pincode.pincode and shops.email = '${dataToSet.email}'`, callback);
+}
+
 //service/shop.js/createShop
 let createShop = (dataToSet, callback) => {
 	let setData = "";
@@ -113,6 +147,7 @@ let getShopWithoutBookings = (criteria, callback) => {
 }
 
 module.exports = {
+	createShopTesting : createShopTesting,
 	createShop : createShop,
 	updateShop : updateShop,
 	updateShopPassword : updateShopPassword,
