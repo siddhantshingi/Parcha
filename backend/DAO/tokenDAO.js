@@ -27,6 +27,7 @@ let getToken = (criteria, callback) => {
 	dbConfig.getDB().query(`select id, shopId, shopName, date, slotNumber, createdAt, verified, status from tokens where 1 ${conditions} ORDER BY createdAt DESC`, callback);
 }
 
+//service/token.js/bookToken
 let getNotCancelledToken = (criteria, callback) => {
     let conditions = "";
 	criteria.userId ? conditions += ` and tokens.userId = ${criteria.userId}` : true;

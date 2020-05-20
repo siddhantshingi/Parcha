@@ -4,6 +4,7 @@ import time
 import random
 import requests
 from api import *
+from utils import *
 from datetime import datetime, timedelta
 
 # Server config
@@ -29,28 +30,10 @@ users_per_pin = 40
 tokens_per_user = 5
 
 # ShopTypes - generate shop type by using one number between 1 and 11
-shop_types = 11
-shopType_mapping = {
-    1 : "General Market",
-    2 : "Sabzi Market",
-    3 : "Supermarket",
-    4 : "Restaurant and Cafes",
-    5 : "Medical Store",
-    6 : "Parlour and Hair Saloon",
-    7 : "Dairy",
-    8 : "Liquor",
-    9 : "Jwellery Shop",
-    10 : "Stationery Shop",
-    11 : "Hardware and Construction Shops"
-    }
+num_shopTypes = 11
 
 # capacities - generate shop capacity by using one number between 1 and 3
 num_capacity = 3
-capacity_mapping = {
-    1 : 5,
-    2 : 10,
-    3 : 15,
-    }
 
 # Same password for all
 password = 'password'
@@ -58,13 +41,9 @@ password = 'password'
 # Counter vairables
 num_users = 0
 num_shops = 0
-users = []
-shops = []
-shop_slots = []
 
 shop_opening_time = '11:00:00';
 shop_closing_time = '13:00:00';
-
 
 def generate_mobile():
     return '9987' + ''.join(
@@ -86,26 +65,29 @@ def generate_date():
 def generate_start_time():
     return time.strftime('%H:%M:%S', time.gmtime(random.randint()))
 
+user_details = []
+verified_shop_details = []
 
 # Generate base objects
 for pincode in range(num_pincodes):
-    temp_users = []
-    temp_shops = []
-
+    temp_user_details = []
+    temp_verified_shop_details = []
     # User objects
     for _ in range(users_per_pin):
         user_name = start_user + num_users
         user_id = start_user_id + num_users
+        user_email = 'user' + str(user_name) + '@user.com'
         user_dict = {}
         user_dict['name'] = 'User ' + str(user_name)
-        user_dict['email'] = 'user' + str(user_name) + '@user.com'
+        user_dict['email'] = user_email
         user_dict['password'] = password
         user_dict['mobileNumber'] = generate_mobile()
         user_dict['aadharNumber'] = generate_aadhar()
         user_dict['pincode'] = str(start_pincode + pincode)
         r = requests.post(url=(SERVER_URL + makeUser), json=user_dict)
         num_users += 1
-        temp_users.append(user_id)
+
+        temp_user_details.append({"user_id": user_id, "user_name": 'User ' + str(user_name), "user_email": user_email})
 
     # Shop objects
     for _ in range(shops_per_pin):
@@ -118,7 +100,7 @@ for pincode in range(num_pincodes):
         shop_dict['mobileNumber'] = generate_mobile()
         shop_dict['aadharNumber'] = generate_aadhar()
         shop_dict['password'] = password
-        new_shopTypeId = random.randint(1, shop_types)
+        new_shopTypeId = random.randint(1, num_shopTypes)
         shop_dict['shopTypeId'] = new_shopTypeId 
         shop_dict['shopType'] = shopType_mapping[new_shopTypeId]
         shop_dict['address'] = 'Vibhav Khand, Gomti Nagar, Lucknow'
@@ -130,6 +112,7 @@ for pincode in range(num_pincodes):
             shop_dict['authVerification'] = 0
         else:
             shop_dict['authVerification'] = 1
+            temp_verified_shop_details.append({"shop_id":shop_id, "shop_name":'Shop ' + str(shop_name)});
         new_capacityIdApp = random.randint(1, num_capacity)
         shop_dict['capacityIdApp'] = new_capacityIdApp
         shop_dict['capacityApp'] = capacity_mapping[new_capacityIdApp]
@@ -152,85 +135,29 @@ for pincode in range(num_pincodes):
     r = requests.post(url=(SERVER_URL + makeAuth), json=auth_dict)
     start_auth += 1
 
-    users.append(temp_users)
-    shops.append(temp_shops)
+    user_details.append(temp_user_details);
+    verified_shop_details.append(temp_verified_shop_details);
 
 print ("users, shops, localAuths table filled up!");
 
+# initiate periodic function
 r = requests.post(url=(SERVER_URL + makeBooking), json=auth_dict)
 print ("shopBookngs table filled up!");
-# Generate functionality objects
-# Generate shop bookings first
-# for pincode in range(num_pincodes):
-#     temp_shop_slots = []
-
-#     for tup in shops[pincode]:
-#         shop_id = tup[0]
-#         shop_size = tup[1]
-#         # Generate bookings for today and tomorrow
-#         for day in range(2):
-#             # Generate 12 slots per day
-#             for slot in range(10):
-#                 shop_booking_dict = {}
-#                 shop_booking_dict['shopId'] = shop_id
-#                 shop_booking_dict['date'] = datetime.strftime(
-#                     datetime.now() - timedelta(day), '%Y-%m-%d')
-#                 if shop_size == 1:
-#                     time_in_seconds = 36000 + slot * 1200
-#                     shop_booking_dict['duration'] = '00:15:00'
-#                     shop_booking_dict['capacity'] = 5
-#                 elif shop_size == 2:
-#                     time_in_seconds = 36000 + slot * 2100
-#                     shop_booking_dict['duration'] = '00:30:00'
-#                     shop_booking_dict['capacity'] = 10
-#                 else:
-#                     time_in_seconds = 36000 + slot * 2400
-#                     shop_booking_dict['duration'] = '00:30:00'
-#                     shop_booking_dict['capacity'] = 20
-#                 shop_booking_dict['startTime'] = time.strftime(
-#                     '%H:%M:%S', time.gmtime(time_in_seconds))
-
-#                 r = requests.post(url=(SERVER_URL + makeBooking),
-#                                   json=shop_booking_dict)
-#                 temp_shop_slots.append(shop_booking_dict)
-
-#         # Add for tomorrow
-#         for slot in range(10):
-#             shop_booking_dict = {}
-#             shop_booking_dict['shopId'] = shop_id
-#             shop_booking_dict['date'] = datetime.strftime(
-#                 datetime.now() + timedelta(1), '%Y-%m-%d')
-#             if shop_size == 1:
-#                 time_in_seconds = 36000 + slot * 1200
-#                 shop_booking_dict['duration'] = '00:15:00'
-#                 shop_booking_dict['capacity'] = 5
-#             elif shop_size == 2:
-#                 time_in_seconds = 36000 + slot * 2100
-#                 shop_booking_dict['duration'] = '00:30:00'
-#                 shop_booking_dict['capacity'] = 10
-#             else:
-#                 time_in_seconds = 36000 + slot * 2400
-#                 shop_booking_dict['duration'] = '00:30:00'
-#                 shop_booking_dict['capacity'] = 20
-#             shop_booking_dict['startTime'] = time.strftime(
-#                 '%H:%M:%S', time.gmtime(time_in_seconds))
-
-#             r = requests.post(url=(SERVER_URL + makeBooking),
-#                               json=shop_booking_dict)
-#             temp_shop_slots.append(shop_booking_dict)
-#     shop_slots.append(temp_shop_slots)
 
 # Generate tokens
-# for pincode in range(num_pincodes):
-#     # len_slot = len(shop_slots[pincode])
-#     for user_id in users[pincode]:
-#         for _ in range(tokens_per_user):
-#             choose_slot = shop_slots[pincode][random.randint(0, len_slot - 1)]
-#             token_dict = {}
-#             token_dict['shopId'] = 
-#             token_dict['shopName'] = 
-#             token_dict['userId'] = 
-#             token_dict['userName'] = 
-#             token_dict['date'] = choose_slot['date']
-#             token_dict['slotNumber'] = choose_slot['slotNumber']
-#             r = requests.post(url=(SERVER_URL + bookToken), json=token_dict)
+num_tokens = 0
+for pincode in range(num_pincodes):
+    for user in user_details[pincode]:
+        for _ in range(tokens_per_user):
+            token_dict = {}
+            shop = random.choice(verified_shop_details[pincode])
+            token_dict['shopId'] = shop['shop_id']
+            token_dict['shopName'] = shop['shop_name']
+            token_dict['userId'] = user['user_id']
+            token_dict['userName'] = user['user_name']
+            token_dict['userEmail'] = user['user_email']
+            token_dict['date'] = datetime.strftime(datetime.now() + timedelta(random.randint(0,2)), '%Y-%m-%d')
+            token_dict['slotNumber'] = random.randint(slotNumber_mapping[shop_opening_time], slotNumber_mapping[shop_closing_time] - 1)
+            r = requests.post(url=(SERVER_URL + bookToken), json=token_dict)
+            num_tokens += 1
+print ("tokens table filled up: ",num_tokens);
