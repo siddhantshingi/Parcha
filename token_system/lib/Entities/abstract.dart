@@ -1,6 +1,7 @@
 // Defining abstract classes for overloaded classes
 
 abstract class Entity {
+  int id;
   String name;
   String shopName;
   String ownerName;

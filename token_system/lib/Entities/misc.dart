@@ -4,7 +4,7 @@ class Misc {
 
   static Map<String, dynamic> passwordToJson(int id, String oldPassword, String newPassword) =>
       {
-        "id": id,
+        "id": id.toString(),
         "oldPassword": oldPassword,
         "newPassword": newPassword,
       };
