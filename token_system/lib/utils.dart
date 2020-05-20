@@ -48,6 +48,18 @@ String slotNumEndTime(int slotNumber) {
   return slotNumStartTime(slotNumber + 1);
 }
 
+String meridianTo24(String time) {
+  // time = 'HH:MM AM' or 'HH:MM PM'
+  int _hour;
+  if (time.substring(6) == 'AM')
+    return time.substring(0,5);
+  else
+    _hour = int.parse(time.substring(0,2));
+    if (_hour != 12)
+        _hour += 12;
+    return _hour.toString() + time.substring(2,5);
+}
+
 String readableDate(String date) {
   // date = 'YYYY-MM-DD'
   int _month = int.parse(date.substring(5, 7));

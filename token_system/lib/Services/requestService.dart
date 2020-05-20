@@ -24,7 +24,7 @@ class RequestService {
   }
 
   static getShopRequestApi(Shop shop) async {
-    final response = await http.get(server + requestUrl + "/get-requests-by-authId?shopId=" + shop.id.toString());
+    final response = await http.get(server + requestUrl + "/get-requests-by-shopId?shopId=" + shop.id.toString());
     return Misc.result(response, false);
   }
 

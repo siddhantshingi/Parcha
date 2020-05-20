@@ -43,7 +43,7 @@ class ShopHistory extends StatelessWidget {
                     endTime: '${slotNumEndTime(bookings[index].slotNumber)}',
                     capacityLeft: bookings[index].capacityLeft,
                     tokensVerified: bookings[index].tokensVerified,
-                    maxCapacity: bookings[index].maxCapaxity);
+                    maxCapacity: bookings[index].maxCapacity);
               });
         },
         onReceiveJson: onReceiveJson,

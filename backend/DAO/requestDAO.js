@@ -59,7 +59,7 @@ let getRequestByAuthId = (criteria, callback) => {
 let getPendingRequests = (criteria, callback) => {
     let conditions = "";
 	criteria.pincode ? conditions += ` and request.pincode = ${criteria.pincode}` : true;
-	conditions += 'and status = 2'
+	conditions += ' and status = 2'
 	console.log(`select shopId, shopName, address, openingTime, closingTime, capacity, createdAT from request where 1 ${conditions}`);
 	dbConfig.getDB().query(`select shopId, shopName, address, openingTime, closingTime, capacity, createdAT from request where 1 ${conditions}`, callback);
 }

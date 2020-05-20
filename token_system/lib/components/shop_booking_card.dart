@@ -22,8 +22,8 @@ class ShopBookingCard extends StatelessWidget {
       : super(key: key);
 
   int status (String date, String startTime, String endTime) {
-    DateTime _from = stamp(date, startTime);
-    DateTime _to = stamp(date, endTime);
+    DateTime _from = stamp(date, meridianTo24(startTime));
+    DateTime _to = stamp(date, meridianTo24(endTime));
     DateTime _now = DateTime.now();
 
     if (_now.isBefore(_from))

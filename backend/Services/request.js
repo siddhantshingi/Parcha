@@ -185,10 +185,6 @@ let getRequestByShopId = (data, callback) => {
 				"shopId": data.shopId
 			}
 			requestDAO.getRequestByShopId(criteria,(err, data) => {
-				if (data.length === 0) {
-					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND, "result": {} });
-					return;
-				}
 				if (err) {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
@@ -237,10 +233,6 @@ let getPendingRequests = (data, callback) => {
 			requestDAO.getPendingRequests(criteria,(err, data) => {
 				if (err) {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
-					return;
-				}
-				if (data.length === 0) {
-					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND, "result": {} });
 					return;
 				}
 				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
