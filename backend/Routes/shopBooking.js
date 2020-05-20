@@ -1,12 +1,13 @@
 let express = require('express'),
 router = express.Router(),
 util = require('../Utilities/util'),
-shopBookingService = require('../Services/shopBooking'),
-periodicFunc = require('../Models/Periodic');
+shopBookingService = require('../Services/shopBooking');
 
 /**Api to Get time slots details using shop ID or date */
 router.post('/create-shop-bookings-testing', (req, res) => {
-	periodicFunc.addShopTimeSlots();
+	shopBookingService.runPeriodicFunction(req.query, (data) => {
+		res.send(data);
+	});
 });
 
 /**Api to Get time slots details using shop ID or date */

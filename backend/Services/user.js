@@ -87,8 +87,6 @@ let createUser = (data, callback) => {
 			
 		}
 	}, (err, response) => {
-		console.log(response.user);
-
 		callback(response.user);
 	});
 }
@@ -153,8 +151,6 @@ let updateUser = (data,callback) => {
 			}
 		}
 	}, (err,response) => {
-		console.log(response.userUpdate);
-
 		callback(response.userUpdate);
 	});
 }
@@ -201,8 +197,6 @@ let updateUserPassword = (data,callback) => {
 			});
 		}
 	}, (err,response) => {
-		console.log(response.userUpdate);
-
 		callback(response.userUpdate);
 	});
 }
@@ -227,7 +221,6 @@ let deleteUser = (data,callback) => {
 			});
 		}
 	}, (err,response) => {
-		console.log(response.removeUser);
 		callback(response.removeUser);
 	});
 }
@@ -271,8 +264,6 @@ let verifyUser = (data, callback) => {
 			});
 		}
 	}, (err, response) => {
-		console.log(response.user);
-
 		callback(response.user);
 	})
 }

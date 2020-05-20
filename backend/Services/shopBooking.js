@@ -2,29 +2,16 @@ let async = require('async'),
 parseString = require('xml2js').parseString;
 
 let util = require('../Utilities/util'),
-shopBookingDAO = require('../DAO/shopBookingDAO');
+shopBookingDAO = require('../DAO/shopBookingDAO'),
+periodicFunc = require('../Models/Periodic');
 
 /**Api to Get time slots details using shop ID, date, startTime, duration */
-let createShopBooking = (data, callback) => {
+let runPeriodicFunction = (data, callback) => {
 	async.auto({
 		shopBooking: (cb) => {
-			let criteria = {
-				"shopId":data.shopId,
-				"date":data.date,
-				"startTime":data.startTime,
-				"duration":data.duration,
-				"capacityLeft":data.capacity,
-				"tokensVerified":"0",
-				"status":"0"
-			}
-			shopBookingDAO.addShopTimeSlot(criteria,(err, data) => {
-				if (err) {
-					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
-					return;
-				}
-				cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": data });
-				return;
-			});
+			periodicFunc.addShopTimeSlots();		
+			cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": {} });
+			return;
 		}
 	}, (err, response) => {
 		callback(response.shopBooking);
@@ -60,4 +47,5 @@ let getShopBookings = (data, callback) => {
 
 module.exports = {
 	getShopBookings : getShopBookings,
+	runPeriodicFunction : runPeriodicFunction
 };
