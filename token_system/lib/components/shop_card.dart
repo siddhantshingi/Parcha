@@ -1,5 +1,6 @@
 // Must be included in a Constrained height environment
 import 'package:flutter/material.dart';
+import 'package:token_system/utils.dart';
 import 'package:token_system/Entities/shop.dart';
 
 class ShopCard extends StatelessWidget {
@@ -29,7 +30,7 @@ class ShopCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        this.shop.name,
+                        shop.shopName,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -39,9 +40,9 @@ class ShopCard extends StatelessWidget {
                       ),
                       const Padding(padding: EdgeInsets.only(bottom: 2.0)),
                       Text(
-                        this.shop.address,
+                        shop.address,
                         maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                        overflow: TextOverflow.fade,
                         style: const TextStyle(
                           fontSize: 14,
                           color: Colors.black54,
@@ -62,7 +63,7 @@ class ShopCard extends StatelessWidget {
                           Icon(Icons.phone, size: 14),
                           const Padding(padding: EdgeInsets.only(right: 2.0)),
                           Text(
-                            this.shop.mobileNumber,
+                            shop.mobileNumber,
                             style: const TextStyle(
                               fontSize: 12.0,
                               color: Colors.black87,
@@ -73,7 +74,7 @@ class ShopCard extends StatelessWidget {
                           Icon(Icons.timelapse, size: 14),
                           const Padding(padding: EdgeInsets.only(right: 2.0)),
                           Text(
-                            '${this.shop.currOpeningTime} - ${this.shop.currClosingTime}',
+                            '${stripSeconds(shop.currOpeningTime)} - ${stripSeconds(shop.currClosingTime)}',
                             style: const TextStyle(
                               fontSize: 12.0,
                               color: Colors.black54,

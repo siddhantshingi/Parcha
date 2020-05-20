@@ -54,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: Text(
-                      user.name,
+                      user.name != null ? user.name:  user.shopName,
                       style: TextStyle(color: Colors.amber[800], fontSize: 30),
                     ),
                   ),

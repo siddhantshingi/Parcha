@@ -35,7 +35,7 @@ class BookScreen extends StatelessWidget {
     return Column(children: <Widget>[
       SectionTitle(heading: 'Confirm Token'),
       Text(
-        shop.name,
+        shop.shopName,
         style: TextStyle(color: Colors.amber[800], fontSize: 24),
       ),
       AsyncBuilder(

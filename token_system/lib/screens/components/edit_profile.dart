@@ -108,7 +108,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                             border: OutlineInputBorder(),
                             labelText: widget.userType == 1 ? 'Shop Name' : 'Name',
                           ),
-                          initialValue: widget.user.name,
+                          initialValue: widget.user.name ?? widget.user.shopName,
                           validator: (value) {
                             if (value.isEmpty)
                               return widget.userType == 1

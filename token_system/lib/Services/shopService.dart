@@ -16,7 +16,7 @@ class ShopService {
 
   static verifyApi(String email, String password) async {
     final response = await http.get(
-        server + shopUrl + "/get-shop?email=" + email + '&' + 'password=' + password);
+        server + shopUrl + "/verify-shop?email=" + email + '&' + 'password=' + password);
     return Misc.result(response, false);
   }
 

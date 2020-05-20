@@ -89,7 +89,7 @@ class Shop extends Entity {
         id: json['id'] as int,
         shopName: json['shopName'] as String,
         ownerName: json['ownerName'] as String,
-        email: json['email'] as String,
+        email: email,
         mobileNumber: json['mobileNumber'] as String,
         aadhaarNumber: json['aadhaarNumber'] as String,
         address: json['address'] as String,
