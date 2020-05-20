@@ -30,7 +30,7 @@ class _RequestState extends State<RequestScreen> {
   int _startHour = 10;
   String _startMinutes = '00';
   String _startMeridian = 'AM';
-  int _endHour = 16;
+  int _endHour = 4;
   String _endMinutes = '00';
   String _endMeridian = 'PM';
   RangeValues _timings = RangeValues(10.0, 16.0);
@@ -49,9 +49,16 @@ class _RequestState extends State<RequestScreen> {
     var _stops = [0.01, 0.03, 0.07, 0.93, 0.97, 0.99];
     String convertFormat(int hours, String minutes, String meridian) {
       if (meridian == 'PM') {
-        return (hours + 12).toString() + ":" + minutes + ":00";
+        if (hours != 12)
+          return (hours + 12).toString() + ":" + minutes + ":00";
+        else
+          return hours.toString() + ":" + minutes + ":00";
       } else {
-        return hours.toString() + ":" + minutes + ":00";
+        String pref = '0';
+        if (hours < 10)
+          return pref + hours.toString() + ":" + minutes + ":00";
+        else
+          return hours.toString() + ":" + minutes + ":00";
       }
     }
 
@@ -70,7 +77,7 @@ class _RequestState extends State<RequestScreen> {
         padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
         child: Column(
           children: <Widget>[
-            SectionTitle(heading: 'Make New Request'),
+            SectionTitle(heading: 'Make New Capacity Request'),
             Container(
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -79,10 +86,8 @@ class _RequestState extends State<RequestScreen> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                     ),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.elliptical(10.0, 6.0),
-                      topRight: Radius.elliptical(10.0, 6.0),
-                    )),
+                    borderRadius: BorderRadius.all(Radius.elliptical(10.0, 6.0)),
+                    ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -131,8 +136,72 @@ class _RequestState extends State<RequestScreen> {
                         Text('Large', style: TextStyle(color: Colors.white70)),
                       ],
                     ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: RaisedButton(
+                        padding: EdgeInsets.all(10),
+                        textColor: Colors.white,
+                        color: Colors.transparent,
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              letterSpacing: 1.0),
+                        ),
+                        onPressed: () {
+                          if (_category == null) {
+                            final snackbar = SnackBar(
+                              content: Text('Please select a Capacity'),
+                            );
+                            Scaffold.of(context).showSnackBar(snackbar);
+                          } else {
+                            Request newRequest = new Request(
+                                shopId: widget.shop.id,
+                                shopName: widget.shop.shopName,
+                                address: widget.shop.address,
+                                pincode: widget.shop.pincode,
+                                capacity: mapRequestOptions[_category]);
+                            RequestService.createRequestApi(newRequest)
+                                .then((code) {
+                              if (code == 200) {
+                                final snackbar = SnackBar(
+                                  content:
+                                  Text('Request Registration successful!'),
+                                );
+                                Scaffold.of(context).showSnackBar(snackbar);
+//                                // Pop screen if successful
+//                                Future.delayed(Duration(seconds: 2), () {
+//                                  Navigator.pop(context);
+//                                });
+                              } else if (code == 409) {
+                                final snackbar = SnackBar(
+                                  content: Text(
+                                      'You already have this approved'),
+                                );
+                                Scaffold.of(context).showSnackBar(snackbar);
+                              } else {
+                                final snackbar = SnackBar(
+                                  content: Text(
+                                      'Registration not successful. Please try again!'),
+                                );
+                                Scaffold.of(context).showSnackBar(snackbar);
+                              }
+                            });
+                          }
+                        },
+                      ),
+                    )
                   ],
                 )),
+            Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+            Divider(
+              height: 10.0,
+              color: Colors.blueGrey,
+              indent: 20,
+              endIndent: 20,
+            ),
+            SectionTitle(heading: 'Make New Timings Request'),
             Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -140,6 +209,10 @@ class _RequestState extends State<RequestScreen> {
                     stops: _stops,
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
+                  ),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.elliptical(10.0, 6.0),
+                    topRight: Radius.elliptical(10.0, 6.0),
                   ),
                 ),
                 child: RangeSlider(
@@ -238,29 +311,22 @@ class _RequestState extends State<RequestScreen> {
                         textColor: Colors.white,
                         color: Colors.transparent,
                         child: Text(
-                          'Submit Request',
+                          'Submit',
                           style: TextStyle(
                               fontSize: 16,
                               color: Colors.white,
                               letterSpacing: 1.0),
                         ),
                         onPressed: () {
-                          if (_category == null) {
-                            final snackbar = SnackBar(
-                              content: Text('Please Select a Slotting Style'),
-                            );
-                            Scaffold.of(context).showSnackBar(snackbar);
-                          } else {
                             Request newRequest = new Request(
                                 shopId: widget.shop.id,
-                                shopName: widget.shop.name,
+                                shopName: widget.shop.shopName,
                                 address: widget.shop.address,
                                 pincode: widget.shop.pincode,
                                 openingTime: convertFormat(
                                     _startHour, _startMinutes, _startMeridian),
                                 closingTime: convertFormat(
-                                    _endHour, _endMinutes, _endMeridian),
-                                capacity: mapRequestOptions[_category]);
+                                    _endHour, _endMinutes, _endMeridian));
                             RequestService.createRequestApi(newRequest)
                                 .then((code) {
                               if (code == 200) {
@@ -287,7 +353,6 @@ class _RequestState extends State<RequestScreen> {
                                 Scaffold.of(context).showSnackBar(snackbar);
                               }
                             });
-                          }
                         },
                       ),
                     )
