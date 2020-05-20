@@ -19,7 +19,7 @@ router.post('/create-user', (req, res) => {
 
 /**Api to create user */
 router.get('/verify-user', (req, res) => {
-	userService.verifyUser(req.body, (data) => {
+	userService.verifyUser(req.query, (data) => {
 		res.send(data);
 	});
 });

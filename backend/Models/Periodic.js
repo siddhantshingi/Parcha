@@ -152,7 +152,7 @@ let initialize = () => {
 	}
 
 	fill_timeSlotNumberMap();
-	repeatEveryLarge(addShopTimeSlots, ONE_DAY/(2*24*60));
+	repeatEveryLarge(addShopTimeSlots, ONE_DAY);
 }
 
 module.exports = {
