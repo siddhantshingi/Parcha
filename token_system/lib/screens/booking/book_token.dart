@@ -19,9 +19,7 @@ class BookScreen extends StatelessWidget {
   BookScreen({Key key, @required this.user, @required this.tn, @required this.shop})
       : super(key: key);
 
-  void alertMessage(String status) {
-
-  }
+  void alertMessage(String status) {}
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +31,6 @@ class BookScreen extends StatelessWidget {
       for (var item in snapshot.data['result']) {
         shopBookings.add(ShopBooking.fromJson(item, shop.id));
       }
-      print (shopBookings[0]);
       return shopBookings;
     };
 
@@ -44,100 +41,102 @@ class BookScreen extends StatelessWidget {
         style: TextStyle(color: Colors.amber[800], fontSize: 24),
       ),
       Expanded(
-        child : AsyncBuilder(
-            future: MiscService.getShopBookingsApi(shop,
-                date: DateTime.now().toString().substring(0, 11)),
-            builder: (bookings) {
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: bookings.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    leading: Icon(Icons.confirmation_number),
-                    title: Text(slotNumStartTime(bookings[index].slotNumber)),
-                    subtitle: Text('Capacity \u{2192}   Left: ' + bookings[index].capacityLeft.toString() + '   Max: ' + bookings[index].maxCapacity.toString()),
-                    trailing: FlatButton.icon(
-                      color: Color.fromARGB(255, 255, 69, 0),
-                      onPressed: () {
-                        return showDialog<void>(
-                          context: context,
-                          barrierDismissible: false, // user must tap button!
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Confirm your booking at ' + shop.shopName),
-                              content: SingleChildScrollView(
-                                child: ListBody(
-                                  children: <Widget>[
-                                    Text(
-                                      'Time: ' +
-                                          slotNumStartTime(bookings[index].slotNumber) +
-                                          ' - ' +
-                                          slotNumEndTime(bookings[index].slotNumber),
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                    Text('Would you like to confirm this booking?'),
-                                  ],
+          child: AsyncBuilder(
+        future: MiscService.getShopBookingsApi(shop),
+        builder: (bookings) {
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: bookings.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                leading: Icon(Icons.confirmation_number),
+                title: Text(slotNumStartTime(bookings[index].slotNumber)),
+                subtitle: Text('Capacity \u{2192}   Left: ' +
+                    bookings[index].capacityLeft.toString() +
+                    '   Max: ' +
+                    bookings[index].maxCapacity.toString()),
+                trailing: FlatButton.icon(
+                  color: Color.fromARGB(255, 255, 69, 0),
+                  onPressed: () {
+                    return showDialog<void>(
+                      context: context,
+                      barrierDismissible: false, // user must tap button!
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Confirm your booking at ' + shop.shopName),
+                          content: SingleChildScrollView(
+                            child: ListBody(
+                              children: <Widget>[
+                                Text(
+                                  'Time: ' +
+                                      slotNumStartTime(bookings[index].slotNumber) +
+                                      ' - ' +
+                                      slotNumEndTime(bookings[index].slotNumber),
+                                  style: TextStyle(fontSize: 16),
                                 ),
-                              ),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('Confirm'),
-                                  onPressed: () {
-                                    var status = TokenService.bookTokenApi(Token(shopId: shop.id,
+                                Text('Would you like to confirm this booking?'),
+                              ],
+                            ),
+                          ),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('Confirm'),
+                              onPressed: () {
+                                var status = TokenService.bookTokenApi(Token(
+                                        shopId: shop.id,
                                         shopName: shop.shopName,
                                         userId: user.id,
                                         userEmail: user.email,
                                         userName: user.name,
                                         date: DateTime.now().toString().substring(0, 11),
-                                        slotNumber: bookings[index].slotNumber)).then((code)
-                                    {
-                                          //TODO: Need a proper UI message.
-                                      if (code == 200)
-                                        return 'Confirmed';
-                                      else if (code == 201)
-                                        return 'Waitlisted';
-                                      else if (code == 409)
-                                        return 'Token already exists';
-                                      else if (code == 404)
-                                        return 'Slot does not exists';
-                                      else
-                                        return 'Server Error';
-                                    });
-                                    Navigator.of(context).pop();
-                                    AlertDialog(
-                                      title: Text(status),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text('Close'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ),
-                                FlatButton(
-                                  child: Text('Cancel'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
+                                        slotNumber: bookings[index].slotNumber))
+                                    .then((code) {
+                                  //TODO: Need a proper UI message.
+                                  if (code == 200)
+                                    return 'Confirmed';
+                                  else if (code == 201)
+                                    return 'Waitlisted';
+                                  else if (code == 409)
+                                    return 'Token already exists';
+                                  else if (code == 404)
+                                    return 'Slot does not exists';
+                                  else
+                                    return 'Server Error';
+                                });
+                                Navigator.of(context).pop();
+                                AlertDialog(
+                                  title: Text(status),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('Close'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                            FlatButton(
+                              child: Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
                         );
                       },
-                      icon: Icon(Icons.add_circle),
-                      label: Text('Book'),
-                    ),
-                  );
-                },
+                    );
+                  },
+                  icon: Icon(Icons.add_circle),
+                  label: Text('Book'),
+                ),
               );
             },
-            onReceiveJson: onReceiveJson,
-        )
-      )
+          );
+        },
+        onReceiveJson: onReceiveJson,
+      ))
     ]);
   }
 }

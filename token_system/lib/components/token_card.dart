@@ -89,7 +89,7 @@ class TokenCard extends StatelessWidget {
                   print(this.tokenId);
                   String signedToken =
                   await TokenService.getSignedTokenApiCall(this.tokenId).then((json) {
-                    return json["result"];
+                    return json['result'];
                   });
                   print(signedToken);
                   await Navigator.push(context,
@@ -111,7 +111,7 @@ class TokenCard extends StatelessWidget {
                   child: const Text('BOOK AGAIN'),
                 ),
               ),
-              visible: (status == 0) || (DateTime.now().isAfter(end)),
+              visible: !((status == 0) || (DateTime.now().isAfter(end))),
             ),
             Visibility(
               child: ButtonTheme(
