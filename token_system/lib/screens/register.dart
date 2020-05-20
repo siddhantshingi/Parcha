@@ -20,7 +20,6 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   var _passKey = GlobalKey<FormFieldState>();
-  String _password = '';
   String _name = '';
   String _email = '';
   String _mobile = '';
@@ -56,8 +55,8 @@ class _RegisterState extends State<Register> {
   }
 
   String validateAadhaar(String value) {
-    // Indian Mobile number are of 10 digit only
-    if (value == null) return null;
+    // Indian Aadhar number, if present, must be of 12 digit only
+    if (value == '') return null;
     if (value.length != 12)
       return 'Aadhaar must be of 12 digits only';
     else
@@ -212,20 +211,15 @@ class _RegisterState extends State<Register> {
                           decoration: ShapeDecoration(
                             shape: RoundedRectangleBorder(
                               side: BorderSide(
-                                  width: 1.0,
-                                  style: BorderStyle.solid,
-                                  color: Colors.blueGrey),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5.0)),
+                                  width: 1.0, style: BorderStyle.solid, color: Colors.blueGrey),
+                              borderRadius: BorderRadius.all(Radius.circular(5.0)),
                             ),
                           ),
                           child: AsyncBuilder(
                             future: MiscService.getShopTypesApi(),
                             builder: (shopTypes) {
                               List<DropdownMenuItem> items = [];
-                              for (var index = 0;
-                                  index < shopTypes.length;
-                                  index++) {
+                              for (var index = 0; index < shopTypes.length; index++) {
                                 items.add(DropdownMenuItem(
                                   child: Text(shopTypes[index].item2),
                                   value: shopTypes[index],
@@ -239,8 +233,7 @@ class _RegisterState extends State<Register> {
                                 iconDisabledColor: Colors.blueGrey,
                                 iconEnabledColor: Colors.blue,
                                 hint: Text('Shop Type'),
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 16),
+                                style: TextStyle(color: Colors.black, fontSize: 16),
                                 underline: Container(height: 0),
                                 isExpanded: true,
                                 items: items,
@@ -375,8 +368,7 @@ class _RegisterState extends State<Register> {
                         ),
                         validator: (value) {
                           if (value.isEmpty) return 'Please Enter password';
-                          if (value.length < 6)
-                            return 'Password should be atleast 6 characters';
+                          if (value.length < 6) return 'Password should be atleast 6 characters';
                           return null;
                         },
                       ),
@@ -404,7 +396,8 @@ class _RegisterState extends State<Register> {
                               // FIXED: add validation function
                               if (_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
-                                _password = _passKey.currentState.value;
+                                String _password = _passKey.currentState.value;
+
                                 if (_selected == SignAs.user) {
                                   User newUser = new User(
                                     name: _name,
@@ -413,14 +406,11 @@ class _RegisterState extends State<Register> {
                                     aadhaarNumber: _aadhaar,
                                     pincode: _pincode,
                                   );
-                                  UserService.registerApi(newUser, _password)
-                                      .then((code) {
+                                  UserService.registerApi(newUser, _password).then((code) {
                                     final snackbar = SnackBar(
-                                      content:
-                                      Text(successMessage(code)),
+                                      content: Text(successMessage(code)),
                                     );
-                                    Scaffold.of(context)
-                                        .showSnackBar(snackbar);
+                                    Scaffold.of(context).showSnackBar(snackbar);
                                     // Pop screen if successful
                                     if (code == 201) {
                                       Future.delayed(Duration(seconds: 1), () {
@@ -443,11 +433,9 @@ class _RegisterState extends State<Register> {
                                       .then((code) {
                                     print('Inside Api call');
                                     final snackbar = SnackBar(
-                                      content:
-                                      Text(successMessage(code)),
+                                      content: Text(successMessage(code)),
                                     );
-                                    Scaffold.of(context)
-                                        .showSnackBar(snackbar);
+                                    Scaffold.of(context).showSnackBar(snackbar);
                                     // Pop screen if successful
                                     if (code == 201) {
                                       Future.delayed(Duration(seconds: 1), () {
@@ -463,14 +451,11 @@ class _RegisterState extends State<Register> {
                                     aadhaarNumber: _aadhaar,
                                     pincode: _pincode,
                                   );
-                                  AuthorityService.registerApi(newAuth, _password)
-                                      .then((code) {
+                                  AuthorityService.registerApi(newAuth, _password).then((code) {
                                     final snackbar = SnackBar(
-                                      content:
-                                      Text(successMessage(code)),
+                                      content: Text(successMessage(code)),
                                     );
-                                    Scaffold.of(context)
-                                        .showSnackBar(snackbar);
+                                    Scaffold.of(context).showSnackBar(snackbar);
                                     // Pop screen if successful
                                     if (code == 201) {
                                       Future.delayed(Duration(seconds: 1), () {

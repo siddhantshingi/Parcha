@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'dart:convert';
 import 'package:email_validator/email_validator.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/Entities/shop.dart';
@@ -146,7 +145,7 @@ class _LoginState extends State<Login> {
               ),
               FlatButton(
                 onPressed: () {
-                  //forgot password screen
+                  // TODO: forgot password screen
                 },
                 textColor: Colors.blue,
                 child: Text('Forgot Password'),

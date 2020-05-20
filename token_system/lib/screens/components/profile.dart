@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:token_system/Entities/abstract.dart';
 import 'package:token_system/components/tab_navigator.dart';
+import 'package:token_system/screens/components/edit_password.dart';
 import 'package:token_system/screens/components/edit_profile.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -8,8 +9,7 @@ class ProfileScreen extends StatelessWidget {
   final GlobalKey<TabNavigatorState> tn;
   final int userType;
 
-  ProfileScreen(
-      {Key key, @required this.user, @required this.tn, this.userType: 0})
+  ProfileScreen({Key key, @required this.user, @required this.tn, this.userType: 0})
       : super(key: key);
 
   @override
@@ -54,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: Text(
-                      user.name != null ? user.name:  user.shopName,
+                      user.name != null ? user.name : user.shopName,
                       style: TextStyle(color: Colors.amber[800], fontSize: 30),
                     ),
                   ),
@@ -122,9 +122,7 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           Expanded(
                             flex: 6,
-                            child: Text(user.aadhaarNumber == null
-                                ? 'NA'
-                                : user.aadhaarNumber),
+                            child: Text(user.aadhaarNumber == null ? 'NA' : user.aadhaarNumber),
                           ),
                         ],
                       ),
@@ -144,8 +142,7 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           Expanded(
                             flex: 6,
-                            child: Text(
-                                user.address == null ? 'NA' : user.address),
+                            child: Text(user.address == null ? 'NA' : user.address),
                           ),
                         ],
                       ),
@@ -165,13 +162,29 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           Expanded(
                             flex: 6,
-                            child: Text(
-                                user.landmark == null ? 'NA' : user.landmark),
+                            child: Text(user.landmark == null ? 'NA' : user.landmark),
                           ),
                         ],
                       ),
                     ),
                     visible: userType == 1,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: RaisedButton(
+                      child: Text('Change Password'),
+                      color: Colors.blueGrey,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        tn.currentState.push(
+                          context,
+                          payload: EditPasswordScreen(
+                            user: user,
+                            userType: userType,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ]),
               ),

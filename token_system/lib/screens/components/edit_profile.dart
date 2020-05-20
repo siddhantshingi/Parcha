@@ -262,9 +262,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                 Scaffold.of(context).showSnackBar(snackbar);
                 // Pop screen if successful
                 if (code == 200) {
-                  Future.delayed(Duration(seconds: 2), () {
-                    Navigator.pop(context);
-                  });
+                  Navigator.pop(context);
                 }
               });
             } else if (widget.userType == 1) {
@@ -284,9 +282,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                 Scaffold.of(context).showSnackBar(snackbar);
                 // Pop screen if successful
                 if (code == 200) {
-                  Future.delayed(Duration(seconds: 2), () {
-                    Navigator.pop(context);
-                  });
+                  Navigator.pop(context);
                 }
               });
             } else {
@@ -302,9 +298,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                 Scaffold.of(context).showSnackBar(snackbar);
                 // Pop screen if successful
                 if (code == 200) {
-                  Future.delayed(Duration(seconds: 2), () {
-                    Navigator.pop(context);
-                  });
+                  Navigator.pop(context);
                 }
               });
             }
