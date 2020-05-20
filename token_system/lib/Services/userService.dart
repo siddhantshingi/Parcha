@@ -9,13 +9,13 @@ class UserService {
   static registerApi(User user, String password) async {
     final response =
         await http.post(server + userUrl + "/create-user", body: user.registerToJson(password));
-    Misc.result(response, true);
+    return Misc.result(response, true);
   }
 
   static verifyApi(String email, String password) async {
     final response =
         await http.get(server + userUrl + "/verify-user?email=" + email + '&password=' + password);
-    Misc.result(response, false);
+    return Misc.result(response, false);
   }
 
   static updateProfileApi(User user,
@@ -26,12 +26,12 @@ class UserService {
             mobileNumber: mobileNumber,
             aadhaarNumber: aadhaarNumber,
             pincode: pincode));
-    Misc.result(response, true);
+    return Misc.result(response, true);
   }
 
   static updatePasswordApi(int id, String oldPassword, String newPassword) async {
     final response = await http.put(server + userUrl + "/update-user-password",
         body: Misc.passwordToJson(id, oldPassword, newPassword));
-    Misc.result(response, true);
+    return Misc.result(response, true);
   }
 }

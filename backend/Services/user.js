@@ -87,6 +87,8 @@ let createUser = (data, callback) => {
 			
 		}
 	}, (err, response) => {
+		console.log(response.user);
+
 		callback(response.user);
 	});
 }
@@ -151,6 +153,8 @@ let updateUser = (data,callback) => {
 			}
 		}
 	}, (err,response) => {
+		console.log(response.userUpdate);
+
 		callback(response.userUpdate);
 	});
 }
@@ -197,6 +201,8 @@ let updateUserPassword = (data,callback) => {
 			});
 		}
 	}, (err,response) => {
+		console.log(response.userUpdate);
+
 		callback(response.userUpdate);
 	});
 }
@@ -221,6 +227,7 @@ let deleteUser = (data,callback) => {
 			});
 		}
 	}, (err,response) => {
+		console.log(response.removeUser);
 		callback(response.removeUser);
 	});
 }
@@ -237,6 +244,7 @@ let verifyUser = (data, callback) => {
 				"email":data.email
 			}
 			userDAO.getUserDetailUsingEmail(criteria,(err, getData) => {
+				console.log(getData);
 				if (err) {
 					cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 					return;
@@ -251,6 +259,7 @@ let verifyUser = (data, callback) => {
 					delete result.email;
 					delete result.password;
 					delete result.emailVerification;
+					console.log(result);
 					cb(null, {"statusCode": util.statusCode.OK,"statusMessage": util.statusMessage.SUCCESS, "result": result });
 					return;
 				}
@@ -262,6 +271,8 @@ let verifyUser = (data, callback) => {
 			});
 		}
 	}, (err, response) => {
+		console.log(response.user);
+
 		callback(response.user);
 	})
 }

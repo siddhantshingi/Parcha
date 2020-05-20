@@ -10,20 +10,20 @@ class MiscService {
 
   static getShopBookingsApi(Shop shop, {String date}) async {
     String _date = (date != null ? "&date=" + date : "");
-    final response = await http.get(server + shopBookingUrl + "/get-pending-requests?shopId=" + shop.id.toString() + _date);
-    Misc.result(response, false);
+    final response = await http.get(server + shopBookingUrl + "/get-shop-bookings?shopId=" + shop.id.toString() + _date);
+    return Misc.result(response, false);
   }
 
   static getShopTypesApi({int id}) async {
     String _id = (id != null ? "?id=" + id.toString() : "");
-    final response = await http.get(server + shopTypeUrl + "/get-pending-requests" + _id);
-    Misc.result(response, false);
+    final response = await http.get(server + shopTypeUrl + "/get-shop-type" + _id);
+    return Misc.result(response, false);
   }
 
   static getCapacitiesApi({int id}) async {
     String _id = (id != null ? "?id=" + id.toString() : "");
-    final response = await http.get(server + capacitiesUrl + "/get-pending-requests" + _id);
-    Misc.result(response, false);
+    final response = await http.get(server + capacitiesUrl + "/get-capacities" + _id);
+    return Misc.result(response, false);
   }
 
 }

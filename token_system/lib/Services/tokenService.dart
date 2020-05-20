@@ -11,30 +11,30 @@ class TokenService {
 
   static bookTokenApi(Token token) async {
     final response = await http.post(server + tokenUrl + "/book-token", body: token.bookToJson());
-    Misc.result(response, true);
+    return Misc.result(response, true);
   }
 
   static cancelTokenApi(int tokenId) async {
     final response = await http.put(server + tokenUrl + "/cancel-token", body: Token.cancelToJson(tokenId));
-    Misc.result(response, true);
+    return Misc.result(response, true);
   }
 
   static getTokenApi(User user) async {
     final response = await http.get(server + tokenUrl + "/get-token?" + "userId=" + user.id.toString());
-    Misc.result(response, false);
+    return Misc.result(response, false);
   }
 
   static verifyTokenApi({String email, String date, int slotNumber, Shop s, Authority a}) async {
     int _shopId = s?.id;
     final response = await http.put(server + tokenUrl + "/verify-token",
         body: Misc.verifyTokenToJson(email, date, slotNumber, shopId: _shopId));
-    Misc.result(response, true);
+    return Misc.result(response, true);
   }
 
   static getSignedTokenApiCall(int tokenId) async {
     final response = await http
         .get(server + tokenUrl + "/get-encrypted-token?tokenId=" + tokenId.toString());
-    Misc.result(response, false);
+    return Misc.result(response, false);
   }
 
 }

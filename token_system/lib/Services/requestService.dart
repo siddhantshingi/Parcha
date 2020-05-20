@@ -10,27 +10,27 @@ class RequestService {
 
   static createRequestApi(Request request) async {
     final response = await http.post(server + requestUrl + "/book-token", body: request.createToJson());
-    Misc.result(response, true);
+    return Misc.result(response, true);
   }
 
   static resolveRequestApi(Request request, Authority auth, int accepted) async {
     final response = await http.put(server + requestUrl + "/resolve-request", body: request.resolveToJson(auth, accepted));
-    Misc.result(response, true);
+    return Misc.result(response, true);
   }
 
   static getPendingRequestApi(Authority auth) async {
     final response = await http.get(server + requestUrl + "/get-pending-requests?pincode=" + auth.pincode);
-    Misc.result(response, false);
+    return Misc.result(response, false);
   }
 
   static getShopRequestApi(Shop shop) async {
     final response = await http.get(server + requestUrl + "/get-requests-by-authId?shopId=" + shop.id.toString());
-    Misc.result(response, false);
+    return Misc.result(response, false);
   }
 
   static getAuthRequestApi(Authority auth) async {
     final response = await http.get(server + requestUrl + "/get-requests-by-authId?authId=" + auth.id.toString());
-    Misc.result(response, false);
+    return Misc.result(response, false);
   }
 
 
