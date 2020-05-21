@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:token_system/Entities/authority.dart';
 import 'package:token_system/components/tab_navigator.dart';
-import 'package:token_system/screens/authority_profile/approve.dart';
+import 'package:token_system/screens/authority_profile/auth_tabs.dart';
 import 'package:token_system/screens/authority_profile/monitor.dart';
 import 'package:token_system/screens/components/profile.dart';
 
@@ -126,7 +126,7 @@ class _AuthorityHomeState extends State<AuthorityHome> {
     // Returning WidgetBuilder makes it easier to implement callbacks
     if (index == 1) {
       Builder builder = Builder(
-        builder: (context) => ApproveScreen(
+        builder: (context) => AuthorityTabs(
           user: widget.user,
           tn: _tabNavigatorKeys[1],
         ),
