@@ -12,6 +12,7 @@ class Request {
   int status;
   int authId;
   String authMobile;
+  String resolvedAt;
 
   Request(
       {this.shopId,
@@ -24,7 +25,8 @@ class Request {
       this.createdAt,
       this.status,
       this.authId,
-      this.authMobile});
+      this.authMobile,
+      this.resolvedAt});
 
   Map<String, dynamic> createToJson() {
     if (this.capacity != null)
@@ -76,7 +78,8 @@ class Request {
         createdAt: json['createdAt'] as String,
         status: json['status'] as int,
         authId: json['authId'] as int,
-        authMobile: json['authMobile'] as String);
+        authMobile: json['authMobile'] as String,
+        resolvedAt: json['resolvedAt'] as String);
   }
 
   factory Request.authRequestFromJson(Map<String, dynamic> json) {
@@ -88,7 +91,8 @@ class Request {
         closingTime: json['closingTime'] as String,
         capacity : json['capacity'] as int,
         createdAt: json['createdAt'] as String,
-        status: json['status'] as int);
+        status: json['status'] as int,
+        resolvedAt: json['resolvedAt'] as String);
   }
 
 }
