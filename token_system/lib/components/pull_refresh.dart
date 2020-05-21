@@ -10,20 +10,18 @@ class PullRefresh extends StatefulWidget {
   final Function onReceiveJson;
   final int size;
 
-
   PullRefresh(
       {Key key,
-        @required this.futureFn,
-        @required this.builder,
-        @required this.onReceiveJson,
-        this.args1,
-        this.args2,
-        this.size: 60})
+      @required this.futureFn,
+      @required this.builder,
+      @required this.onReceiveJson,
+      this.args1,
+      this.args2,
+      this.size: 60})
       : super(key: key);
 
   @override
   _RefreshState createState() => _RefreshState();
-
 }
 
 class _RefreshState extends State<PullRefresh> {
@@ -54,10 +52,9 @@ class _RefreshState extends State<PullRefresh> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      child: AsyncBuilder(future: _future, builder: widget.builder, onReceiveJson: widget.onReceiveJson),
+      child: AsyncBuilder(
+          future: _future, builder: widget.builder, onReceiveJson: widget.onReceiveJson),
       onRefresh: _getData,
-
     );
   }
-
 }
