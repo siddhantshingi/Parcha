@@ -53,7 +53,6 @@ class _SearchState extends State<SearchBar> {
       ),
       Builder(
         builder: (BuildContext context) {
-          print('Building SearchBar builder');
           if (filteredList == null) {
             return widget.builder(widget.totalItems);
           } else {
