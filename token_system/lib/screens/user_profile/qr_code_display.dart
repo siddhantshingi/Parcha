@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:token_system/components/section_title.dart';
 
 class QrCodeScreen extends StatefulWidget {
   final String message;
@@ -15,15 +16,10 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
     return Material(
       color: Colors.white,
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue[900],
-          title: Text("Take a screeenshot of the image"),
-          centerTitle: true,
-          elevation: 0,
-        ),
         body: Container(
           child: Column(
             children: <Widget>[
+              SectionTitle(heading: 'Take a screenshot of the image'),
               Expanded(
                 child: Center(
                   child: Container(

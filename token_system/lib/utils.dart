@@ -63,18 +63,20 @@ var timeSlotNumberMap = <String, int>{
   '21:30:00': 32,
 };
 
-int timeToSlotNumber (int hour, int min) {
-  print (hour);
-  print (min);
+int timeToSlotNumber(int hour, int min) {
+  print(hour);
+  print(min);
   var hour_string = '';
-  if (hour < 10) hour_string = '0'+hour.toString();
-  else hour_string = hour.toString();
-  print (timeSlotNumberMap['03:00:00']);
+  if (hour < 10)
+    hour_string = '0' + hour.toString();
+  else
+    hour_string = hour.toString();
+  print(timeSlotNumberMap['03:00:00']);
   if (min < 30) {
-    print (hour_string + ":00:00");
+    print(hour_string + ":00:00");
     return timeSlotNumberMap[hour_string + ":00:00"];
   } else {
-    print (hour_string + ":30:00");
+    print(hour_string + ":30:00");
     return timeSlotNumberMap[hour_string + ":30:00"];
   }
 }
@@ -85,7 +87,7 @@ String slotNumStartTime(int slotNumber) {
   String _meridian = 'AM';
   String pref = '';
   if (slotNumber % 2 == 0) _minutes = '30';
-  slotNumber = (slotNumber - 1)~/2;
+  slotNumber = (slotNumber - 1) ~/ 2;
   _hour += slotNumber;
   if (_hour >= 12) _meridian = 'PM';
   if (_hour >= 13) _hour -= 12;
@@ -103,12 +105,11 @@ String meridianTo24(String time) {
   // time = 'HH:MM AM' or 'HH:MM PM'
   int _hour;
   if (time.substring(6) == 'AM')
-    return time.substring(0,5);
+    return time.substring(0, 5);
   else
-    _hour = int.parse(time.substring(0,2));
-    if (_hour != 12)
-        _hour += 12;
-    return _hour.toString() + time.substring(2,5);
+    _hour = int.parse(time.substring(0, 2));
+  if (_hour != 12) _hour += 12;
+  return _hour.toString() + time.substring(2, 5);
 }
 
 String readableDate(String date) {
@@ -117,7 +118,7 @@ String readableDate(String date) {
   int _day = int.parse(date.substring(8, 10));
 
   String day = '';
-  day += monthAbbr[_month] + ' ';
+  day += monthAbbr[_month - 1] + ' ';
   day += _day.toString();
   return day;
 }
@@ -137,8 +138,7 @@ DateTime stampStart(String date, int slotNumber) {
   if (slotNumber % 2 == 0) _minutes = '30';
   slotNumber ~/= 2;
   _hour += slotNumber;
-  if (_hour < 10)
-    _prefix = '0';
+  if (_hour < 10) _prefix = '0';
 
   String stamp = date + ' ' + _prefix + _hour.toString() + ':' + _minutes + ':' + _rem;
   return DateTime.parse(stamp);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:token_system/components/pull_refresh.dart';
 import 'package:token_system/utils.dart';
 import 'package:token_system/Entities/shop.dart';
 import 'package:token_system/Entities/token.dart';
@@ -17,8 +18,7 @@ class UserHistory extends StatelessWidget {
   final User user;
   final GlobalKey<TabNavigatorState> tn;
 
-  UserHistory({Key key, @required this.user, @required this.tn})
-      : super(key: key);
+  UserHistory({Key key, @required this.user, @required this.tn}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +36,9 @@ class UserHistory extends StatelessWidget {
     return Column(children: <Widget>[
       SectionTitle(heading: 'Token History'),
       Expanded(
-          child: AsyncBuilder(
-          future: TokenService.getTokenApi(user),
+        child: PullRefresh(
+          futureFn: TokenService.getTokenApi,
+          args1: user,
           builder: (tokens) {
             return ListView.builder(
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
@@ -50,8 +51,7 @@ class UserHistory extends StatelessWidget {
                   tn.currentState.push(
                     context,
                     payload: AsyncBuilder(
-                      future:
-                          ShopService.getShopUserApi(user, id: tokens[index].shopId),
+                      future: ShopService.getShopUserApi(user, id: tokens[index].shopId),
                       builder: (shop) {
                         return BookScreen(user: user, tn: tn, shop: shop);
                       },
@@ -59,7 +59,7 @@ class UserHistory extends StatelessWidget {
                     ),
                   );
                 };
-              return TokenCard(
+                return TokenCard(
                   shopName: tokens[index].shopName,
                   date: '${readableDate(tokens[index].date)}',
                   startTime: '${slotNumStartTime(tokens[index].slotNumber)}',
@@ -70,13 +70,15 @@ class UserHistory extends StatelessWidget {
                   tokenId: tokens[index].id,
                   start: stampStart(tokens[index].date, tokens[index].slotNumber),
                   end: stampEnd(tokens[index].date, tokens[index].slotNumber),
-                  bookAgain: bookAgain
-              );
-            },
-          );
-        },
-        onReceiveJson: onReceiveJson,
-      ))
+                  bookAgain: bookAgain,
+                  tn: tn,
+                );
+              },
+            );
+          },
+          onReceiveJson: onReceiveJson,
+        ),
+      )
     ]);
   }
 }
