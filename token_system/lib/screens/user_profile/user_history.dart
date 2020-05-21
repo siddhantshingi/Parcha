@@ -70,7 +70,8 @@ class UserHistory extends StatelessWidget {
                   tokenId: tokens[index].id,
                   start: stampStart(tokens[index].date, tokens[index].slotNumber),
                   end: stampEnd(tokens[index].date, tokens[index].slotNumber),
-                  bookAgain: bookAgain
+                  bookAgain: bookAgain,
+                  tn: tn,
               );
             },
           );

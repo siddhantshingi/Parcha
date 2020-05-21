@@ -108,7 +108,6 @@ class BookScreen extends StatelessWidget {
                                     });
 
                                     if (status != null) {
-                                      print(status);
                                       final snackbar = SnackBar(
                                         content: Text('Status of booking: ' +
                                             status +
