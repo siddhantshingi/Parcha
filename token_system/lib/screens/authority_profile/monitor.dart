@@ -31,7 +31,7 @@ class MonitorShops extends StatelessWidget {
       if (query.isNotEmpty) {
         List<Shop> shopsToDisplay = [];
         shops.forEach((item) {
-          if (item.shopName.contains(query)) {
+          if (item.shopName.toLowerCase().contains(query.toLowerCase())) {
             shopsToDisplay.add(item);
           }
         });
