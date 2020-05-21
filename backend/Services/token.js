@@ -4,6 +4,7 @@ parseString = require('xml2js').parseString;
 let util = require('../Utilities/util'),
 tokenDAO = require('../DAO/tokenDAO'),
 shopBookingDAO = require('../DAO/shopBookingDAO');
+periodicFunc = require('../Models/Periodic');
 
 /**API to book a token */
 let bookToken = (data, callback) => {
@@ -32,13 +33,30 @@ let bookToken = (data, callback) => {
 			}
 			tokenDAO.getNotCancelledToken(criteria,(err, data) => {
 				if (data.length === 0) {
-					shopBookingDAO.getShopBookings(criteria_booking,(err, data) => {
+					shopBookingDAO.getValidShopBookings(criteria_booking,(err, data) => {
 						if (err) {
 							cb(null, {"statusCode": util.statusCode.FOUR_ZERO_ZERO,"statusMessage": util.statusMessage.BAD_REQUEST + err, "result": {} });
 							return;
 						}
 						if (data[0])
 						{
+
+							var today = new Date();
+							var date = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+							var time = ('0' + today.getHours()).slice(-2) + ":" + ('0' + today.getMinutes()).slice(-2) + ":" + ('0' + today.getSeconds()).slice(-2);
+							var dateTime = date + ' ' + time;
+							var slot = periodicFunc.getSlotNumber(periodicFunc.floorTime(dateTime));
+							console.log(dateTime);
+							console.log(criteria.slotNumber);
+							console.log(slot);
+							console.log(periodicFunc.floorTime(dateTime));
+
+							if(criteria.slotNumber < slot)
+							{
+								cb(null, {"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND + " slot you are trying to book is not found", "result": {} });
+								return;
+							}
+
 							if (data[0].capacityLeft != 0) {
 								dataToSet.status = "1";
 							} else {

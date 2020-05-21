@@ -11,6 +11,16 @@ let getShopBookings = (criteria, callback) => {
 	dbConfig.getDB().query(`select * from shopBookings where 1 ${conditions} ORDER BY date, slotNumber`, callback);
 }
 
+let getValidShopBookings = (criteria, callback) => {
+    let conditions = "";
+	criteria.shopId ? conditions += ` and shopId = ${criteria.shopId}` : true;
+	criteria.date ? conditions += ` and date = '${criteria.date}'` : true;
+	criteria.slotNumber ? conditions += ` and slotNumber = ${criteria.slotNumber}` : true;
+	conditions += ' and date >= curdate() '
+	console.log(`select * from shopBookings where 1 ${conditions} ORDER BY date, slotNumber`);
+	dbConfig.getDB().query(`select * from shopBookings where 1 ${conditions} ORDER BY date, slotNumber`, callback);
+}
+
 //models/Periodic.js/large-periodic function
 let addShopTimeSlot = (dataToSet, callback) => {
 	let setData = "";
@@ -36,5 +46,6 @@ let deleteShopTimeSlot = (criteria, callback) => {
 module.exports = {
 	getShopBookings : getShopBookings,
 	addShopTimeSlot : addShopTimeSlot,
-	deleteShopTimeSlot : deleteShopTimeSlot
+	deleteShopTimeSlot : deleteShopTimeSlot,
+	getValidShopBookings : getValidShopBookings
 }

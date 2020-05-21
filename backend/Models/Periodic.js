@@ -159,5 +159,7 @@ let initialize = () => {
 
 module.exports = {
 	initialize: initialize,
-	addShopTimeSlots : addShopTimeSlots
+	addShopTimeSlots : addShopTimeSlots,
+	getSlotNumber : getSlotNumber,
+	floorTime : floorTime
 }
