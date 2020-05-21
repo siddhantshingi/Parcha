@@ -4,6 +4,7 @@ import 'package:tuple/tuple.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/Services/miscServices.dart';
 import 'package:token_system/components/async_builder.dart';
+import 'package:token_system/components/pull_refresh.dart';
 import 'package:token_system/components/section_title.dart';
 import 'package:token_system/components/tab_navigator.dart';
 import 'package:token_system/screens/booking/choose_shop.dart';
@@ -33,8 +34,8 @@ class ChooseCategory extends StatelessWidget {
     return Column(children: <Widget>[
       SectionTitle(heading: 'Choose Category'),
       Expanded(
-        child: AsyncBuilder(
-          future: MiscService.getShopTypesApi(),
+        child: PullRefresh(
+          futureFn: MiscService.getShopTypesApi,
           builder: (shopTypes) {
             return GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
