@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:token_system/components/pull_refresh.dart';
 import 'package:token_system/utils.dart';
 import 'package:token_system/Entities/shop_booking.dart';
 import 'package:token_system/Entities/shop.dart';
@@ -28,7 +29,10 @@ class BookScreen extends StatelessWidget {
       // Construct List of Categories
       List<ShopBooking> shopBookings = [];
       for (var item in snapshot.data['result']) {
-        shopBookings.add(ShopBooking.fromJson(item, shop.id));
+        ShopBooking sb = ShopBooking.fromJson(item, shop.id);
+        if (DateTime.now().isBefore(stampEnd(sb.date, sb.slotNumber))) {
+          shopBookings.add(sb);
+        }
       }
       return shopBookings;
     };
@@ -91,10 +95,10 @@ class BookScreen extends StatelessWidget {
                                             userId: user.id,
                                             userEmail: user.email,
                                             userName: user.name,
-                                            date: DateTime.now().toString().substring(0, 11),
+                                            date: bookings[index].date,
                                             slotNumber: bookings[index].slotNumber))
                                         .then((code) {
-                                      //TODO: Need a proper UI message.
+                                      // FIXED: Need a proper UI message.
                                       if (code == 200)
                                         return 'Confirmed';
                                       else if (code == 201)
