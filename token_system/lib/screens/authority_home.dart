@@ -73,7 +73,7 @@ class _AuthorityHomeState extends State<AuthorityHome> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('TokenDown'),
+          title: const Text('Parcha'),
           backgroundColor: Colors.blueGrey,
           elevation: 0,
           actions: <Widget>[
