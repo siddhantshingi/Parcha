@@ -46,8 +46,9 @@ class BookScreen extends StatelessWidget {
           style: TextStyle(color: Colors.amber[800], fontSize: 24),
         ),
         Expanded(
-          child: AsyncBuilder(
-            future: MiscService.getShopBookingsApi(shop),
+          child: PullRefresh(
+            futureFn: MiscService.getShopBookingsApi,
+            args1: shop,
             builder: (bookings) {
               return ListView.builder(
                 shrinkWrap: true,
