@@ -45,13 +45,9 @@ let bookToken = (data, callback) => {
 							var date = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
 							var time = ('0' + today.getHours()).slice(-2) + ":" + ('0' + today.getMinutes()).slice(-2) + ":" + ('0' + today.getSeconds()).slice(-2);
 							var dateTime = date + ' ' + time;
-							var slot = periodicFunc.getSlotNumber(periodicFunc.floorTime(dateTime));
-							console.log(dateTime);
-							console.log(criteria.slotNumber);
-							console.log(slot);
-							console.log(periodicFunc.floorTime(dateTime));
+							var currSlot = periodicFunc.getSlotNumber(periodicFunc.floorTime(dateTime));
 
-							if(criteria.slotNumber < slot)
+							if(date === data[0].date && criteria.slotNumber < currSlot)
 							{
 								cb(null, {"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND + " slot you are trying to book is not found", "result": {} });
 								return;
