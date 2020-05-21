@@ -34,7 +34,7 @@ class Token {
         "slotNumber": this.slotNumber.toString(),
       };
 
-  static Map<String, dynamic> cancelToJson(id) => {"tokenId": id.toString()};
+  static Map<String, dynamic> cancelToJson(id) => {"id": id.toString()};
 
   factory Token.getFromJson(Map<String, dynamic> json) {
     return Token(

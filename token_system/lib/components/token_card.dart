@@ -126,7 +126,9 @@ class TokenCard extends StatelessWidget {
                     child: FlatButton(
                       onPressed: () {
                         // FIXED: Cancel this token and redraw this card only.
-                        TokenService.cancelTokenApi(this.tokenId);
+                        TokenService.cancelTokenApi(this.tokenId).then((code) {
+                          print(code);
+                        });
                       },
                       textColor: Colors.redAccent,
                       child: const Text('CANCEL'),
