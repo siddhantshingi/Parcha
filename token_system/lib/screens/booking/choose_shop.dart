@@ -32,11 +32,10 @@ class ChooseShop extends StatelessWidget {
 
     // Filter results using this function
     var filterSearchResults = (List<Shop> shops, String query) {
-      print('In filter search');
       if (query.isNotEmpty) {
         List<Shop> shopsToDisplay = [];
         shops.forEach((item) {
-          if (item.shopName.contains(query)) {
+          if (item.shopName.toLowerCase().contains(query.toLowerCase())) {
             shopsToDisplay.add(item);
           }
         });
