@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:token_system/Entities/authority.dart';
 import 'package:token_system/Entities/shop.dart';
+import 'package:token_system/components/search_bar.dart';
+import 'package:token_system/components/section_title.dart';
 import 'package:token_system/components/shop_card.dart';
 import 'package:token_system/components/tab_navigator.dart';
 import 'package:token_system/components/async_builder.dart';
@@ -11,13 +13,11 @@ class MonitorShops extends StatelessWidget {
   final Authority user;
   final GlobalKey<TabNavigatorState> tn;
 
-  MonitorShops({Key key, @required this.user, @required this.tn})
-      : super(key: key);
+  MonitorShops({Key key, @required this.user, @required this.tn}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Call shop list API to get all shops in a pin code
-
+    // FIXED: Call shop list API to get all shops in a pin code
     var onReceiveJson = (snapshot) {
       // Construct List of Categories
       List<Shop> shops = [];
@@ -27,52 +27,65 @@ class MonitorShops extends StatelessWidget {
       return shops;
     };
 
+    var filterSearchResults = (List<Shop> shops, String query) {
+      if (query.isNotEmpty) {
+        List<Shop> shopsToDisplay = [];
+        shops.forEach((item) {
+          if (item.shopName.toLowerCase().contains(query.toLowerCase())) {
+            shopsToDisplay.add(item);
+          }
+        });
+
+        return shopsToDisplay;
+      }
+      return shops;
+    };
+
     return Column(children: <Widget>[
-      Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(10),
-        child: Text(
-          'Monitor and Track Shops',
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.amber,
-          ),
-        ),
-      ),
-      Expanded(
-        child: AsyncBuilder(
-          future: ShopService.getShopAuthApi(user),
-          builder: (shops) {
-            return ListView.builder(
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
-              itemCount: shops.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: InkWell(
-                    splashColor: Colors.blueGrey[300],
-                    onTap: () {
-                      // View shop profile (from Authority view)
-                      tn.currentState.push(
-                        context,
-                        payload: ShopProfile(user: user, shop: shops[index]),
+      SectionTitle(heading: 'Monitor and Track Shops'),
+      AsyncBuilder(
+        future: ShopService.getShopAuthApi(user),
+        builder: (allShops) {
+          return Expanded(
+            child: SearchBar(
+              filterSearch: filterSearchResults,
+              totalItems: allShops,
+              builder: (shopsToDisplay) {
+                return Flexible(
+                  fit: FlexFit.loose,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+                    itemCount: shopsToDisplay.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: InkWell(
+                          splashColor: Colors.blueGrey[300],
+                          onTap: () {
+                            // View shop profile (from Authority view)
+                            tn.currentState.push(
+                              context,
+                              payload: ShopProfile(user: user, shop: shopsToDisplay[index]),
+                            );
+                          },
+                          child: SizedBox(
+                            height: 80,
+                            child: ShopCard(
+                              shop: shopsToDisplay[index],
+                              minimal: false,
+                            ),
+                          ),
+                        ),
                       );
                     },
-                    child: SizedBox(
-                      height: 80,
-                      child: ShopCard(
-                        shop: shops[index],
-                        minimal: false,
-                      ),
-                    ),
                   ),
                 );
               },
-            );
-          },
-          onReceiveJson: onReceiveJson,
-        )
-      ),
+            ),
+          );
+        },
+        onReceiveJson: onReceiveJson,
+      )
     ]);
   }
 }

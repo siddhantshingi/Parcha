@@ -6,8 +6,10 @@ import 'package:token_system/Entities/request.dart';
 class RequestAuth extends StatelessWidget {
   final Request request;
   final bool minimal;
+  final bool resolved;
 
-  RequestAuth({Key key, @required this.request, this.minimal: false}) : super(key: key);
+  RequestAuth({Key key, @required this.request, this.minimal: false, this.resolved: false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,27 +60,29 @@ class RequestAuth extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Row(children: <Widget>[
-                      Icon(Icons.people, size: 14),
+                      Icon(this.request.capacity != 0 ? Icons.people : Icons.timelapse, size: 14),
                       const Padding(padding: EdgeInsets.only(right: 2.0)),
                       Text(
-                        'Capacity: ' + this.request.capacity.toString(),
-                        style: const TextStyle(
-                          fontSize: 12.0,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ]),
-                    Row(children: <Widget>[
-                      Icon(Icons.timelapse, size: 14),
-                      const Padding(padding: EdgeInsets.only(right: 2.0)),
-                      Text(
-                        '${stripSeconds(this.request.openingTime)} - ${stripSeconds(this.request.closingTime)}',
+                        this.request.capacity != 0
+                            ? 'Capacity: ' + this.request.capacity.toString()
+                            : '${stripSeconds(this.request.openingTime)} - ${stripSeconds(this.request.closingTime)}',
                         style: const TextStyle(
                           fontSize: 12.0,
                           color: Colors.black54,
                         ),
                       ),
                     ]),
+//                    Row(children: <Widget>[
+//                      Icon(Icons.timelapse, size: 14),
+//                      const Padding(padding: EdgeInsets.only(right: 2.0)),
+//                      Text(
+//                        '${stripSeconds(this.request.openingTime)} - ${stripSeconds(this.request.closingTime)}',
+//                        style: const TextStyle(
+//                          fontSize: 12.0,
+//                          color: Colors.black54,
+//                        ),
+//                      ),
+//                    ]),
                   ],
                 ),
               ),

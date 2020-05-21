@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:token_system/components/loading.dart';
 import 'package:token_system/components/async_builder.dart';
 
 class PullRefresh extends StatefulWidget {
