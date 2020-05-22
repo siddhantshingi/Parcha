@@ -29,3 +29,7 @@ backend/public.pem
 
 # Custom ignores
 .vscode/
+
+# Mac Os debug files
+token_system/ios/Flutter/Debug.xcconfig
+token_system/ios/Flutter/Release.xcconfig

@@ -9,11 +9,12 @@ shopDAO = require('../DAO/shopDAO');
 let createShopTesting = (data, callback) => {
 	async.auto({
 		shop: (cb) => {
+			var password = util.createNewHashedPassword(data.password);
 			var dataToSet = {
 				"shopName": data.shopName,
 				"ownerName": data.ownerName,
 				"email":data.email,
-				"password":data.password,
+				"password":password,
 				"mobileNumber":data.mobileNumber,
 				"aadharNumber":data.aadharNumber,
 				"address":data.address,
@@ -82,11 +83,12 @@ let createShopTesting = (data, callback) => {
 let createShop = (data, callback) => {
 	async.auto({
 		shop: (cb) => {
+			var password = util.createNewHashedPassword(data.password);
 			var dataToSet = {
 				"shopName": data.shopName,
 				"ownerName": data.ownerName,
 				"email":data.email,
-				"password":data.password,
+				"password":password,
 				"mobileNumber":data.mobileNumber,
 				"aadhaarNumber":data.aadhaarNumber,
 				"address":data.address,
@@ -224,7 +226,7 @@ let updateShopPassword = (data,callback) => {
 				"id" : data.id
 			}
 			var dataToSet={
-				"password": data.newPassword
+				"password": util.createNewHashedPassword(data.newPassword)
 			}
 			console.log(data);
 			console.log(dataToSet);
@@ -235,7 +237,7 @@ let updateShopPassword = (data,callback) => {
 				}
 				else{
 					console.log(dbData);
-					if(dbData[0].password === data.oldPassword)
+					if(util.verifyPassword(dbData[0].password, data.oldPassword))
 					{
 						shopDAO.updateShopPassword(criteria, dataToSet, (err, dbData)=>{
 							if(err){
@@ -281,7 +283,7 @@ let verifyShop = (data, callback) => {
 					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND + " Email-id not found", "result": {} });
 					return;
 				}
-				else if(getData[0].password === data.password)
+				else if(util.verifyPassword(getData[0].password, data.password))
 				{
 					var result = getData[0];
 					delete result.email;

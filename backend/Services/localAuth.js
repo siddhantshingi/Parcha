@@ -9,10 +9,11 @@ pincodeDAO = require('../DAO/pincodeDAO');
 let createLocalAuth = (data, callback) => {
 	async.auto({
 		localAuth: (cb) => {
+			var password = util.createNewHashedPassword(data.password);
 			var dataToSet = {
 				"name":data.name,
 				"email":data.email,
-				"password":data.password,
+				"password":password,
 				"mobileNumber":data.mobileNumber,
 				"aadharNumber":data.aadharNumber,
 				"pincode":data.pincode,
@@ -140,7 +141,7 @@ let updateLocalAuthPassword = (data,callback) => {
 				"id" : data.id
 			}
 			var dataToSet={
-				"password":data.newPassword
+				"password":util.createNewHashedPassword(data.newPassword)
 			}
 			localAuthDAO.getLocalAuth(criteria, (err, dbData)=>{
 				if(err){
@@ -148,7 +149,7 @@ let updateLocalAuthPassword = (data,callback) => {
 					return; 
 				}
 				else{
-					if(dbData[0].password === data.oldPassword)
+					if(util.verifyPassword(dbData[0].password, data.oldPassword))
 					{
 						localAuthDAO.updateLocalAuth(criteria, dataToSet, (err, dbData)=>{
 							if(err){
@@ -221,7 +222,7 @@ let verifyLocalAuth = (data, callback) => {
 					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND + " Email-id not found", "result": {} });
 					return;
 				}
-				else if(getData[0].password === data.password)
+				else if(util.verifyPassword(getData[0].password, data.password))
 				{
 					var result = getData[0];
 					delete result.email;

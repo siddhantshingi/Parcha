@@ -36,11 +36,12 @@ let sendEmail = (data_pack, callback) => {
 let createUser = (data, callback) => {
 	async.auto({
 		user: (cb) => {
+			var password = util.createNewHashedPassword(data.password);
 			var dataToSet = {
 				"name":data.name,
 				"email":data.email,
 				"mobileNumber":data.mobileNumber,
-				"password":data.password,
+				"password":password,
 				"aadharNumber":data.aadharNumber,
 				"pincode":data.pincode,
 			}
@@ -167,7 +168,7 @@ let updateUserPassword = (data,callback) => {
 				"id" : data.id
 			}
 			var dataToSet={
-				"password":data.newPassword
+				"password":util.createNewHashedPassword(data.newPassword)
 			}
 			userDAO.getUserDetailUsingId(criteria, (err, dbData)=>{
 				if(err){
@@ -175,7 +176,7 @@ let updateUserPassword = (data,callback) => {
 					return; 
 				}
 				else{
-					if(dbData[0].password === data.oldPassword)
+					if(util.verifyPassword(dbData[0].password, data.oldPassword))
 					{
 						userDAO.updateUserPassword(criteria, dataToSet, (err, dbData)=>{
 							if(err){
@@ -246,7 +247,7 @@ let verifyUser = (data, callback) => {
 					cb(null,{"statusCode": util.statusCode.FOUR_ZERO_FOUR,"statusMessage": util.statusMessage.NOT_FOUND + " Email-id not found", "result": {} });
 					return;
 				}
-				else if(getData[0].password === data.password)
+				else if(util.verifyPassword(getData[0].password, data.password))
 				{
 					var result = getData[0];
 					delete result.email;

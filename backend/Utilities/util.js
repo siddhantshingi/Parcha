@@ -47,8 +47,29 @@ let encryptStringWithRsaPrivateKey = function(toSign) {
     return output;
 };
 
+let createNewHashedPassword = function(cleartext){
+	var salt = crypto.randomBytes(16).toString('base64');
+	var iterationcount = 10000;
+	var key = crypto.pbkdf2Sync(cleartext, salt, iterationcount, 64, 'sha512').toString('base64');
+	var password = salt +","+iterationcount+","+key;
+	return password;
+}
+
+let verifyPassword = function(savedPassword, cleartext){
+	var splitPassword = savedPassword.split(',');
+	var savedSalt = splitPassword[0];
+	var savedIterationCount = parseInt(splitPassword[1]);
+	var savedKey = splitPassword[2];
+	var enteredKey = crypto.pbkdf2Sync(cleartext, savedSalt, savedIterationCount, 64, 'sha512').toString('base64');
+	return (savedKey===enteredKey);
+}
+
+
+
 module.exports = {
 	statusCode: statusCode,
 	statusMessage: statusMessage,
-	encryptStringWithRsaPrivateKey: encryptStringWithRsaPrivateKey
+	encryptStringWithRsaPrivateKey: encryptStringWithRsaPrivateKey,
+	createNewHashedPassword: createNewHashedPassword,
+	verifyPassword: verifyPassword
 }
