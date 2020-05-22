@@ -126,7 +126,7 @@ String readableDate(String date) {
 String readableTimestamp(String timestamp) {
   // timestamp = 'YYYY-MM-DD HH:MM:SS'
   String _date = readableDate(timestamp.substring(0, 10));
-  return _date + ' ' + timestamp.substring(12);
+  return _date + ' ' + timestamp.substring(11);
 }
 
 DateTime stampStart(String date, int slotNumber) {

@@ -19,6 +19,7 @@ let resolveRequest = (criteria,dataToSet,callback) => {
 	dataToSet.status ? setData += `status = '${dataToSet.status}'` : true;
 	dataToSet.authId ? setData += `, authId = '${dataToSet.authId}'` : true;
 	dataToSet.authMobile ? setData += `, authMobile = '${dataToSet.authMobile}'` : true;
+	setData += ', resolvedAt = now()';
 
     let conditions = "";
 	criteria.shopId ? conditions += ` and shopId = ${criteria.shopId}` : true;
@@ -45,15 +46,15 @@ let getRequest = (criteria, callback) => {
 let getRequestByShopId = (criteria, callback) => {
     let conditions = "";
 	criteria.shopId ? conditions += ` and request.shopId = '${criteria.shopId}'` : true;
-	console.log(`select shopId, openingTime, closingTime, capacity, createdAt, status, authId, authMobile from request where 1 ${conditions}`);
-	dbConfig.getDB().query(`select shopId, openingTime, closingTime, capacity, createdAt, status, authId, authMobile from request where 1 ${conditions}`, callback);
+	console.log(`select shopId, openingTime, closingTime, capacity, createdAt, resolvedAt, status, authId, authMobile from request where 1 ${conditions}`);
+	dbConfig.getDB().query(`select shopId, openingTime, closingTime, capacity, createdAt, resolvedAt, status, authId, authMobile from request where 1 ${conditions}`, callback);
 }
 
 let getRequestByAuthId = (criteria, callback) => {
     let conditions = "";
 	criteria.authId ? conditions += ` and request.authId = '${criteria.authId}'` : true;
-	console.log(`select shopId, shopName, address, openingTime, closingTime, capacity, createdAt, status from request where 1 ${conditions}`);
-	dbConfig.getDB().query(`select shopId, shopName, address, openingTime, closingTime, capacity, createdAt, status from request where 1 ${conditions}`, callback);
+	console.log(`select shopId, shopName, address, openingTime, closingTime, capacity, createdAt, resolvedAt, status from request where 1 ${conditions}`);
+	dbConfig.getDB().query(`select shopId, shopName, address, openingTime, closingTime, capacity, createdAt, resolvedAt, status from request where 1 ${conditions}`, callback);
 }
 
 let getPendingRequests = (criteria, callback) => {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TitleWidget extends StatelessWidget {
-  static const String _title = 'TokenDown';
+  static const String _title = 'Parcha';
 
   @override
   Widget build(BuildContext context) {
