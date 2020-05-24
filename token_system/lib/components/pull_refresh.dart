@@ -23,8 +23,11 @@ class PullRefresh extends StatefulWidget {
   _RefreshState createState() => _RefreshState();
 }
 
-class _RefreshState extends State<PullRefresh> {
+class _RefreshState extends State<PullRefresh> with AutomaticKeepAliveClientMixin<PullRefresh> {
   Future<dynamic> _future;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
