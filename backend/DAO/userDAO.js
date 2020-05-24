@@ -23,7 +23,7 @@ let createUser = (dataToSet, callback) => {
 	dataToSet.email ? setData += `, email = '${dataToSet.email}'` : true;
 	dataToSet.mobileNumber ? setData += `, mobileNumber = '${dataToSet.mobileNumber}'` : true;
 	dataToSet.password ? setData += `, password = '${dataToSet.password}'` : true;
-	dataToSet.aadharNumber ? setData += `, aadharNumber = '${dataToSet.aadharNumber}'` : setData +=  `, aadharNumber = '------------'`;
+	dataToSet.aadhaarNumber ? setData += `, aadhaarNumber = '${dataToSet.aadhaarNumber}'` : setData +=  `, aadhaarNumber = '------------'`;
 	dataToSet.pincode ? setData += `, pincode = '${dataToSet.pincode}'` : true;
 	setData += `, emailVerification = 1`;
 	setData += `, mobileVerification = 0`;
@@ -49,7 +49,7 @@ let updateUser = (criteria,dataToSet,callback) => {
 	criteria.id ? setData += `id = '${criteria.id}'` : true;
 	dataToSet.name ? setData += `, name = '${dataToSet.name}'` : true;
 	dataToSet.mobileNumber ? setData += `, mobileNumber = '${dataToSet.mobileNumber}'` : true;
-	dataToSet.aadharNumber ? setData += `, aadharNumber = '${dataToSet.aadharNumber}'` : true;
+	dataToSet.aadhaarNumber ? setData += `, aadhaarNumber = '${dataToSet.aadhaarNumber}'` : true;
 	dataToSet.pincode ? setData += `, pincode = '${dataToSet.pincode}'` : true;
 	console.log(`UPDATE users SET ${setData} where 1 ${conditions}`);
 	console.log(`update users, pincode set users.state = pincode.state, users.district = pincode.district where users.pincode = pincode.pincode and users.id = '${criteria.id}'`);

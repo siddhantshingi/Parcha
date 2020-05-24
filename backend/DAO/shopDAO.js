@@ -64,7 +64,7 @@ let updateShop = (criteria,dataToSet,callback) => {
 	dataToSet.shopName ? setData += `, shopName = '${dataToSet.shopName}'` : true;
 	dataToSet.ownerName ? setData += `, ownerName = '${dataToSet.ownerName}'` : true;
 	dataToSet.mobileNumber ? setData += `, mobileNumber = '${dataToSet.mobileNumber}'` : true;
-	dataToSet.aadharNumber ? setData += `, aadharNumber = '${dataToSet.aadharNumber}'` : true;
+	dataToSet.aadhaarNumber ? setData += `, aadhaarNumber = '${dataToSet.aadhaarNumber}'` : true;
 	dataToSet.address ? setData += `, address = '${dataToSet.address}'` : true;
 	dataToSet.landmark ? setData += `, landmark = '${dataToSet.landmark}'` : true;
 	if (typeof dataToSet.shopTypeId !== 'undefined' && dataToSet.shopTypeId !== null) 

@@ -15,7 +15,7 @@ let createLocalAuth = (dataToSet, callback) => {
 	dataToSet.email ? setData += `, email = '${dataToSet.email}'` : true;
 	dataToSet.mobileNumber ? setData += `, mobileNumber = '${dataToSet.mobileNumber}'` : true;
 	dataToSet.password ? setData += `, password = '${dataToSet.password}'` : true;
-	dataToSet.aadharNumber ? setData += `, aadharNumber = '${dataToSet.aadharNumber}'` : setData +=  `, aadharNumber = '------------'`;
+	dataToSet.aadhaarNumber ? setData += `, aadhaarNumber = '${dataToSet.aadhaarNumber}'` : setData +=  `, aadhaarNumber = '------------'`;
 	dataToSet.pincode ? setData += `, pincode = '${dataToSet.pincode}'` : true;
 	setData += `, emailVerification = 1`;
 	setData += `, authVerification = 0`;
@@ -34,7 +34,7 @@ let updateLocalAuth = (criteria,dataToSet,callback) => {
 	dataToSet.email ? setData += `, email = '${dataToSet.email}'` : true;
 	dataToSet.mobileNumber ? setData += `, mobileNumber = '${dataToSet.mobileNumber}'` : true;
 	dataToSet.password ? setData += `, password = '${dataToSet.password}'` : true;
-	dataToSet.aadharNumber ? setData += `, aadharNumber = '${dataToSet.aadharNumber}'` : true;
+	dataToSet.aadhaarNumber ? setData += `, aadhaarNumber = '${dataToSet.aadhaarNumber}'` : true;
 	dataToSet.state ? setData += `, state = '${dataToSet.state}'` : true;
 	dataToSet.district ? setData += `, district = '${dataToSet.district}'` : true;
 	dataToSet.pincode ? setData += `, pincode = '${dataToSet.pincode}'` : true;

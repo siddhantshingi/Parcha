@@ -42,7 +42,7 @@ let createUser = (data, callback) => {
 				"email":data.email,
 				"mobileNumber":data.mobileNumber,
 				"password":password,
-				"aadharNumber":data.aadharNumber,
+				"aadhaarNumber":data.aadhaarNumber,
 				"pincode":data.pincode,
 			}
 			let criteria = {
@@ -106,7 +106,7 @@ let updateUser = (data,callback) => {
 			var dataToSet={
 				"name":data.name,
 				"mobileNumber":data.mobileNumber,
-				"aadharNumber":data.aadharNumber,
+				"aadhaarNumber":data.aadhaarNumber,
 				"pincode":data.pincode
 			}
 			if(data.pincode)

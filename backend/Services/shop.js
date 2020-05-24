@@ -16,7 +16,7 @@ let createShopTesting = (data, callback) => {
 				"email":data.email,
 				"password":password,
 				"mobileNumber":data.mobileNumber,
-				"aadharNumber":data.aadharNumber,
+				"aadhaarNumber":data.aadhaarNumber,
 				"address":data.address,
 				"landmark":data.landmark,
 				"shopTypeId":data.shopTypeId,

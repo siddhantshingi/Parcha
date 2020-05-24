@@ -15,7 +15,7 @@ let createLocalAuth = (data, callback) => {
 				"email":data.email,
 				"password":password,
 				"mobileNumber":data.mobileNumber,
-				"aadharNumber":data.aadharNumber,
+				"aadhaarNumber":data.aadhaarNumber,
 				"pincode":data.pincode,
 			}
 			let criteria = {
@@ -79,7 +79,7 @@ let updateLocalAuth = (data,callback) => {
 			var dataToSet={
 				"name":data.name,
 				"mobileNumber":data.mobileNumber,
-				"aadharNumber":data.aadharNumber,
+				"aadhaarNumber":data.aadhaarNumber,
 				"pincode":data.pincode
 			}
 			if(data.pincode)
