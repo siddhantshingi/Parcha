@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/Entities/shop.dart';
 import 'package:token_system/Entities/authority.dart';
@@ -11,6 +10,7 @@ import 'package:token_system/Services/authorityService.dart';
 import 'package:token_system/components/async_builder.dart';
 import 'package:token_system/components/title.dart';
 import 'package:token_system/screens/login.dart';
+import 'package:token_system/utils.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -44,38 +44,6 @@ class _RegisterState extends State<Register> {
       return 'Bad pincode!';
     else
       return 'Registration failed!';
-  }
-
-  String validateMobile(String value) {
-    // Indian Mobile number are of 10 digit only
-    if (value.length != 10)
-      return 'Mobile Number must be of 10 digits';
-    else
-      return null;
-  }
-
-  String validateAadhaar(String value) {
-    // Indian Aadhar number, if present, must be of 12 digit only
-    if (value == '') return null;
-    if (value.length != 12)
-      return 'Aadhaar must be of 12 digits only';
-    else
-      return null;
-  }
-
-  String validatePincode(String value) {
-    // Indian Mobile number are of 10 digit only
-    if (value.length != 6)
-      return 'Pincode must be of 6 digits';
-    else
-      return null;
-  }
-
-  String validateEmail(String value) {
-    if (!EmailValidator.validate(value))
-      return 'Please enter a valid email address';
-    else
-      return null;
   }
 
   String validateConfirmPassword(String value) {
@@ -166,7 +134,7 @@ class _RegisterState extends State<Register> {
                           labelText: isShop() ? 'Shop Name' : 'Name',
                         ),
                         validator: (value) {
-                          if (value.isEmpty)
+                          if (value.isEmpty || value.trim() == '')
                             return isShop()
                                 ? 'Please enter your Shop name'
                                 : 'Please enter your name';
@@ -189,7 +157,7 @@ class _RegisterState extends State<Register> {
                             labelText: 'Shop Owner Name',
                           ),
                           validator: (value) {
-                            if (value.isEmpty)
+                            if (value.isEmpty || value.trim() == '')
                               return 'Please enter your name';
                             else
                               return null;
@@ -224,10 +192,6 @@ class _RegisterState extends State<Register> {
                                   child: Text(shopTypes[index].item2),
                                   value: shopTypes[index],
                                 ));
-//                                items.add(DropdownMenuItem(
-//                                  child: Text(shopTypes[index]),
-//                                  value: 2*index + 1,
-//                                ));
                               }
                               return DropdownButton(
                                 iconDisabledColor: Colors.blueGrey,
@@ -241,7 +205,6 @@ class _RegisterState extends State<Register> {
                                 onChanged: (value) {
                                   setState(() {
                                     _shopType = value;
-//                                    print(_shopType);
                                   });
                                 },
                               );
@@ -325,7 +288,7 @@ class _RegisterState extends State<Register> {
                             labelText: 'Address',
                           ),
                           validator: (value) {
-                            if (value.isEmpty)
+                            if (value.isEmpty || value.trim() == '')
                               return 'Please enter your address';
                             else
                               return null;
@@ -400,11 +363,11 @@ class _RegisterState extends State<Register> {
 
                                 if (_selected == SignAs.user) {
                                   User newUser = new User(
-                                    name: _name,
-                                    email: _email,
-                                    mobileNumber: _mobile,
-                                    aadhaarNumber: _aadhaar,
-                                    pincode: _pincode,
+                                    name: _name.trim(),
+                                    email: _email.trim(),
+                                    mobileNumber: _mobile.trim(),
+                                    aadhaarNumber: _aadhaar.trim(),
+                                    pincode: _pincode.trim(),
                                   );
                                   UserService.registerApi(newUser, _password).then((code) {
                                     final snackbar = SnackBar(
@@ -420,15 +383,15 @@ class _RegisterState extends State<Register> {
                                   });
                                 } else if (_selected == SignAs.shop) {
                                   Shop newShop = new Shop(
-                                      shopName: _name,
-                                      ownerName: _ownerName,
-                                      email: _email,
-                                      mobileNumber: _mobile,
-                                      aadhaarNumber: _aadhaar,
-                                      address: _address,
-                                      landmark: _landmark,
+                                      shopName: _name.trim(),
+                                      ownerName: _ownerName.trim(),
+                                      email: _email.trim(),
+                                      mobileNumber: _mobile.trim(),
+                                      aadhaarNumber: _aadhaar.trim(),
+                                      address: _address.trim(),
+                                      landmark: _landmark.trim(),
                                       shopType: _shopType.item2,
-                                      pincode: _pincode);
+                                      pincode: _pincode.trim());
                                   ShopService.registerApi(newShop, _password, _shopType.item1)
                                       .then((code) {
                                     print('Inside Api call');
@@ -445,11 +408,11 @@ class _RegisterState extends State<Register> {
                                   });
                                 } else {
                                   Authority newAuth = new Authority(
-                                    name: _name,
-                                    email: _email,
-                                    mobileNumber: _mobile,
-                                    aadhaarNumber: _aadhaar,
-                                    pincode: _pincode,
+                                    name: _name.trim(),
+                                    email: _email.trim(),
+                                    mobileNumber: _mobile.trim(),
+                                    aadhaarNumber: _aadhaar.trim(),
+                                    pincode: _pincode.trim(),
                                   );
                                   AuthorityService.registerApi(newAuth, _password).then((code) {
                                     final snackbar = SnackBar(

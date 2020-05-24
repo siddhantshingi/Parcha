@@ -1,3 +1,5 @@
+import 'package:email_validator/email_validator.dart';
+
 List<String> monthFull = [
   'January',
   'February',
@@ -66,18 +68,18 @@ var timeSlotNumberMap = <String, int>{
 int timeToSlotNumber(int hour, int min) {
   print(hour);
   print(min);
-  var hour_string = '';
+  var hourString = '';
   if (hour < 10)
-    hour_string = '0' + hour.toString();
+    hourString = '0' + hour.toString();
   else
-    hour_string = hour.toString();
+    hourString = hour.toString();
   print(timeSlotNumberMap['03:00:00']);
   if (min < 30) {
-    print(hour_string + ":00:00");
-    return timeSlotNumberMap[hour_string + ":00:00"];
+    print(hourString + ":00:00");
+    return timeSlotNumberMap[hourString + ":00:00"];
   } else {
-    print(hour_string + ":30:00");
-    return timeSlotNumberMap[hour_string + ":30:00"];
+    print(hourString + ":30:00");
+    return timeSlotNumberMap[hourString + ":30:00"];
   }
 }
 
@@ -157,4 +159,36 @@ DateTime stamp(String date, String time) {
   String _parsable = date + ' ' + time;
   _parsable += ':00.0';
   return DateTime.parse(_parsable);
+}
+
+String validateMobile(String value) {
+  // Indian Mobile number are of 10 digit only
+  if (value.trim().length != 10)
+    return 'Mobile Number must be of 10 digits';
+  else
+    return null;
+}
+
+String validateAadhaar(String value) {
+  // Indian Aadhaar number are of 12 digit only
+  if (value.trim() == '') return null;
+  if (value.trim().length != 12)
+    return 'aadhaar must be of 12 digits only';
+  else
+    return null;
+}
+
+String validatePincode(String value) {
+  // Indian Mobile number are of 10 digit only
+  if (value.trim().length != 6)
+    return 'Pincode must be of 6 digits';
+  else
+    return null;
+}
+
+String validateEmail(String value) {
+  if (!EmailValidator.validate(value.trim()))
+    return 'Please enter a valid email address';
+  else
+    return null;
 }

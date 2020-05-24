@@ -30,7 +30,7 @@ class Authority extends Entity {
         "email": this.email,
         "password": password,
         "mobileNumber": this.mobileNumber,
-        "aadharNumber": this.aadhaarNumber,
+        "aadhaarNumber": this.aadhaarNumber,
         "pincode": this.pincode,
       };
 
@@ -40,7 +40,7 @@ class Authority extends Entity {
         "id": this.id.toString(),
         "name": name ?? this.name,
         "mobileNumber": mobileNumber ?? this.mobileNumber,
-        "aadharNumber": aadhaarNumber ?? this.aadhaarNumber,
+        "aadhaarNumber": aadhaarNumber ?? this.aadhaarNumber,
         "pincode": pincode ?? this.pincode,
       };
 

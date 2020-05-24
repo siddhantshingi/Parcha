@@ -53,6 +53,7 @@ class _RefreshState extends State<PullRefresh> with AutomaticKeepAliveClientMixi
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return RefreshIndicator(
       child: AsyncBuilder(
           future: _future, builder: widget.builder, onReceiveJson: widget.onReceiveJson),

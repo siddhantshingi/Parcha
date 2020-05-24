@@ -3,6 +3,7 @@ import 'package:token_system/Entities/abstract.dart';
 import 'package:token_system/Services/authorityService.dart';
 import 'package:token_system/Services/shopService.dart';
 import 'package:token_system/Services/userService.dart';
+import 'package:token_system/utils.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final Entity user;
@@ -27,38 +28,13 @@ class _EditScreenState extends State<EditProfileScreen> {
   String _landmark = 'XXX';
 
   String successMessage(int statusCode) {
-    //TODO: UI popup to show this message
+    // FIXED: UI popup to show this message
     if (statusCode == 200)
       return 'Profile updated.';
     else if (statusCode == 412)
       return 'Bad pincode!';
     else
       return 'Update failed!';
-  }
-
-  String validateMobile(String value) {
-    // Indian Mobile number are of 10 digit only
-    if (value.length != 10)
-      return 'Mobile Number must be of 10 digits';
-    else
-      return null;
-  }
-
-  String validateAadhaar(String value) {
-    // Indian Mobile number are of 10 digit only
-    if (value == null) return null;
-    if (value.length != 12)
-      return 'Aadhar must be of 12 digits only';
-    else
-      return null;
-  }
-
-  String validatePincode(String value) {
-    // Indian Mobile number are of 10 digit only
-    if (value.length != 6)
-      return 'Pincode must be of 6 digits';
-    else
-      return null;
   }
 
   @override
@@ -111,7 +87,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                           ),
                           initialValue: widget.user.name ?? widget.user.shopName,
                           validator: (value) {
-                            if (value.isEmpty)
+                            if (value.isEmpty || value.trim() == '')
                               return widget.userType == 1
                                   ? 'Please enter your Shop name'
                                   : 'Please enter your name';
@@ -135,7 +111,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                             ),
                             initialValue: widget.user.ownerName,
                             validator: (value) {
-                              if (value.isEmpty)
+                              if (value.isEmpty || value.trim() == '')
                                 return 'Please enter your name';
                               else
                                 return null;
@@ -171,7 +147,7 @@ class _EditScreenState extends State<EditProfileScreen> {
                         child: TextFormField(
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'Aadhar number',
+                            labelText: 'aadhaar number',
                           ),
                           initialValue: widget.user.aadhaarNumber,
                           keyboardType: TextInputType.phone,
@@ -246,15 +222,15 @@ class _EditScreenState extends State<EditProfileScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // TODO: Call update user API and relevant status codes
+          // FIXED: Call update user API and relevant status codes
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
             if (widget.userType == 0) {
               UserService.updateProfileApi(widget.user,
-                      name: _name,
-                      mobileNumber: _mobile,
-                      aadhaarNumber: _aadhaar,
-                      pincode: _pincode)
+                      name: _name.trim(),
+                      mobileNumber: _mobile.trim(),
+                      aadhaarNumber: _aadhaar.trim(),
+                      pincode: _pincode.trim())
                   .then((code) {
                 final snackbar = SnackBar(
                   content: Text(successMessage(code)),
@@ -267,13 +243,13 @@ class _EditScreenState extends State<EditProfileScreen> {
               });
             } else if (widget.userType == 1) {
               ShopService.updateProfileApi(widget.user,
-                      shopName: _name,
-                      ownerName: _ownerName,
-                      mobileNumber: _mobile,
-                      aadhaarNumber: _aadhaar,
-                      address: _address,
-                      landmark: _landmark,
-                      pincode: _pincode)
+                      shopName: _name.trim(),
+                      ownerName: _ownerName.trim(),
+                      mobileNumber: _mobile.trim(),
+                      aadhaarNumber: _aadhaar.trim(),
+                      address: _address.trim(),
+                      landmark: _landmark.trim(),
+                      pincode: _pincode.trim())
                   .then((code) {
                 print('Inside Api call');
                 final snackbar = SnackBar(
@@ -287,10 +263,10 @@ class _EditScreenState extends State<EditProfileScreen> {
               });
             } else {
               AuthorityService.updateProfileApi(widget.user,
-                      name: _name,
-                      mobileNumber: _mobile,
-                      aadhaarNumber: _aadhaar,
-                      pincode: _pincode)
+                      name: _name.trim(),
+                      mobileNumber: _mobile.trim(),
+                      aadhaarNumber: _aadhaar.trim(),
+                      pincode: _pincode.trim())
                   .then((code) {
                 final snackbar = SnackBar(
                   content: Text(successMessage(code)),

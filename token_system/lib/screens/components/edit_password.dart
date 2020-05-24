@@ -127,7 +127,7 @@ class _EditScreenState extends State<EditPasswordScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // TODO: Call update user API and relevant status codes
+          // FIXED: Call update user API and relevant status codes
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
             String _password = _passKey.currentState.value;

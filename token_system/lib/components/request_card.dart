@@ -21,7 +21,6 @@ class RequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Make a call to get Shop Name and pincode from the shopId
     var borderColor;
     var statusText;
     var icon;
