@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:token_system/Entities/authority.dart';
 import 'package:token_system/components/tab_navigator.dart';
 import 'package:token_system/screens/authority_profile/auth_tabs.dart';
@@ -80,7 +81,10 @@ class _AuthorityHomeState extends State<AuthorityHome> {
             IconButton(
               icon: const Icon(Icons.power_settings_new),
               tooltip: 'Logout',
-              onPressed: () {
+              onPressed: () async {
+                var prefs = await SharedPreferences.getInstance();
+                await prefs.remove('signedAs');
+                await prefs.remove('entityData');
                 Navigator.pushReplacementNamed(context, '/login');
               },
             )

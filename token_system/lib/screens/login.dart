@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:token_system/Entities/user.dart';
 import 'package:token_system/Entities/shop.dart';
 import 'package:token_system/Entities/authority.dart';
@@ -25,7 +28,48 @@ class _LoginState extends State<Login> {
   String _password = '';
   var _passkey = GlobalKey<FormFieldState>();
   SignAs _selected = SignAs.user;
-
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((prefs) {
+        if(prefs.containsKey('signedAs')){
+          String signAs = prefs.getString('signedAs');
+          if(signAs=="user"){
+            String entityString = prefs.getString('entityData');
+            print(entityString);
+            var userJson = jsonDecode(entityString);
+            User u = User.fromJson(userJson);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => UserHome(user: u)),
+            );
+          }else if(signAs=="shop"){
+              String entityString = prefs.getString('entityData');
+              print(entityString);
+              var shopJson = jsonDecode(entityString);
+              Shop s = Shop.fromJson(shopJson);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ShopHome(shop: s)),
+              );
+          }else if(signAs=="authority"){
+              String entityString = prefs.getString('entityData');
+              print(entityString);
+              var authorityJson = jsonDecode(entityString);
+              Authority a = Authority.fromJson(authorityJson);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AuthorityHome(user: a)),
+              );
+          }
+        }else{
+          print("SignUp, no saved sign in detected");
+        }
+    });
+  }
   String errorMessage(int statusCode) {
     if (statusCode == 401)
       return 'Wrong password!';
@@ -166,10 +210,16 @@ class _LoginState extends State<Login> {
                         _formKey.currentState.save();
                         _password = _passkey.currentState.value;
                         if (_selected == SignAs.user) {
-                          UserService.verifyApi(_email, _password).then((json) {
+                          UserService.verifyApi(_email, _password).then((json) async {
                             if (json['statusCode'] == 200) {
                               User u = User.verifyFromJson(json['result'], _email);
                               // Login successful
+                              String userString = jsonEncode(u);
+                              var prefs = await SharedPreferences.getInstance();
+                              prefs.setString('entityData', userString);
+                              prefs.setString('signedAs', 'user');
+                              print("set up entityData as");
+                              print(userString);
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -185,10 +235,16 @@ class _LoginState extends State<Login> {
                             }
                           });
                         } else if (_selected == SignAs.shop) {
-                          ShopService.verifyApi(_email, _password).then((json) {
+                          ShopService.verifyApi(_email, _password).then((json) async {
                             if (json['statusCode'] == 200) {
                               Shop s = Shop.verifyFromJson(json['result'], _email);
                               // Login successful
+                              String shopString = jsonEncode(s);
+                              var prefs = await SharedPreferences.getInstance();
+                              prefs.setString('entityData', shopString);
+                              prefs.setString('signedAs', 'shop');
+                              print("set up entityData as");
+                              print(shopString);
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -204,10 +260,16 @@ class _LoginState extends State<Login> {
                             }
                           });
                         } else {
-                          AuthorityService.verifyApi(_email, _password).then((json) {
+                          AuthorityService.verifyApi(_email, _password).then((json) async {
                             if (json['statusCode'] == 200) {
                               Authority a = Authority.verifyFromJson(json['result'], _email);
                               // Login successful
+                              String authorityString = jsonEncode(a);
+                              var prefs = await SharedPreferences.getInstance();
+                              prefs.setString('entityData', authorityString);
+                              prefs.setString('signedAs', 'authority');
+                              print("set up entityData as");
+                              print(authorityString);
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(

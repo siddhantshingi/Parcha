@@ -1,5 +1,7 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:token_system/Entities/abstract.dart';
-
+part 'shop.g.dart';
+@JsonSerializable()
 class Shop extends Entity {
   int id;
   String shopName;
@@ -138,4 +140,6 @@ class Shop extends Entity {
         mobileVerification: json['mobileVerification'] as int,
         authVerification: json['authVerification'] as int);
   }
+  factory Shop.fromJson(Map<String, dynamic> json) => _$ShopFromJson(json);
+  Map<String, dynamic> toJson() => _$ShopToJson(this);
 }

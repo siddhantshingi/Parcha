@@ -1,5 +1,7 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:token_system/Entities/abstract.dart';
-
+part 'user.g.dart';
+@JsonSerializable()
 class User extends Entity {
   int id;
   String name;
@@ -54,4 +56,7 @@ class User extends Entity {
         pincode: json['pincode'] as String,
         mobileVerification: json['mobileVerification'] as int);
   }
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 }
