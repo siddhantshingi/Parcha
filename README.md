@@ -32,6 +32,12 @@ Feel free to contribute in the following ways:
 2. Fork the repo, make changes and raise a PR. Information [here](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request)  
 3. Contact any of the authors below.
 
+## License
+Licensed under the GNU GPLv3 License (the "License"); you may not use files in this project except in compliance with the License. You may obtain a copy of the License at
+```
+https://choosealicense.com/licenses/gpl-3.0/
+```
+
 ## Authors
 + [Siddhant Shingi](https://github.com/siddhantshingi)
 + [Divyanshu Saxena](https://github.com/DivyanshuSaxena)
